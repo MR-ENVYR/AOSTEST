@@ -1,0 +1,33 @@
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:style_of_agent/Login.dart';
+import 'package:style_of_agent/Splashscreen.dart';
+import 'package:style_of_agent/phoneauthpage.dart';
+import 'package:style_of_agent/welcomescreen.dart';
+
+import 'newonboard.dart';
+
+int initScreen;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  _mockCheckForSession();
+  runApp(MyApp());
+}
+
+Future<int> _mockCheckForSession() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  initScreen = await prefs.getInt("initScreen");
+//  await prefs.setInt("initScreen",1);
+  print('initScreen ${initScreen}');
+  await Future.delayed(Duration(milliseconds: 3000), () {});
+  return initScreen;
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: (initScreen==0 || initScreen==null)? OnBoardingCircle():(initScreen==1)? LoginScreen():(initScreen==2)? PhoneVerificationScreen(): Welcomescreen());
+      }
+  }
