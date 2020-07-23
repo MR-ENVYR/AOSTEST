@@ -13,78 +13,6 @@ import 'utils.dart';
 
 class FirebaseMethods {
 
-
-  //getCurrentUser()
-  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
-  //signIn
-//  GoogleSignIn _googleSignIn = GoogleSignIn();
-
-  //getting Current User
-//  Future<FirebaseUser> getCurrentUser() async {
-//    FirebaseUser currentUser = await _firebaseAuth.currentUser();
-//    print("getting current user");
-//    print(currentUser.toString());
-//    return currentUser;
-//  }
-
-  //sign in using google
-//  Future<FirebaseUser> signInwithGoogle() async {
-//    try {
-//      print("Google Signing in");
-//      GoogleSignInAccount _signInAccount = await _googleSignIn.signIn();
-//      GoogleSignInAuthentication _signInAuthentication =
-//          await _signInAccount.authentication;
-//      final AuthCredential credential = GoogleAuthProvider.getCredential(
-//          idToken: _signInAuthentication.idToken,
-//          accessToken: _signInAuthentication.accessToken);
-//      FirebaseUser user =
-//          (await _firebaseAuth.signInWithCredential(credential)).user;
-//      return user;
-//    } on PlatformException catch (e) {
-//      showToast(msg: e.message);
-//    }
-//  }
-
-  Future<FirebaseUser> signUp(
-      {@required String email, @required String pwd}) async {
-    try {
-      FirebaseUser user = (await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: pwd))
-          .user;
-      if (user != null) {
-        user.sendEmailVerification();
-      //  await addUserToDB(user, PHONE_NO);
-        await _firebaseAuth.signOut();
-      }
-      return user;
-    } on PlatformException catch (e) {
-      showToast(msg: e.message);
-    }
-  }
-
-  Future<FirebaseUser> signIn2(
-      {@required String email, @required String pwd}) async {
-    try {
-      FirebaseUser user = (await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: pwd))
-          .user;
-      print(user.displayName);
-      return user;
-    } on PlatformException catch (e) {
-      showToast(msg: e.message);
-    }
-  }
-
-  //Check whether user is new
-//  Future<bool> authenticateUser(FirebaseUser user) async {
-//    QuerySnapshot result = await usersref
-//        .where("email", isEqualTo: user.email)
-//        .getDocuments();
-//    final List<DocumentSnapshot> docs = result.documents;
-//    return docs.length == 0 ? true : false;
-//  }
-
   //PHONE NUMBER VERIFICATION
   sendCodeToPhoneNumber(FirebaseUser currentuser, {@required String phonenumber, BuildContext context}) {
     PHONE_NO = phonenumber;
@@ -176,7 +104,6 @@ class FirebaseMethods {
                               "isphoneverified":true
                             });
                             SharedPreferences prefs = await SharedPreferences.getInstance();
-                            initScreen = await prefs.getInt("initScreen");
                             await prefs.setInt("initScreen",3);
                             Navigator.of(context).pushReplacement(MaterialPageRoute(
                                 builder: (BuildContext context) => Welcomescreen()));
@@ -203,41 +130,5 @@ class FirebaseMethods {
         });
   }
 
-  //add user into collection
-//  Future<void> addUserToDB(FirebaseUser userToAdd, String phNo) async {
-//    User collectionUser = User.fromDocument(
-//        uid: userToAdd.uid,
-//        email: userToAdd.email,
-//        username: getUserName(userToAdd),
-//        phoneNumber: phNo,
-//        isPhoneVerified: true,
-//        profilephoto: userToAdd.photoUrl);
-//    _userCollection.document(userToAdd.uid).setData(collectionUser.toJson());
-//  }
-
-//  Future<void> updateProfile(String id, User user) async {
-//    _userCollection.document(id).setData({});
-//  }
-
-//  getUploaderName(String id) async {
-//    print(id);
-//    DocumentSnapshot snapshot = await _userCollection.document(id).get();
-//    return snapshot.data[UserModel.USERNAME_KEY];
-//  }
-
-//
-  //signOut
-  Future<void> signOut() async {
-    await _firebaseAuth.signOut();
-  }
-//
-//  void addMessageToDB(
-//      {@required Message msgToAdd, @required String topicId}) async {
-//    await firestore
-//        .collection("topics")
-//        .document(topicId)
-//        .collection("messages")
-//        .add(msgToAdd.toJson());
-//  }
 
 }

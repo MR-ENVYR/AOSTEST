@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/Login.dart';
 import 'package:style_of_agent/phoneauthpage.dart';
+import 'package:style_of_agent/utils.dart';
 import 'Splashscreen.dart';
 import 'model/usermodel.dart';
 import 'styles.dart';
@@ -21,9 +22,25 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<Signup> {
+  bool _obscureText = true;
+  GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+  TextEditingController confirmpassController = TextEditingController();
+
   FirebaseAuth _auth = FirebaseAuth.instance;
   bool _rememberMe = false;
   GoogleSignIn _googleSignIn = new GoogleSignIn();
+  String email;
+  String password;
+  String confirmpassword;
+
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   Widget _buildEmailTF() {
     return Column(
@@ -37,30 +54,49 @@ class _SignupScreenState extends State<Signup> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
+         // height: 60.0,
+          child: TextFormField(
+            controller: emailController,
+            validator: (String email) => emailValidator(email),
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontFamily: "Helvetica",
                 fontWeight: FontWeight.w200),
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white24,
-              contentPadding: EdgeInsets.only(top: 14.0),
+              hintText: 'Enter your email',
+              hintStyle: kHintTextStyle,
+              contentPadding:
+              EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
               prefixIcon: Icon(
-                Icons.alternate_email,
+                Icons.email,
                 color: Colors.white,
               ),
-              hintText: 'Enter your Email',
-              hintStyle: kHintTextStyle,
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white38),
-                borderRadius: BorderRadius.circular(15.7),
+              errorStyle: TextStyle(
+                  color: Colors.deepOrange,
+                  fontFamily: "Helvetica",
+                  fontWeight: FontWeight.w200),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepOrange),
+                borderRadius: BorderRadius.circular(12.3),
               ),
-              enabledBorder: UnderlineInputBorder(
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepOrange),
+                borderRadius: BorderRadius.circular(12.3),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+                borderRadius: BorderRadius.circular(12.3),
+              ),
+              enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.white38),
-                borderRadius: BorderRadius.circular(15.7),
+                borderRadius: BorderRadius.circular(12.3),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white38),
+                borderRadius: BorderRadius.circular(12.3),
               ),
             ),
           ),
@@ -68,35 +104,101 @@ class _SignupScreenState extends State<Signup> {
       ],
     );
   }
-
-  Future<FirebaseUser> handleSignIn() async {
-    GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
-    GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
-
-    AuthCredential credential = GoogleAuthProvider.getCredential(
-        idToken: googleSignInAuthentication.idToken,
-        accessToken: googleSignInAuthentication.accessToken);
-
-    AuthResult result = (await _auth.signInWithCredential(credential));
-    FirebaseUser _user = result.user;
-    saveusertofirestore(_user);
+  Future<FirebaseUser> signUp(
+      {@required String email, @required String pwd}) async {
+    try {
+      FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
+          email: email, password: pwd))
+          .user;
+      if (user != null) {
+        savedata(user);
+      }
+    } on PlatformException catch (e) {
+      final snackbar = SnackBar(
+        backgroundColor: Colors.black54,
+        content: Text(
+          e.message,
+          style: TextStyle(
+              color: Colors.white,
+              fontFamily: "Helvetica",
+              fontWeight: FontWeight.w200),
+        ),
+      );
+      scaffoldkey.currentState.showSnackBar(snackbar);
+    }
   }
 
-//  Future<void> gooleSignout() async {
-//    Navigator.push(
-//        context, MaterialPageRoute(builder: (context) => PhoneVerificationScreen(user:currentuser)));
-////    await _auth.signOut().then((onValue) {
-////      _googleSignIn.signOut();
-////      setState(() {
-////        issignin = true;
-////      });
-////    });
-//
-//  }
+  savedata(FirebaseUser user) async{
+    QuerySnapshot result =
+        await usersref.where("email", isEqualTo: user.email).getDocuments();
+    final List<DocumentSnapshot> docs = result.documents;
+    if (docs.length == 0) {
+      usersref.document(user.uid).setData({
+        "id": user.uid,
+        "profilename": user.displayName,
+        "url": user.photoUrl,
+        "email": user.email,
+        "phonenumber": "",
+        "isphoneverified": false,
+        "timestamp": time
+      });
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (BuildContext context) =>
+              PhoneVerificationScreen(user: user)));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setInt("initScreen", 2);
+    } else {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
+      await _auth.signOut();
+      final snackbar = SnackBar(
+        backgroundColor: Colors.black45,
+        content: Text(
+          "Already a user! Please login",
+          style: TextStyle(
+              color: Colors.white,
+              fontFamily: "Helvetica",
+              fontWeight: FontWeight.w200),
+        ),
+      );
+      scaffoldkey.currentState.showSnackBar(snackbar);
+    }
+  }
+
+
+  Future<FirebaseUser> handleSignIn() async {
+    try{
+      GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+      GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount.authentication;
+
+      AuthCredential credential = GoogleAuthProvider.getCredential(
+          idToken: googleSignInAuthentication.idToken,
+          accessToken: googleSignInAuthentication.accessToken);
+
+      AuthResult result = (await _auth.signInWithCredential(credential));
+      FirebaseUser _user = result.user;
+      saveusertofirestore(_user);
+    }
+    on PlatformException catch (e) {
+      final snackbar = SnackBar(
+        backgroundColor: Colors.black54,
+        content: Text(
+          e.message,
+          style: TextStyle(
+              color: Colors.white,
+              fontFamily: "Helvetica",
+              fontWeight: FontWeight.w200),
+        ),
+      );
+      scaffoldkey.currentState.showSnackBar(snackbar);
+    }
+
+  }
 
   Widget _buildPasswordTF() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
@@ -107,30 +209,58 @@ class _SignupScreenState extends State<Signup> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            obscureText: true,
+         // height: 60.0,
+          child: TextFormField(
+            textAlignVertical: TextAlignVertical.center,
+            textAlign: TextAlign.left,
+            controller: passController,
+            validator: (String phone) => pwdValidator(phone),
+            obscureText: _obscureText,
             style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontFamily: "Helvetica",
                 fontWeight: FontWeight.w200),
             decoration: InputDecoration(
+              suffixIcon: IconButton(
+                icon: Icon(
+                    _obscureText ? Icons.visibility : Icons.visibility_off),
+                onPressed:_toggle,
+                color: Colors.white38,
+                focusColor: Colors.white70,
+              ),
               filled: true,
               fillColor: Colors.white24,
-              contentPadding: EdgeInsets.only(top: 14.0),
+              contentPadding:
+              EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
               prefixIcon: Icon(
                 Icons.lock_outline,
                 color: Colors.white,
               ),
+              errorStyle: TextStyle(
+                  color: Colors.deepOrange,
+                  fontFamily: "Helvetica",
+                  fontWeight: FontWeight.w200),
               hintText: 'Enter your Password',
               hintStyle: kHintTextStyle,
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white38),
-                borderRadius: BorderRadius.circular(15.7),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red),
+                borderRadius: BorderRadius.circular(12.3),
               ),
-              enabledBorder: UnderlineInputBorder(
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red),
+                borderRadius: BorderRadius.circular(12.3),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+                borderRadius: BorderRadius.circular(12.3),
+              ),
+              enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.white38),
-                borderRadius: BorderRadius.circular(15.7),
+                borderRadius: BorderRadius.circular(12.3),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white38),
+                borderRadius: BorderRadius.circular(12.3),
               ),
             ),
           ),
@@ -141,6 +271,7 @@ class _SignupScreenState extends State<Signup> {
 
   Widget _buildconfirmPasswordTF() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
@@ -151,30 +282,58 @@ class _SignupScreenState extends State<Signup> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            obscureText: true,
+//          height: 60.0,
+          child: TextFormField(
+            textAlignVertical: TextAlignVertical.center,
+            textAlign: TextAlign.left,
+            controller: confirmpassController,
+            validator: (String phone) => pwdValidator(phone),
+            obscureText: _obscureText,
             style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontFamily: "Helvetica",
                 fontWeight: FontWeight.w200),
             decoration: InputDecoration(
+              suffixIcon: IconButton(
+                icon:Icon(_obscureText?Icons.visibility:Icons.visibility_off),
+                onPressed: ()=> _toggle,
+                color: Colors.white38,
+                focusColor: Colors.white70,
+              ),
+              errorStyle: TextStyle(
+                  color: Colors.deepOrange,
+                  fontFamily: "Helvetica",
+                  fontWeight: FontWeight.w200),
               filled: true,
               fillColor: Colors.white24,
-              contentPadding: EdgeInsets.only(top: 14.0),
+              contentPadding:
+              EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+             // contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
-                Icons.lock,
+                Icons.lock_outline,
                 color: Colors.white,
               ),
-              hintText: 'Confirm your Password',
+              hintText: 'Enter your Password',
               hintStyle: kHintTextStyle,
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white38),
-                borderRadius: BorderRadius.circular(15.7),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepOrange),
+                borderRadius: BorderRadius.circular(12.3),
               ),
-              enabledBorder: UnderlineInputBorder(
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepOrange),
+                borderRadius: BorderRadius.circular(12.3),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+                borderRadius: BorderRadius.circular(12.3),
+              ),
+              enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.white38),
-                borderRadius: BorderRadius.circular(15.7),
+                borderRadius: BorderRadius.circular(12.3),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white38),
+                borderRadius: BorderRadius.circular(12.3),
               ),
             ),
           ),
@@ -221,26 +380,26 @@ class _SignupScreenState extends State<Signup> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setInt("initScreen", 2);
       print('initScreen ${initScreen}');
-    }
-    else {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (BuildContext context) =>
-              LoginScreen()));
+    } else {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
 
       await _auth.signOut().then((onValue) {
         _googleSignIn.signOut();
       });
-      Fluttertoast.showToast(
-          msg: "Already a user ! Login",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black45,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      final snackbar = SnackBar(
+        backgroundColor: Colors.black54,
+        content: Text(
+          "Already a user! Please login",
+          style: TextStyle(
+              color: Colors.white,
+              fontFamily: "Helvetica",
+              fontWeight: FontWeight.w200),
+        ),
+      );
+      scaffoldkey.currentState.showSnackBar(snackbar);
     }
 
-    //currentuser=User.fromDocument(documentSnapshot);
   }
 
   Widget _buildRememberMeCheckbox() {
@@ -252,7 +411,7 @@ class _SignupScreenState extends State<Signup> {
             data: ThemeData(unselectedWidgetColor: Colors.black),
             child: Checkbox(
               value: _rememberMe,
-              checkColor: Color(0xFFc0a948),
+              checkColor: (Colors.deepOrange),
               activeColor: Colors.white,
               onChanged: (value) {
                 setState(() {
@@ -271,13 +430,39 @@ class _SignupScreenState extends State<Signup> {
     );
   }
 
+  validateandsend() {
+    if (_formKey.currentState.validate()) {
+      email = emailController.text.trim();
+      password = passController.text.trim();
+      confirmpassword = confirmpassController.text.trim();
+      _formKey.currentState.save();
+      if(password==confirmpassword){
+        signUp(email: email, pwd: password);
+      }
+      else{
+        final snackbar = SnackBar(
+        backgroundColor: Colors.black54,
+        content: Text(
+          "Password does not match",
+          style: TextStyle(
+              color: Colors.white,
+              fontFamily: "Helvetica",
+              fontWeight: FontWeight.w200),
+        ),
+      );
+      scaffoldkey.currentState.showSnackBar(snackbar);
+      }
+
+    }
+  }
+
   Widget _buildSignupBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => handleSignIn(),
+        onPressed: () => validateandsend(),
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -401,6 +586,7 @@ class _SignupScreenState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: scaffoldkey,
         resizeToAvoidBottomInset: false,
         body: AnnotatedRegion<SystemUiOverlayStyle>(
             value: SystemUiOverlayStyle.dark,
@@ -438,24 +624,33 @@ class _SignupScreenState extends State<Signup> {
                             'Sign up',
                             style: TextStyle(
                               letterSpacing: 2.0,
-                              color: Color(0xFFe5cf73),
+                              color: Colors.white,
                               fontFamily: "Playfairdisplay",
                               fontSize: 40.0,
                               fontWeight: FontWeight.w800,
                             ),
                           ),
                           SizedBox(height: 20.0),
-                          _buildEmailTF(),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          _buildPasswordTF(),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          _buildconfirmPasswordTF(),
-                          SizedBox(
-                            height: 20.0,
+                          Form(
+                            key: _formKey,
+                            child: ListView(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              children: <Widget>[
+                                _buildEmailTF(),
+                                SizedBox(
+                                  height: 20.0,
+                                ),
+                                _buildPasswordTF(),
+                                SizedBox(
+                                  height: 20.0,
+                                ),
+                                _buildconfirmPasswordTF(),
+                                SizedBox(
+                                  height: 20.0,
+                                ),
+                              ],
+                            ),
                           ),
                           //_buildForgotPasswordBtn(),
                           _buildRememberMeCheckbox(),

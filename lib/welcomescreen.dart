@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/Login.dart';
+
+import 'main.dart';
 
 
 
@@ -22,6 +25,8 @@ class _WelcomescreenState extends State<Welcomescreen> {
   Future<void> gooleSignout() async {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt("initScreen", 1);
     await _auth.signOut().then((onValue) {
       _googleSignIn.signOut();
 //

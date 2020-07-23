@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/Login.dart';
-import 'package:style_of_agent/Splashscreen.dart';
 import 'package:style_of_agent/phoneauthpage.dart';
 import 'package:style_of_agent/welcomescreen.dart';
 
@@ -16,12 +15,11 @@ Future<void> main() async {
 }
 
 Future<int> _mockCheckForSession() async {
+  await Future.delayed(Duration(milliseconds: 3000), () {});
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = await prefs.getInt("initScreen");
-//  await prefs.setInt("initScreen",1);
-  print('initScreen ${initScreen}');
-  await Future.delayed(Duration(milliseconds: 3000), () {});
   return initScreen;
+
 }
 
 class MyApp extends StatelessWidget {
