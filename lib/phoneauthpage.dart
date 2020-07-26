@@ -120,8 +120,12 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                             });
                             SharedPreferences prefs = await SharedPreferences.getInstance();
                             await prefs.setInt("initScreen",3);
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                builder: (BuildContext context) => Welcomescreen()));
+                            Future.delayed(const Duration(milliseconds: 1000), () {
+                              setState(() {
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                    builder: (BuildContext context) => Welcomescreen()));
+                              });
+                            });
                             await _firebaseAuth.signOut();
                           } else {
                             final snackbar = SnackBar(

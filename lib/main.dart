@@ -10,12 +10,12 @@ int initScreen;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  _mockCheckForSession();
+  initScreen=await _mockCheckForSession();
   runApp(MyApp());
 }
 
 Future<int> _mockCheckForSession() async {
-  await Future.delayed(Duration(milliseconds: 3000), () {});
+  await Future.delayed(Duration(milliseconds: 2000), () {});
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = await prefs.getInt("initScreen");
   return initScreen;

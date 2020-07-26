@@ -2,15 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/Login.dart';
 import 'package:style_of_agent/phoneauthpage.dart';
+import 'package:style_of_agent/progress.dart';
 import 'package:style_of_agent/utils.dart';
 import 'Splashscreen.dart';
 import 'model/usermodel.dart';
 import 'styles.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 final usersref = Firestore.instance.collection("users");
 final DateTime time = DateTime.now();
@@ -32,6 +33,8 @@ class _SignupScreenState extends State<Signup> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   bool _rememberMe = false;
   GoogleSignIn _googleSignIn = new GoogleSignIn();
+  final facebookLogin = new FacebookLogin();
+
   String email;
   String password;
   String confirmpassword;
@@ -132,6 +135,7 @@ class _SignupScreenState extends State<Signup> {
     QuerySnapshot result =
         await usersref.where("email", isEqualTo: user.email).getDocuments();
     final List<DocumentSnapshot> docs = result.documents;
+    Navigator.pop(context);
     if (docs.length == 0) {
       usersref.document(user.uid).setData({
         "id": user.uid,
@@ -148,10 +152,16 @@ class _SignupScreenState extends State<Signup> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setInt("initScreen", 2);
     } else {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
       await _auth.signOut();
       final snackbar = SnackBar(
+        action: SnackBarAction(
+          label: "Login here  ",
+          textColor: Colors.deepOrange,
+          onPressed: (){
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
+          },
+        ),
         backgroundColor: Colors.black45,
         content: Text(
           "Already a user! Please login",
@@ -167,20 +177,61 @@ class _SignupScreenState extends State<Signup> {
 
 
   Future<FirebaseUser> handleSignIn() async {
+    showAlertDialog(context,"Please wait!");
     try{
-      GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+      GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn()
+      .catchError((onError) {
+        Navigator.pop(context);
+        final snackbar = SnackBar(
+          backgroundColor: Colors.black54,
+          content: Text(
+            onError.toString(),
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: "Helvetica",
+                fontWeight: FontWeight.w200),
+          ),
+        );
+        scaffoldkey.currentState.showSnackBar(snackbar);
+      });
       GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount.authentication;
-
+      await googleSignInAccount.authentication
+          .catchError((onError) {
+        Navigator.pop(context);
+        final snackbar = SnackBar(
+          backgroundColor: Colors.black54,
+          content: Text(
+            onError.toString(),
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: "Helvetica",
+                fontWeight: FontWeight.w200),
+          ),
+        );
+        scaffoldkey.currentState.showSnackBar(snackbar);
+      });
       AuthCredential credential = GoogleAuthProvider.getCredential(
           idToken: googleSignInAuthentication.idToken,
           accessToken: googleSignInAuthentication.accessToken);
-
-      AuthResult result = (await _auth.signInWithCredential(credential));
+      AuthResult result = (await _auth.signInWithCredential(credential).catchError((onError) {
+        Navigator.pop(context);
+        final snackbar = SnackBar(
+          backgroundColor: Colors.black54,
+          content: Text(
+            onError.toString(),
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: "Helvetica",
+                fontWeight: FontWeight.w200),
+          ),
+        );
+        scaffoldkey.currentState.showSnackBar(snackbar);
+      }));
       FirebaseUser _user = result.user;
       saveusertofirestore(_user);
     }
     on PlatformException catch (e) {
+      Navigator.pop(context);
       final snackbar = SnackBar(
         backgroundColor: Colors.black54,
         content: Text(
@@ -364,6 +415,7 @@ class _SignupScreenState extends State<Signup> {
     QuerySnapshot result =
         await usersref.where("email", isEqualTo: user.email).getDocuments();
     final List<DocumentSnapshot> docs = result.documents;
+    Navigator.pop(context);
     if (docs.length == 0) {
       usersref.document(user.uid).setData({
         "id": user.uid,
@@ -374,6 +426,7 @@ class _SignupScreenState extends State<Signup> {
         "isphoneverified": false,
         "timestamp": time
       });
+
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (BuildContext context) =>
               PhoneVerificationScreen(user: user)));
@@ -381,23 +434,31 @@ class _SignupScreenState extends State<Signup> {
       await prefs.setInt("initScreen", 2);
       print('initScreen ${initScreen}');
     } else {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
-
-      await _auth.signOut().then((onValue) {
-        _googleSignIn.signOut();
-      });
       final snackbar = SnackBar(
         backgroundColor: Colors.black54,
         content: Text(
-          "Already a user! Please login",
+          "Already a user! Please Login",
           style: TextStyle(
               color: Colors.white,
               fontFamily: "Helvetica",
               fontWeight: FontWeight.w200),
         ),
+        elevation: 6.0,
+        action:SnackBarAction(
+          label: 'Login  ',
+          textColor: Colors.deepOrange,
+          onPressed: (){
+             Navigator.of(context).pushReplacement(
+         MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
+          },
+        ),
       );
       scaffoldkey.currentState.showSnackBar(snackbar);
+      await _auth.signOut().then((onValue) {
+        _googleSignIn.signOut();
+      });
+//
+
     }
 
   }
@@ -424,20 +485,22 @@ class _SignupScreenState extends State<Signup> {
               style: TextStyle(
                   fontFamily: "Helvetica",
                   fontWeight: FontWeight.w200,
-                  color: Color(0xFFc0a948))),
+                  color: Colors.white70)),
         ],
       ),
     );
   }
 
-  validateandsend() {
+  validateandsend() async{
     if (_formKey.currentState.validate()) {
       email = emailController.text.trim();
       password = passController.text.trim();
       confirmpassword = confirmpassController.text.trim();
       _formKey.currentState.save();
       if(password==confirmpassword){
-        signUp(email: email, pwd: password);
+        showAlertDialog(context,"Creating user.. Please wait");
+        await signUp(email: email, pwd: password);
+        Navigator.pop(context);
       }
       else{
         final snackbar = SnackBar(
@@ -504,6 +567,54 @@ class _SignupScreenState extends State<Signup> {
       ],
     );
   }
+  Future<FirebaseUser> firebaseAuthWithFacebook({@required FacebookAccessToken token}) async {
+    AuthCredential credential= FacebookAuthProvider.getCredential(accessToken: token.token);
+    FirebaseUser firebaseUser = (await _auth.signInWithCredential(credential)).user;
+    return firebaseUser;
+  }
+
+  handlefacebooklogin() async{
+    showAlertDialog(context,"Please wait..");
+    final facebookLoginResult = await facebookLogin.logIn(['email', 'public_profile']);
+    switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.error:
+        Navigator.pop(context);
+        final snackbar = SnackBar(
+          backgroundColor: Colors.black45,
+          content: Text(
+            "Error! Please try again ",
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: "Helvetica",
+                fontWeight: FontWeight.w200),
+          ),
+        );
+        scaffoldkey.currentState.showSnackBar(snackbar);
+        break;
+
+      case FacebookLoginStatus.cancelledByUser:
+        Navigator.pop(context);
+        final snackbar = SnackBar(
+          backgroundColor: Colors.black45,
+          content: Text(
+            "Cancelled by you!",
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: "Helvetica",
+                fontWeight: FontWeight.w200),
+          ),
+        );
+        scaffoldkey.currentState.showSnackBar(snackbar);
+        break;
+
+      case FacebookLoginStatus.loggedIn:
+        /// calling the auth mehtod and getting the logged user
+        var firebaseUser = await firebaseAuthWithFacebook(
+            token: facebookLoginResult.accessToken);
+        savedata(firebaseUser);
+
+    }
+  }
 
   Widget _buildSocialBtn(Function onTap, AssetImage logo) {
     return GestureDetector(
@@ -536,7 +647,7 @@ class _SignupScreenState extends State<Signup> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           _buildSocialBtn(
-            () => print('Signup with Facebook'),
+            () => handlefacebooklogin(),
             AssetImage(
               'assets/images/facebook.jpg',
             ),
@@ -563,7 +674,7 @@ class _SignupScreenState extends State<Signup> {
               text: 'Already have an account? ',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 10.0,
+                fontSize: 13.0,
                 fontFamily: "Helvetica",
                 fontWeight: FontWeight.w200,
               ),
@@ -571,10 +682,10 @@ class _SignupScreenState extends State<Signup> {
             TextSpan(
               text: ' Login',
               style: TextStyle(
-                fontFamily: "Playfairdisplay",
+                fontFamily: "Helvetica",
                 color: Colors.deepOrange,
-                fontSize: 15.0,
-                fontWeight: FontWeight.w600,
+                fontSize: 16.0,
+                fontWeight: FontWeight.w400,
               ),
             ),
           ],
@@ -615,7 +726,7 @@ class _SignupScreenState extends State<Signup> {
                       physics: AlwaysScrollableScrollPhysics(),
                       padding: EdgeInsets.symmetric(
                         horizontal: 30.0,
-                        vertical: 40.0,
+                        vertical: 80.0,
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

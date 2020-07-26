@@ -37,47 +37,47 @@ class _OnBoardingCircleState extends State<OnBoardingCircle> {
           screenWidth: screenWidth,
           screenheight: screenheight,
           image: 'assets/images/woman4.jpg',
-          type: 'Connect with ease',
-          startGradientColor: Colors.orange,
-          endGradientColor: Colors.red,
+          type: 'Create your personal profile',
+          startGradientColor: Color(0xFFc0a948),
+          endGradientColor: Colors.amber,
           subText:
-              'Connect with best stylists in town from the comfort of your home.Get personalised recommendations at your fingertips'),
+              'Connect with fashion professionals from the comfort of your home'),
       IntroWidget(
           screenWidth: screenWidth,
           screenheight: screenheight,
           image: 'assets/images/man1.jpg',
-          type: 'Find the fashion that adorns you',
-          startGradientColor: Colors.orange,
-          endGradientColor: Colors.red,
+          type: 'Upload your outfit selfie',
+          startGradientColor: Color(0xFFc0a948),
+          endGradientColor: Colors.amber,
           subText:
-              'Find the brands that embellish your style.Wear exotic attire and never run out of style'),
-      IntroWidget(
-          screenWidth: screenWidth,
-          screenheight: screenheight,
-          image: 'assets/images/woman2.jpg',
-          type: 'Communicate with ease',
-          startGradientColor: Colors.orange,
-          endGradientColor: Colors.red,
-          subText:
-              "Upload your pic and get the best suited recommendations from our stylists"),
-      IntroWidget(
-          screenWidth: screenWidth,
-          screenheight: screenheight,
-          image: 'assets/images/man2.jpg',
-          type: 'Secure end to end chats',
-          startGradientColor: Colors.orange,
-          endGradientColor: Colors.red,
-          subText:
-              'Acess your chats with stylists anytime you need them.Our secure end to end framework keeps your chats personal'),
+              'Upload your outfit selfie and get the best suited recommendations on what to wear today'),
       IntroWidget(
           screenWidth: screenWidth,
           screenheight: screenheight,
           image: 'assets/images/woman3.jpg',
-          type: 'Experience modern styling',
-          startGradientColor: Colors.orange,
-          endGradientColor: Colors.red,
+          type: 'Get instant style device',
+          startGradientColor: Color(0xFFc0a948),
+          endGradientColor: Colors.amber,
           subText:
-              'The Agents of Style are ready to deduce your requirement.Lets get started'),
+              "Upload your pic and get the best suited recommendations from our stylists"),
+//      IntroWidget(
+//          screenWidth: screenWidth,
+//          screenheight: screenheight,
+//          image: 'assets/images/man2.jpg',
+//          type: 'Secure end to end chats',
+//          startGradientColor: Colors.orange,
+//          endGradientColor: Colors.red,
+//          subText:
+//              'Acess your chats with stylists anytime you need them.Our secure end to end framework keeps your chats personal'),
+//      IntroWidget(
+//          screenWidth: screenWidth,
+//          screenheight: screenheight,
+//          image: 'assets/images/woman3.jpg',
+//          type: 'Experience modern styling',
+//          startGradientColor: Colors.orange,
+//          endGradientColor: Colors.red,
+//          subText:
+//              'The Agents of Style are ready to deduce your requirement.Lets get started'),
     ];
 //    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     return Scaffold(
@@ -164,7 +164,7 @@ class _OnBoardingCircleState extends State<OnBoardingCircle> {
       height: 8.0,
       width: isActive ? 35.0 : 25.0,
       decoration: BoxDecoration(
-        color: isActive ? Colors.deepOrange : Colors.white,
+        color: isActive ? Color(0xFFc0a948): Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
     );
