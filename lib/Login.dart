@@ -11,6 +11,7 @@ import 'package:style_of_agent/Signup.dart';
 import 'package:style_of_agent/progress.dart';
 import 'package:style_of_agent/utils.dart';
 import 'package:style_of_agent/welcomescreen.dart';
+import 'emailverificationpage.dart';
 import 'model/usermodel.dart';
 import 'styles.dart';
 
@@ -345,15 +346,16 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       alignment: Alignment.centerRight,
       child: FlatButton(
-        onPressed: () => print('Forgot Password Button Pressed'),
-        padding: EdgeInsets.only(right: 0.0),
+        onPressed: () =>Navigator.of(context).push(
+            MaterialPageRoute(builder: (BuildContext context) => Emailverification())),
+        padding: EdgeInsets.only(right: 0.0,top: 10.0),
         child: Text(
           'Forgot Password?',
           style: TextStyle(
               fontFamily: "Helvetica",
               fontWeight: FontWeight.w200,
-              fontSize: 15.0,
-              color: Colors.deepOrange),
+              fontSize: 19.0,
+              color: Colors.white),
         ),
       ),
     );
@@ -628,6 +630,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       vertical: 80.0,
                     ),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(

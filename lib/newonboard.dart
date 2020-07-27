@@ -60,24 +60,6 @@ class _OnBoardingCircleState extends State<OnBoardingCircle> {
           endGradientColor: Colors.amber,
           subText:
               "Upload your pic and get the best suited recommendations from our stylists"),
-//      IntroWidget(
-//          screenWidth: screenWidth,
-//          screenheight: screenheight,
-//          image: 'assets/images/man2.jpg',
-//          type: 'Secure end to end chats',
-//          startGradientColor: Colors.orange,
-//          endGradientColor: Colors.red,
-//          subText:
-//              'Acess your chats with stylists anytime you need them.Our secure end to end framework keeps your chats personal'),
-//      IntroWidget(
-//          screenWidth: screenWidth,
-//          screenheight: screenheight,
-//          image: 'assets/images/woman3.jpg',
-//          type: 'Experience modern styling',
-//          startGradientColor: Colors.orange,
-//          endGradientColor: Colors.red,
-//          subText:
-//              'The Agents of Style are ready to deduce your requirement.Lets get started'),
     ];
 //    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     return Scaffold(

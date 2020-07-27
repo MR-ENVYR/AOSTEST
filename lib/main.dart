@@ -26,6 +26,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: (initScreen==0 || initScreen==null)? OnBoardingCircle():(initScreen==1)? LoginScreen():(initScreen==2)? PhoneVerificationScreen(): Welcomescreen());
+      home: (initScreen==1 || initScreen==null)? OnBoardingCircle():(initScreen==5)? LoginScreen():(initScreen==2)? PhoneVerificationScreen(): Welcomescreen());
       }
   }
