@@ -206,6 +206,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setInt("initScreen",3);
+      await prefs.setString("uid",user.uid);
       scaffoldkey.currentState.showSnackBar(snackbar);
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (BuildContext context) => Welcomescreen()));
@@ -422,6 +423,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await scaffoldkey.currentState.showSnackBar(snackbar);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setInt("initScreen",3);
+      await prefs.setString("uid",user.uid);
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (BuildContext context) => Welcomescreen()));
     }
@@ -545,7 +547,6 @@ class _LoginScreenState extends State<LoginScreen> {
         children: <Widget>[
           _buildSocialBtn(
             () =>{
-
               handlefacebooklogin()
             },
             AssetImage(

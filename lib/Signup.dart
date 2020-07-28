@@ -150,6 +150,7 @@ class _SignupScreenState extends State<Signup> {
           builder: (BuildContext context) =>
               PhoneVerificationScreen(user: user)));
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString("uid",user.uid);
       await prefs.setInt("initScreen", 2);
     } else {
       await _auth.signOut();
@@ -431,8 +432,8 @@ class _SignupScreenState extends State<Signup> {
           builder: (BuildContext context) =>
               PhoneVerificationScreen(user: user)));
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString("uid",user.uid);
       await prefs.setInt("initScreen", 2);
-      print('initScreen ${initScreen}');
     } else {
       final snackbar = SnackBar(
         backgroundColor: Colors.black54,

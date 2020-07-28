@@ -2,9 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:style_of_agent/Login.dart';
+import 'package:style_of_agent/progress.dart';
 import 'package:style_of_agent/welcomescreen.dart';
 import 'Signup.dart';
-import 'firebasemethods.dart';
 import 'utils.dart';
 
 class PhoneVerificationScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class PhoneVerificationScreen extends StatefulWidget {
 }
 
 class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
+  String uid;
   FirebaseAuth auth=FirebaseAuth.instance;
   GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -24,10 +26,47 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
   TextEditingController codeController = TextEditingController();
   FocusNode phoneNode = FocusNode();
   FocusNode codeNode = FocusNode();
-  sendCodeToPhoneNumber(FirebaseUser currentuser, {@required String phonenumber, BuildContext context}) {
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.user==null){
+      getuid();
+    }
+    else{
+        uid=widget.user.uid;
+    }
+  }
+
+  Future<void>getuid() async {
+    await Future.delayed(Duration(milliseconds: 2000), () {});
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String currentuseruid = await prefs.getString("uid");
+    if(currentuseruid==null){
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (BuildContext context) => LoginScreen()));
+    }
+    else{
+      uid=currentuseruid;
+    }
+  }
+
+//  Future<FirebaseUser> getCurrentUser() async {
+//    FirebaseUser CurrentUser = await FirebaseAuth.instance.currentUser();
+//    if(CurrentUser==null){
+//
+//    }
+//    else{
+//      setState(() {
+//        widget.user=CurrentUser;
+//      });
+//    }
+//
+//  }
+
+  sendCodeToPhoneNumber({@required String phonenumber, BuildContext context}) {
     PHONE_NO = phonenumber;
-    FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-    _firebaseAuth.verifyPhoneNumber(
+    auth.verifyPhoneNumber(
         phoneNumber: phonenumber,
         timeout: Duration(seconds: 15),
         verificationCompleted: (AuthCredential authCredentials) {
@@ -102,7 +141,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                         AuthCredential _credentials;
                         _credentials = PhoneAuthProvider.getCredential(
                             verificationId: verificationId, smsCode: sms);
-                        _firebaseAuth
+                        auth
                             .signInWithCredential(_credentials)
                             .then((AuthResult result) async {
                           if (result.user != null) {
@@ -114,7 +153,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                                   fontWeight: FontWeight.w200),),
                             );
                             scaffoldkey.currentState.showSnackBar(snackbar);
-                            await usersref.document(currentuser.uid).updateData({
+                            await usersref.document(uid).updateData({
                               "phonenumber":phonenumber,
                               "isphoneverified":true
                             });
@@ -126,7 +165,6 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                                     builder: (BuildContext context) => Welcomescreen()));
                               });
                             });
-                            await _firebaseAuth.signOut();
                           } else {
                             final snackbar = SnackBar(
                               backgroundColor: Colors.black54,
@@ -306,7 +344,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                               String phoneNumber = "+" +
                                   codeController.text.trim() +
                                   phoneController.text.trim();
-                               sendCodeToPhoneNumber(widget.user,
+                               sendCodeToPhoneNumber(
                                   phonenumber: phoneNumber, context: context);
                             }
                           },

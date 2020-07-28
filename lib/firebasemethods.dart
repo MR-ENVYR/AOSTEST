@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/model/usermodel.dart';
 import 'package:style_of_agent/welcomescreen.dart';
 import 'Signup.dart';
-import 'main.dart';
 import 'utils.dart';
 
 class FirebaseMethods {
