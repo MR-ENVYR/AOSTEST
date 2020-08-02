@@ -212,7 +212,7 @@ class _LoginScreenState extends State<LoginScreen> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setInt("initScreen", 3);
       await prefs.setString("uid", user.uid);
-      Future.delayed(const Duration(milliseconds: 2000), () {
+      Future.delayed(const Duration(milliseconds: 1000), () {
         setState(() {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (BuildContext context) => Welcomescreen()));
@@ -276,8 +276,12 @@ class _LoginScreenState extends State<LoginScreen> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setInt("initScreen", 3);
       await prefs.setString("uid", user.uid);
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (BuildContext context) => Welcomescreen()));
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        setState(() {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => Welcomescreen()));
+        });
+      });
     }
   }
 

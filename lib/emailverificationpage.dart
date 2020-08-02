@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'Login.dart';
 import 'progress.dart';
@@ -59,19 +60,15 @@ class _EmailverificationState extends State<Emailverification> {
           ),
             child: Stack(
               children: <Widget>[
-                Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                ),
-
                 Padding(
-                  padding: EdgeInsets.all(12.0),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0,vertical: 15.0),
                   child: Form(
                     key: _formKey,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
+                        SizedBox(
+                          height: 5.0
+                        ),
                         Container(
                           height: 150.0,
                           decoration: BoxDecoration(
@@ -79,7 +76,7 @@ class _EmailverificationState extends State<Emailverification> {
                                 fit: BoxFit.cover, image: AssetImage(
                               'assets/images/email.png',
                             ),),
-                            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
                           ),
                         ),
                         SizedBox(
@@ -100,7 +97,7 @@ class _EmailverificationState extends State<Emailverification> {
                           focusNode: emailNode,
                           validator: (String email) => emailValidator(email),
                           cursorColor: Colors.white,
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.done,
                           onFieldSubmitted: (value) {
                             FocusScope.of(context).unfocus();
@@ -123,13 +120,19 @@ class _EmailverificationState extends State<Emailverification> {
                             focusedBorder: labelBorder,
                             errorBorder: errorBorder,
                             border: labelBorder,
-                            errorStyle: errorStyle,
+                            errorStyle:TextStyle(
+                                color: Colors.red,
+                                letterSpacing: 1.0,
+                                fontFamily: "Helvetica",
+                                fontWeight: FontWeight.w200,
+                                fontSize: 14.0
+                            ),
                             filled: true,
                             fillColor: Colors.white12,
                           ),
                         ),
                         SizedBox(
-                          height: 40,
+                          height: 20,
                         ),
                         FlatButton(
                           shape: RoundedRectangleBorder(
@@ -139,20 +142,19 @@ class _EmailverificationState extends State<Emailverification> {
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             child: Text(
                               '          Send          ',
-                              style: TextStyle(
-                                  color:Colors.white,
-                                  fontSize: 20.0,
-                                  fontFamily: "Helvetica",
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ),
+                              style:  GoogleFonts.playfairDisplay(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                          )),
                           onPressed: () async {
                             FocusScope.of(context).unfocus();
                             if (_formKey.currentState.validate()) {
                               showAlertDialog(context,"Email sent..Redirecting to Login page");
                               emailController.text = emailController.text.trim();
                              await auth.sendPasswordResetEmail(email: emailController.text).whenComplete(() async =>
-                                 await Future.delayed(Duration(milliseconds: 2000), () async {
+                                 await Future.delayed(Duration(milliseconds: 1000), () async {
                                    await Navigator.pop(context);
                                    Navigator.of(context).pushReplacement(
                             MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));

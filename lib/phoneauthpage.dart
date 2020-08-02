@@ -51,7 +51,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
   }
 
 
-  sendCodeToPhoneNumber({@required String phonenumber, BuildContext context}) {
+  sendCodeToPhoneNumber({@required String phonenumber,BuildContext context}) {
     PHONE_NO = phonenumber;
     auth.verifyPhoneNumber(
         phoneNumber: phonenumber,
@@ -133,6 +133,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                             .signInWithCredential(_credentials)
                             .then((AuthResult result) async {
                           if (result.user != null) {
+                            Navigator.pop(context);
                             final snackbar = SnackBar(
                               backgroundColor: Colors.black54,
                               content: Text("Congrats! Your Phone number is verified ",style: TextStyle(
@@ -140,7 +141,6 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                                   fontFamily: "Helvetica",
                                   fontWeight: FontWeight.w200),),
                             );
-                            Navigator.pop(context);
                             scaffoldkey.currentState.showSnackBar(snackbar);
                             await usersref.document(uid).updateData({
                               "phonenumber":phonenumber,
@@ -166,6 +166,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                             scaffoldkey.currentState.showSnackBar(snackbar);
                           }
                         }).catchError((onError) {
+                          Navigator.pop(context);
                           final snackbar = SnackBar(
                             backgroundColor: Colors.black54,
                             content: Text(onError.toString(),style: TextStyle(
@@ -174,10 +175,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                                 fontWeight: FontWeight.w200),),
                           );
                           scaffoldkey.currentState.showSnackBar(snackbar);
-                          Navigator.pop(context);
                         });
                       }
-                      //Navigator.pop(context);
                     },
                   )
                 ],
@@ -271,7 +270,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                               fontWeight: FontWeight.w200),
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.outlined_flag,color: Colors.white,),
-                              hintText: "+91",
+                              hintText: "91",
                               hintStyle: TextStyle(
                                   color: Colors.white54,
                                   fontFamily: "Helvetica",
