@@ -41,6 +41,18 @@ dependencies:
   progress_dialog: ^1.2.4
   flutter_signin_button: ^1.0.0
   google_fonts: ^1.1.0
+  firebase_storage:
+  flutter_svg: ^0.17.4
+  simple_animations: ^1.1.3
+  page_transition: ^1.1.4
+  carousel_slider: ^2.2.1
+  material_design_icons_flutter:
+  image_picker:
+  country_pickers: ^1.3.0
+  flutter_google_places: ^0.2.6
+  google_maps_webservice: ^0.0.17
+  convex_bottom_bar: ^2.3.0
+  curved_navigation_bar: ^0.3.3
 
 
 
@@ -82,6 +94,12 @@ flutter:
     - assets/images/email.png
     - assets/images/log.jpeg
 
+    - assets/images/
+    - assets/images/logos/
+    - assets/images/emojis/
+    - assets/images/qa_section/
+    - assets/images/occasions/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -113,6 +131,19 @@ flutter:
           weight: 200
         - asset: assets/fonts/Playbold.ttf
           weight: 800
+
+    - family: FreigSanPro
+      fonts:
+          #          - asset: assets/fonts/FreigSanProBlkIt.otf
+            #            weight: 400
+        - asset: assets/fonts/FreigSanProBold.otf
+          weight: 800
+        - asset: assets/fonts/FreigSanProMed.otf
+          weight: 500
+        - asset: assets/fonts/FreigSanProSem.otf
+          weight: 300
+        - asset: assets/fonts/FreigSanProLig.otf
+
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

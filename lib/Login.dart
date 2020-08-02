@@ -14,11 +14,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/phoneauthpage.dart';
 import 'package:style_of_agent/progress.dart';
 import 'package:style_of_agent/utils.dart';
+import 'package:style_of_agent/animated_menu/menu_frame.dart';
 import 'package:style_of_agent/welcomescreen.dart';
 
 import 'emailverificationpage.dart';
 import 'model/usermodel.dart';
-
 
 final usersref = Firestore.instance.collection("users");
 final DateTime time = DateTime.now();
@@ -215,18 +215,15 @@ class _LoginScreenState extends State<LoginScreen> {
       Future.delayed(const Duration(milliseconds: 1000), () {
         setState(() {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (BuildContext context) => Welcomescreen()));
+              builder: (BuildContext context) => MenuFrame()));
         });
       });
     }
   }
 
-
-
-
   Widget _buildForgotPasswordBtn() {
     return Container(
-      alignment:Alignment.topLeft,
+      alignment: Alignment.topLeft,
       margin: EdgeInsets.only(left: 10.0),
       child: FlatButton(
         onPressed: () => Navigator.of(context).push(MaterialPageRoute(
@@ -242,7 +239,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
 
   checkuser(FirebaseUser user) async {
     QuerySnapshot result =
@@ -279,7 +275,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Future.delayed(const Duration(milliseconds: 1000), () {
         setState(() {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (BuildContext context) => Welcomescreen()));
+              builder: (BuildContext context) => MenuFrame()));
         });
       });
     }
@@ -322,23 +318,22 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-
-  validateandsendsignup() async{
+  validateandsendsignup() async {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState.validate()) {
       email = emailController.text.trim();
       password = passController.text.trim();
       _formKey.currentState.save();
-        showAlertDialog(context,"Creating user.. Please wait");
-        await signUp(email: email, pwd: password);
-        Navigator.pop(context);
+      showAlertDialog(context, "Creating user.. Please wait");
+      await signUp(email: email, pwd: password);
+      Navigator.pop(context);
     }
   }
-  Future<void> signUp(
-      {@required String email, @required String pwd}) async {
+
+  Future<void> signUp({@required String email, @required String pwd}) async {
     try {
       FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
-          email: email, password: pwd))
+              email: email, password: pwd))
           .user;
       if (user != null) {
         savedata(user);
@@ -357,9 +352,10 @@ class _LoginScreenState extends State<LoginScreen> {
       scaffoldkey.currentState.showSnackBar(snackbar);
     }
   }
-  savedata(FirebaseUser user) async{
+
+  savedata(FirebaseUser user) async {
     QuerySnapshot result =
-    await usersref.where("email", isEqualTo: user.email).getDocuments();
+        await usersref.where("email", isEqualTo: user.email).getDocuments();
     final List<DocumentSnapshot> docs = result.documents;
     if (docs.length == 0) {
       usersref.document(user.uid).setData({
@@ -375,7 +371,7 @@ class _LoginScreenState extends State<LoginScreen> {
           builder: (BuildContext context) =>
               PhoneVerificationScreen(user: user)));
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString("uid",user.uid);
+      await prefs.setString("uid", user.uid);
       await prefs.setInt("initScreen", 2);
     } else {
       await _auth.signOut();
@@ -392,6 +388,7 @@ class _LoginScreenState extends State<LoginScreen> {
       scaffoldkey.currentState.showSnackBar(snackbar);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -440,24 +437,27 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontFamily: "Helvetica",
                                     fontWeight: FontWeight.w200),
                                 controller: emailController,
-                                validator: (String email) => emailValidator(email),
+                                validator: (String email) =>
+                                    emailValidator(email),
                                 keyboardType: TextInputType.emailAddress,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  errorStyle:TextStyle(
+                                  errorStyle: TextStyle(
                                       color: Colors.red,
                                       letterSpacing: 1.0,
                                       fontFamily: "Helvetica",
                                       fontWeight: FontWeight.w200,
-                                      fontSize: 14.0
-                                  ),
+                                      fontSize: 14.0),
                                   hintText: "Email",
-                                  hintStyle:TextStyle(
+                                  hintStyle: TextStyle(
                                       color: Colors.black54,
                                       fontFamily: "Helvetica",
                                       fontWeight: FontWeight.w200),
                                   contentPadding: EdgeInsets.all(20),
-                                  prefixIcon: Icon(Icons.person_outline,color: Colors.black54,),
+                                  prefixIcon: Icon(
+                                    Icons.person_outline,
+                                    color: Colors.black54,
+                                  ),
                                 ),
                               ),
                               Divider(
@@ -469,20 +469,23 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontFamily: "Helvetica",
                                     fontWeight: FontWeight.w200),
                                 controller: passController,
-                                validator: (String password) => pwdValidator(password),
+                                validator: (String password) =>
+                                    pwdValidator(password),
                                 obscureText: !_obscureText,
                                 decoration: InputDecoration(
-                                  border: InputBorder.none,
+                                    border: InputBorder.none,
                                     contentPadding: EdgeInsets.all(20),
-                                    prefixIcon: Icon(Icons.lock_outline,color: Colors.black54,),
+                                    prefixIcon: Icon(
+                                      Icons.lock_outline,
+                                      color: Colors.black54,
+                                    ),
                                     hintText: 'Password',
-                                    errorStyle:TextStyle(
+                                    errorStyle: TextStyle(
                                         color: Colors.red,
                                         letterSpacing: 1.0,
                                         fontFamily: "Helvetica",
                                         fontWeight: FontWeight.w200,
-                                        fontSize: 14.0
-                                    ),
+                                        fontSize: 14.0),
                                     hintStyle: TextStyle(
                                         color: Colors.black54,
                                         fontFamily: "Helvetica",
@@ -509,7 +512,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           RaisedButton(
-                            padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 8.0),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 8.0),
                             elevation: 10,
                             splashColor: Colors.white,
                             shape: RoundedRectangleBorder(
@@ -523,12 +527,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: Colors.white,
                               ),
                             ),
-                            onPressed: ()=>validateandsend(),
-                            color:Color(0xFFfb4545),
+                            onPressed: () => validateandsend(),
+                            color: Color(0xFFfb4545),
                           ),
                           RaisedButton(
                             elevation: 10,
-                            padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 8.0),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 8.0),
                             splashColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -541,8 +546,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: Colors.white,
                               ),
                             ),
-                            onPressed:()=>validateandsendsignup(),
-                            color:Color(0xFFfb4545),
+                            onPressed: () => validateandsendsignup(),
+                            color: Color(0xFFfb4545),
                           )
                         ],
                       ),
@@ -562,7 +567,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SignInButton(
                         Buttons.Google,
                         text: 'Continue With Google',
-                        onPressed:()=> handleSignIn(),
+                        onPressed: () => handleSignIn(),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -573,7 +578,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SignInButton(
                         Buttons.Facebook,
                         text: 'Continue with Facebook',
-                        onPressed: ()=>handlefacebooklogin(),
+                        onPressed: () => handlefacebooklogin(),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -583,7 +588,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-                )),
-          );
+          )),
+    );
   }
 }
