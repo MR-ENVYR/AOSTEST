@@ -61,7 +61,7 @@ pwdValidator(String pwd) {
     return "Enter Password";
   else {
     if (pwd.length < 6) {
-      return 'Minimum password length must be 6';
+      return 'Password length must be > 6';
     }
   }
 }

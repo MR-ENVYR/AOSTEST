@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:style_of_agent/Login.dart';
-import 'introwidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:style_of_agent/Login.dart';
 
-import 'main.dart';
+import 'introwidget.dart';
 
 class OnBoardingCircle extends StatefulWidget {
   @override
@@ -61,7 +60,6 @@ class _OnBoardingCircleState extends State<OnBoardingCircle> {
           subText:
               "Upload your pic and get the best suited recommendations from our stylists"),
     ];
-//    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.dark,

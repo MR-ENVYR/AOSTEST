@@ -39,6 +39,10 @@ dependencies:
   flushbar: ^1.10.4
   flutter_facebook_login: ^3.0.0
   progress_dialog: ^1.2.4
+  flutter_signin_button: ^1.0.0
+  google_fonts: ^1.1.0
+
+
 
 
 
@@ -68,27 +72,15 @@ flutter:
 
    # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/onboarding1.png
-    - assets/images/onboarding2.png
-    - assets/images/onboarding3.png
-    - assets/images/onboarding4.png
-    - assets/images/onboarding5.png
     - assets/images/google.jpg
     - assets/images/facebook.jpg
-    - assets/images/11.jpg
-    - assets/images/22.jpg
-    - assets/images/33.jpg
     - assets/images/woman1.jpg
-    - assets/images/woman2.jpg
     - assets/images/woman3.jpg
     - assets/images/woman4.jpg
     - assets/images/man1.jpg
-    - assets/images/man2.jpg
-    - assets/images/woman6.jpg
     - assets/images/glitterwomen.jpg
-    - assets/images/glitter.jpg
     - assets/images/email.png
-
+    - assets/images/log.jpeg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/Login.dart';
 import 'package:style_of_agent/progress.dart';
 import 'package:style_of_agent/welcomescreen.dart';
-import 'Signup.dart';
 import 'utils.dart';
 
 class PhoneVerificationScreen extends StatefulWidget {
@@ -51,24 +50,12 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
     }
   }
 
-//  Future<FirebaseUser> getCurrentUser() async {
-//    FirebaseUser CurrentUser = await FirebaseAuth.instance.currentUser();
-//    if(CurrentUser==null){
-//
-//    }
-//    else{
-//      setState(() {
-//        widget.user=CurrentUser;
-//      });
-//    }
-//
-//  }
 
   sendCodeToPhoneNumber({@required String phonenumber, BuildContext context}) {
     PHONE_NO = phonenumber;
     auth.verifyPhoneNumber(
         phoneNumber: phonenumber,
-        timeout: Duration(seconds: 15),
+        timeout: Duration(seconds: 6),
         verificationCompleted: (AuthCredential authCredentials) {
         },
         verificationFailed: (AuthException authException) {
@@ -125,7 +112,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                   FlatButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    color: Colors.deepOrange,
+                    color:Color(0xFFfb4545),
                     child: Text(
                       "Done",
                       style: TextStyle(
@@ -135,6 +122,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                           fontWeight: FontWeight.w200),
                     ),
                     onPressed: () async {
+                      showAlertDialog(context,"Please wait..");
                       FocusScope.of(context).unfocus();
                       if (_formKey.currentState.validate()) {
                         String sms = smsController.text.trim();
@@ -152,6 +140,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                                   fontFamily: "Helvetica",
                                   fontWeight: FontWeight.w200),),
                             );
+                            Navigator.pop(context);
                             scaffoldkey.currentState.showSnackBar(snackbar);
                             await usersref.document(uid).updateData({
                               "phonenumber":phonenumber,
@@ -166,6 +155,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                               });
                             });
                           } else {
+                            Navigator.pop(context);
                             final snackbar = SnackBar(
                               backgroundColor: Colors.black54,
                               content: Text("Your Phone number is not verified ",style: TextStyle(
@@ -174,7 +164,6 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                                   fontWeight: FontWeight.w200),),
                             );
                             scaffoldkey.currentState.showSnackBar(snackbar);
-                            Navigator.pop(context);
                           }
                         }).catchError((onError) {
                           final snackbar = SnackBar(
@@ -196,8 +185,6 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
         },
         codeAutoRetrievalTimeout: (String verificationId) {
           verificationId = verificationId;
-          print(verificationId);
-          print("Timeout");
         });
   }
 
@@ -205,23 +192,40 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff030b2f),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        bottomOpacity: 0.0,
+        elevation: 0.0,
+        automaticallyImplyLeading: false,
+        title: Padding(
+          padding: EdgeInsets.only(top: 10.0),
+          child:  RichText(
+              text: TextSpan(children: [
+                TextSpan(
+                    text: "AGENTS OF\n",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                      letterSpacing: 3,
+                    )),
+                TextSpan(
+                    text: "STYLE",
+                    style: TextStyle(
+                        letterSpacing: 3,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w200,
+                        color: Color(0xFFc0a948),
+                        fontFamily: "Playfairdisplay"))
+              ])),
+        ),
+        centerTitle: true,
+      ),
       key: scaffoldkey,
       resizeToAvoidBottomInset: false,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.dark,
         child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Colors.black, Colors.black],
-                begin: FractionalOffset(0, 0),
-                end: FractionalOffset(0, 1),
-                stops: [0.0, 1.0],
-                tileMode: TileMode.clamp),
-            image: DecorationImage(
-              image: AssetImage("assets/images/woman1.jpg"),
-              fit: BoxFit.cover,
-            ),
-          ),
             child: Stack(
               children: <Widget>[
                 Container(
@@ -237,15 +241,16 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                       shrinkWrap: true,
                       children: <Widget>[
                         SizedBox(
-                          height: 30,
+                          height: 15,
                         ),
                         Text(
-                          'Please verify your Mobile Number',
+                          'Phone Verification',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 25.0,
-                              fontFamily: "Helvetica",
-                              fontWeight: FontWeight.w400),
+                              fontSize: 30.0,
+                              fontFamily: "Playfairdisplay",
+                              fontWeight: FontWeight.w200),
                         ),
                         SizedBox(
                           height: 30,
@@ -265,12 +270,13 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                               fontFamily: "Helvetica",
                               fontWeight: FontWeight.w200),
                           decoration: InputDecoration(
-                              hintText: "91",
+                            prefixIcon: Icon(Icons.outlined_flag,color: Colors.white,),
+                              hintText: "+91",
                               hintStyle: TextStyle(
-                                  color: Colors.white30,
+                                  color: Colors.white54,
                                   fontFamily: "Helvetica",
                                   fontWeight: FontWeight.w200),
-                              labelText: "Enter your Country Code",
+                              labelText: "Country Code",
                               labelStyle: TextStyle(
                                   color: Colors.white,
                                   fontFamily: "Helvetica",
@@ -299,11 +305,12 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                               fontFamily: "Helvetica",
                               fontWeight: FontWeight.w200),
                           decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.perm_phone_msg,color: Colors.white,),
                             hintStyle: TextStyle(
-                                color: Colors.white30,
+                                color: Colors.white54,
                                 fontFamily: "Helvetica",
                                 fontWeight: FontWeight.w200),
-                            labelText: "Enter your Phone number",
+                            labelText: "Phone number",
                             labelStyle: TextStyle(
                                 color: Colors.white,
                                 fontFamily: "Helvetica",
@@ -323,7 +330,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                         FlatButton(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
-                          color: Colors.deepOrange,
+                          color:Color(0xFFfb4545),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             child: Text(

@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/Login.dart';
 import 'package:style_of_agent/phoneauthpage.dart';
 import 'package:style_of_agent/welcomescreen.dart';
-
 import 'newonboard.dart';
 
 int initScreen;
@@ -15,7 +14,7 @@ Future<void> main() async {
 }
 
 Future<int> _mockCheckForSession() async {
-  await Future.delayed(Duration(milliseconds: 2000), () {});
+  await Future.delayed(Duration(milliseconds: 1000), () {});
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = await prefs.getInt("initScreen");
   return initScreen;

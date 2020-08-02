@@ -6,11 +6,10 @@
             <solid android:color="#030923"/>
         </shape>
     </item>
-     <item
-         android:bottom="10dp"
-         android:top="10dp">
-        <bitmap
-            android:gravity="center"
-            android:src="@mipmap/logonew" />
-    </item>
+    <item
+        android:width="290dp"
+        android:height="380dp"
+        android:drawable="@drawable/logonew"
+        android:gravity="center" />
+
 </layer-list>

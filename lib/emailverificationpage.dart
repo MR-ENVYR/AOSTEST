@@ -25,7 +25,31 @@ class _EmailverificationState extends State<Emailverification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff030b2f),
       key: scaffoldkey,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        bottomOpacity: 0.0,
+        elevation: 0.0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          color: Colors.white,
+          onPressed:(){
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: true,
+        title:
+            Text(
+              'Reset Password',
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: "Playfairdisplay",
+                fontSize: 30.0,
+                fontWeight: FontWeight.w800,),
+            ),
+
+      ),
       resizeToAvoidBottomInset: false,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.dark,
@@ -39,22 +63,9 @@ class _EmailverificationState extends State<Emailverification> {
                   height: double.infinity,
                   width: double.infinity,
                 ),
+
                 Padding(
-                  padding: EdgeInsets.only(top:20.0),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Text(
-                      'Reset Password',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: "Playfairdisplay",
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.w800,),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(20.0),
+                  padding: EdgeInsets.all(12.0),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -69,7 +80,6 @@ class _EmailverificationState extends State<Emailverification> {
                               'assets/images/email.png',
                             ),),
                             borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                            color: Colors.redAccent,
                           ),
                         ),
                         SizedBox(
@@ -124,11 +134,11 @@ class _EmailverificationState extends State<Emailverification> {
                         FlatButton(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
-                          color: Colors.deepOrange,
+                          color:Color(0xFFfb4545),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             child: Text(
-                              '        Send        ',
+                              '          Send          ',
                               style: TextStyle(
                                   color:Colors.white,
                                   fontSize: 20.0,
@@ -142,7 +152,7 @@ class _EmailverificationState extends State<Emailverification> {
                               showAlertDialog(context,"Email sent..Redirecting to Login page");
                               emailController.text = emailController.text.trim();
                              await auth.sendPasswordResetEmail(email: emailController.text).whenComplete(() async =>
-                                 await Future.delayed(Duration(milliseconds: 3000), () async {
+                                 await Future.delayed(Duration(milliseconds: 2000), () async {
                                    await Navigator.pop(context);
                                    Navigator.of(context).pushReplacement(
                             MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));

@@ -1,19 +1,28 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:style_of_agent/Signup.dart';
+import 'package:style_of_agent/phoneauthpage.dart';
 import 'package:style_of_agent/progress.dart';
 import 'package:style_of_agent/utils.dart';
 import 'package:style_of_agent/welcomescreen.dart';
+
 import 'emailverificationpage.dart';
 import 'model/usermodel.dart';
-import 'styles.dart';
+
+
+final usersref = Firestore.instance.collection("users");
+final DateTime time = DateTime.now();
+User currentuser;
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -21,7 +30,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool _obscureText=true;
+  bool _obscureText = true;
   FirebaseAuth _auth = FirebaseAuth.instance;
   final usersref = Firestore.instance.collection("users");
   final DateTime time = DateTime.now();
@@ -36,22 +45,25 @@ class _LoginScreenState extends State<LoginScreen> {
   String email;
   String password;
 
-
   void _toggle() {
     setState(() {
       _obscureText = !_obscureText;
     });
   }
-  Future<FirebaseUser> firebaseAuthWithFacebook({@required FacebookAccessToken token}) async {
 
-    AuthCredential credential= FacebookAuthProvider.getCredential(accessToken: token.token);
-    FirebaseUser firebaseUser = (await _auth.signInWithCredential(credential)).user;
+  Future<FirebaseUser> firebaseAuthWithFacebook(
+      {@required FacebookAccessToken token}) async {
+    AuthCredential credential =
+        FacebookAuthProvider.getCredential(accessToken: token.token);
+    FirebaseUser firebaseUser =
+        (await _auth.signInWithCredential(credential)).user;
     return firebaseUser;
   }
 
-  handlefacebooklogin() async{
-    showAlertDialog(context,"Getting credentials..");
-    final facebookLoginResult = await facebookLogin.logIn(['email', 'public_profile']);
+  handlefacebooklogin() async {
+    showAlertDialog(context, "Getting credentials..");
+    final facebookLoginResult =
+        await facebookLogin.logIn(['email', 'public_profile']);
     switch (facebookLoginResult.status) {
       case FacebookLoginStatus.error:
         Navigator.pop(context);
@@ -85,19 +97,20 @@ class _LoginScreenState extends State<LoginScreen> {
         break;
 
       case FacebookLoginStatus.loggedIn:
-      /// calling the auth mehtod and getting the logged user
+
+        /// calling the auth mehtod and getting the logged user
         var firebaseUser = await firebaseAuthWithFacebook(
             token: facebookLoginResult.accessToken);
         checkuserfromfirestore(firebaseUser);
     }
   }
 
-
-  Future<FirebaseUser> handleSignIn() async {
-    showAlertDialog(context,"Please wait!");
-    try{
-      GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn()
-          .catchError((onError) {
+  Future<void> handleSignIn() async {
+    FocusScope.of(context).unfocus();
+    showAlertDialog(context, "Please wait..");
+    try {
+      GoogleSignInAccount googleSignInAccount =
+          await _googleSignIn.signIn().catchError((onError) {
         Navigator.pop(context);
         final snackbar = SnackBar(
           backgroundColor: Colors.black54,
@@ -112,8 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
         scaffoldkey.currentState.showSnackBar(snackbar);
       });
       GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount.authentication
-          .catchError((onError) {
+          await googleSignInAccount.authentication.catchError((onError) {
         Navigator.pop(context);
         final snackbar = SnackBar(
           backgroundColor: Colors.black54,
@@ -130,7 +142,8 @@ class _LoginScreenState extends State<LoginScreen> {
       AuthCredential credential = GoogleAuthProvider.getCredential(
           idToken: googleSignInAuthentication.idToken,
           accessToken: googleSignInAuthentication.accessToken);
-      AuthResult result = (await _auth.signInWithCredential(credential).catchError((onError) {
+      AuthResult result =
+          (await _auth.signInWithCredential(credential).catchError((onError) {
         Navigator.pop(context);
         final snackbar = SnackBar(
           backgroundColor: Colors.black54,
@@ -146,8 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }));
       FirebaseUser _user = result.user;
       checkuserfromfirestore(_user);
-    }
-    on PlatformException catch (e) {
+    } on PlatformException catch (e) {
       Navigator.pop(context);
       final snackbar = SnackBar(
         backgroundColor: Colors.black54,
@@ -161,39 +173,31 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       scaffoldkey.currentState.showSnackBar(snackbar);
     }
-
   }
 
   checkuserfromfirestore(FirebaseUser user) async {
     QuerySnapshot result =
         await usersref.where("email", isEqualTo: user.email).getDocuments();
     final List<DocumentSnapshot> docs = result.documents;
-    Navigator.pop(context);
     if (docs.length == 0) {
-      await _auth.signOut().then((onValue) {
-        _googleSignIn.signOut();
-        facebookLogin.logOut();
+      usersref.document(user.uid).setData({
+        "id": user.uid,
+        "profilename": user.displayName,
+        "url": user.photoUrl,
+        "email": user.email,
+        "phonenumber": "",
+        "isphoneverified": false,
+        "timestamp": time
       });
-      final snackbar = SnackBar(
-        backgroundColor: Colors.black54,
-        action: SnackBarAction(
-          label: "Signup",
-          onPressed: (){
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => Signup()));
-          },
-        ),
-        content: Text(
-          "New user ! Please Signup first",
-          style: TextStyle(
-              color: Colors.white,
-              fontFamily: "Helvetica",
-              fontWeight: FontWeight.w200),
-        ),
-      );
-      scaffoldkey.currentState.showSnackBar(snackbar);
+      Navigator.pop(context);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString("uid", user.uid);
+      await prefs.setInt("initScreen", 2);
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (BuildContext context) =>
+              PhoneVerificationScreen(user: user)));
     } else {
-
+      Navigator.pop(context);
       final snackbar = SnackBar(
         backgroundColor: Colors.black54,
         content: Text(
@@ -204,226 +208,74 @@ class _LoginScreenState extends State<LoginScreen> {
               fontWeight: FontWeight.w200),
         ),
       );
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setInt("initScreen",3);
-      await prefs.setString("uid",user.uid);
       scaffoldkey.currentState.showSnackBar(snackbar);
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (BuildContext context) => Welcomescreen()));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setInt("initScreen", 3);
+      await prefs.setString("uid", user.uid);
+      Future.delayed(const Duration(milliseconds: 2000), () {
+        setState(() {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => Welcomescreen()));
+        });
+      });
     }
   }
 
-  Widget _buildEmailTF() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'E-mail',
-          style: kLabelStyle,
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          child: TextFormField(
-            controller: emailController,
-            validator: (String email) => emailValidator(email),
-            keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
-                color: Colors.white,
-                fontFamily: "Helvetica",
-                fontWeight: FontWeight.w200),
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white24,
-              hintText: 'Enter your email',
-              hintStyle: kHintTextStyle,
-              contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-              prefixIcon: Icon(
-                Icons.email,
-                color: Colors.white,
-              ),
-              errorStyle: TextStyle(
-                  color: Colors.deepOrange,
-                  fontFamily: "Helvetica",
-                  fontWeight: FontWeight.w200),
-              focusedErrorBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red),
-                borderRadius: BorderRadius.circular(12.3),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red),
-                borderRadius: BorderRadius.circular(12.3),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white38),
-                borderRadius: BorderRadius.circular(12.3),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white38),
-                borderRadius: BorderRadius.circular(12.3),
-              ),
-              disabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white38),
-                borderRadius: BorderRadius.circular(12.3),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
-  Widget _buildPasswordTF() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Password',
-          style: kLabelStyle,
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          child: TextFormField(
-            controller: passController,
-            validator: (String phone) => pwdValidator(phone),
-            obscureText: _obscureText,
-            style: TextStyle(
-                color: Colors.white,
-                fontFamily: "Helvetica",
-                fontWeight: FontWeight.w200),
-            decoration: InputDecoration(
-              errorStyle: TextStyle(
-                  color: Colors.deepOrange,
-                  fontFamily: "Helvetica",
-                  fontWeight: FontWeight.w200),
-              suffixIcon: IconButton(
-                icon:Icon(_obscureText?Icons.visibility:Icons.visibility_off),
-                onPressed:_toggle,
-                color: Colors.white38,
-                focusColor: Colors.white70,
-              ),
-              filled: true,
-              fillColor: Colors.white24,
-              contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-              prefixIcon: Icon(
-                Icons.lock_outline,
-                color: Colors.white,
-              ),
-              hintText: 'Enter your Password',
-              hintStyle: kHintTextStyle,
-              focusedErrorBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red),
-                borderRadius: BorderRadius.circular(12.3),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red),
-                borderRadius: BorderRadius.circular(12.3),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-                borderRadius: BorderRadius.circular(12.3),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white38),
-                borderRadius: BorderRadius.circular(12.3),
-              ),
-              disabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white38),
-                borderRadius: BorderRadius.circular(12.3),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+
 
   Widget _buildForgotPasswordBtn() {
     return Container(
-      alignment: Alignment.centerRight,
+      alignment:Alignment.topLeft,
+      margin: EdgeInsets.only(left: 10.0),
       child: FlatButton(
-        onPressed: () =>Navigator.of(context).push(
-            MaterialPageRoute(builder: (BuildContext context) => Emailverification())),
-        padding: EdgeInsets.only(right: 0.0,top: 10.0),
+        onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) => Emailverification())),
         child: Text(
           'Forgot Password?',
           style: TextStyle(
               fontFamily: "Helvetica",
               fontWeight: FontWeight.w200,
-              fontSize: 19.0,
-              color: Colors.white),
+              fontSize: 16.0,
+              color: Colors.grey),
         ),
       ),
     );
   }
 
-  Widget _buildRememberMeCheckbox() {
-    return Container(
-      height: 20.0,
-      child: Row(
-        children: <Widget>[
-          Theme(
-            data: ThemeData(unselectedWidgetColor: Colors.black),
-            child: Checkbox(
-              value: _rememberMe,
-              checkColor: Colors.deepOrange,
-              activeColor: Colors.white,
-              onChanged: (value) {
-                setState(() {
-                  _rememberMe = value;
-                });
-              },
-            ),
-          ),
-//          Text(
-//            'Remember me',
-//            style: TextStyle(
-//              color: Color(0xFFc0a948)
-//            )
-//          ),
-        ],
-      ),
-    );
-  }
-  checkuser(FirebaseUser user)async{
+
+  checkuser(FirebaseUser user) async {
     QuerySnapshot result =
-    await usersref.where("email", isEqualTo: user.email).getDocuments();
+        await usersref.where("email", isEqualTo: user.email).getDocuments();
     final List<DocumentSnapshot> docs = result.documents;
     if (docs.length == 0) {
       final snackbar = SnackBar(
         backgroundColor: Colors.black54,
-        action:SnackBarAction(
-          label: 'Signup  ',
-          textColor: Colors.deepOrange,
-          onPressed: (){
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (BuildContext context) => Signup()));
-          },
+        content: Text(
+          "New User! Please Signup first",
+          style: TextStyle(
+              color: Colors.white,
+              fontFamily: "Helvetica",
+              fontWeight: FontWeight.w200),
         ),
-        content: Text("New User! Please Signup first",style: TextStyle(
-            color: Colors.white,
-            fontFamily: "Helvetica",
-            fontWeight: FontWeight.w200),),
       );
       scaffoldkey.currentState.showSnackBar(snackbar);
       await _auth.signOut();
     } else {
       final snackbar = SnackBar(
         backgroundColor: Colors.black54,
-        content: Text("Welcome Back! Let's connect",style: TextStyle(
-            color: Colors.white,
-            fontFamily: "Helvetica",
-            fontWeight: FontWeight.w200),),
+        content: Text(
+          "Welcome Back! Let's connect",
+          style: TextStyle(
+              color: Colors.white,
+              fontFamily: "Helvetica",
+              fontWeight: FontWeight.w200),
+        ),
       );
       await scaffoldkey.currentState.showSnackBar(snackbar);
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setInt("initScreen",3);
-      await prefs.setString("uid",user.uid);
+      await prefs.setInt("initScreen", 3);
+      await prefs.setString("uid", user.uid);
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (BuildContext context) => Welcomescreen()));
     }
@@ -432,249 +284,302 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<FirebaseUser> login(
       {@required String email, @required String pwd}) async {
     try {
-
-      FirebaseUser user = (await _auth.signInWithEmailAndPassword(
-          email: email, password: pwd))
-          .user;
-      if(user!=null){
+      FirebaseUser user =
+          (await _auth.signInWithEmailAndPassword(email: email, password: pwd))
+              .user;
+      if (user != null) {
         checkuser(user);
       }
-
     } on PlatformException catch (e) {
-
       final snackbar = SnackBar(
         backgroundColor: Colors.black54,
-        content: Text(e.message,style: TextStyle(
-            color: Colors.white,
-            fontFamily: "Helvetica",
-            fontWeight: FontWeight.w200),),
-      );
-      await scaffoldkey.currentState.showSnackBar(snackbar);
-    }
-  }
-
-  validateandsend() async{
-    if (_formKey.currentState.validate()) {
-      showAlertDialog(context,"Loging in. Please wait");
-      email = emailController.text.trim();
-      password=passController.text.trim();
-      _formKey.currentState.save();
-      await login(email: email, pwd: password);
-      Navigator.pop(context);
-      FocusScope.of(context).requestFocus(new FocusNode());
-      TextEditingController().clear();//remove focus
-    }
-  }
-
-  Widget _buildLoginBtn() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 10.0,
-        onPressed: () => validateandsend(),
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        color: Colors.deepOrange,
-        child: Text(
-          'LOG IN',
-          style: TextStyle(
-            color: Colors.white,
-            letterSpacing: 1.0,
-            fontSize: 22.0,
-            fontWeight: FontWeight.w600,
-            fontFamily: "Playfairdisplay",
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSignInWithText() {
-    return Column(
-      children: <Widget>[
-        Text(
-          '- OR -',
-          style: TextStyle(
-            color: Colors.white,
-            fontFamily: "Helvetica",
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        SizedBox(height: 15.0),
-        Text(
-          'Login with',
+        content: Text(
+          e.message,
           style: TextStyle(
               color: Colors.white,
               fontFamily: "Helvetica",
               fontWeight: FontWeight.w200),
         ),
-      ],
-    );
+      );
+      await scaffoldkey.currentState.showSnackBar(snackbar);
+    }
   }
 
-  Widget _buildSocialBtn(Function onTap, AssetImage logo) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 40.0,
-        width: 40.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(0, 2),
-              blurRadius: 6.0,
-            ),
-          ],
-          image: DecorationImage(
-            image: logo,
-          ),
+  validateandsend() async {
+    if (_formKey.currentState.validate()) {
+      showAlertDialog(context, "Loging in. Please wait");
+      email = emailController.text.trim();
+      password = passController.text.trim();
+      _formKey.currentState.save();
+      await login(email: email, pwd: password);
+      Navigator.pop(context);
+      FocusScope.of(context).requestFocus(new FocusNode());
+      TextEditingController().clear(); //remove focus
+    }
+  }
+
+
+  validateandsendsignup() async{
+    FocusScope.of(context).unfocus();
+    if (_formKey.currentState.validate()) {
+      email = emailController.text.trim();
+      password = passController.text.trim();
+      _formKey.currentState.save();
+        showAlertDialog(context,"Creating user.. Please wait");
+        await signUp(email: email, pwd: password);
+        Navigator.pop(context);
+    }
+  }
+  Future<void> signUp(
+      {@required String email, @required String pwd}) async {
+    try {
+      FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
+          email: email, password: pwd))
+          .user;
+      if (user != null) {
+        savedata(user);
+      }
+    } on PlatformException catch (e) {
+      final snackbar = SnackBar(
+        backgroundColor: Colors.black54,
+        content: Text(
+          e.message,
+          style: TextStyle(
+              color: Colors.white,
+              fontFamily: "Helvetica",
+              fontWeight: FontWeight.w200),
         ),
-      ),
-    );
+      );
+      scaffoldkey.currentState.showSnackBar(snackbar);
+    }
   }
-
-  Widget _buildSocialBtnRow() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          _buildSocialBtn(
-            () =>{
-              handlefacebooklogin()
-            },
-            AssetImage(
-              'assets/images/facebook.jpg',
-            ),
-          ),
-          _buildSocialBtn(
-            () => handleSignIn(),
-            AssetImage(
-              'assets/images/google.jpg',
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSignupBtn() {
-    return GestureDetector(
-      onTap: () => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Signup())),
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: 'Don\'t have an Account? ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 13.0,
-                fontFamily: "Helvetica",
-                fontWeight: FontWeight.w200,
-              ),
-            ),
-            TextSpan(
-              text: ' Sign Up',
-              style: TextStyle(
-                fontFamily: "Helvetica",
-                color: Colors.deepOrange,
-                fontSize: 16.0,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ],
+  savedata(FirebaseUser user) async{
+    QuerySnapshot result =
+    await usersref.where("email", isEqualTo: user.email).getDocuments();
+    final List<DocumentSnapshot> docs = result.documents;
+    if (docs.length == 0) {
+      usersref.document(user.uid).setData({
+        "id": user.uid,
+        "profilename": user.displayName,
+        "url": user.photoUrl,
+        "email": user.email,
+        "phonenumber": "",
+        "isphoneverified": false,
+        "timestamp": time
+      });
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (BuildContext context) =>
+              PhoneVerificationScreen(user: user)));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString("uid",user.uid);
+      await prefs.setInt("initScreen", 2);
+    } else {
+      await _auth.signOut();
+      final snackbar = SnackBar(
+        backgroundColor: Colors.black45,
+        content: Text(
+          "Already a user! Please login",
+          style: TextStyle(
+              color: Colors.white,
+              fontFamily: "Helvetica",
+              fontWeight: FontWeight.w200),
         ),
-      ),
-    );
+      );
+      scaffoldkey.currentState.showSnackBar(snackbar);
+    }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: scaffoldkey,
-        resizeToAvoidBottomInset: false,
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
+      key: scaffoldkey,
+      resizeToAvoidBottomInset: false,
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.dark,
           child: Container(
-            alignment:Alignment.center,
+            alignment: Alignment.center,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.black, Colors.black],
-                  begin: FractionalOffset(0, 0),
-                  end: FractionalOffset(0, 1),
-                  stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp),
               image: DecorationImage(
-                image: AssetImage("assets/images/glitterwomen.jpg"),
+                image: AssetImage("assets/images/log.jpeg"),
                 fit: BoxFit.cover,
               ),
             ),
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                ),
-                Container(
-                  height: double.infinity,
-                  child: SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 30.0,
-                      vertical: 80.0,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'Log in',
-                          style: TextStyle(
-                            letterSpacing: 2.0,
-                            color: Colors.white,
-                            fontFamily: "Playfairdisplay",
-                            fontSize: 40.0,
-                            fontWeight: FontWeight.w800,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+              child: Container(
+                color: Colors.black.withOpacity(0.1),
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
                           ),
+                          color: Colors.white54.withOpacity(0.50),
                         ),
-                        SizedBox(height: 20.0),
-                        Form(
+                        child: Form(
                           key: _formKey,
                           child: ListView(
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             children: <Widget>[
-                              _buildEmailTF(),
                               SizedBox(
-                                height: 30.0,
+                                height: 4.0,
                               ),
-                              _buildPasswordTF(),
+                              TextFormField(
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: "Helvetica",
+                                    fontWeight: FontWeight.w200),
+                                controller: emailController,
+                                validator: (String email) => emailValidator(email),
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  errorStyle:TextStyle(
+                                      color: Colors.red,
+                                      letterSpacing: 1.0,
+                                      fontFamily: "Helvetica",
+                                      fontWeight: FontWeight.w200,
+                                      fontSize: 14.0
+                                  ),
+                                  hintText: "Email",
+                                  hintStyle:TextStyle(
+                                      color: Colors.black54,
+                                      fontFamily: "Helvetica",
+                                      fontWeight: FontWeight.w200),
+                                  contentPadding: EdgeInsets.all(20),
+                                  prefixIcon: Icon(Icons.person_outline,color: Colors.black54,),
+                                ),
+                              ),
+                              Divider(
+                                thickness: 3,
+                              ),
+                              TextFormField(
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: "Helvetica",
+                                    fontWeight: FontWeight.w200),
+                                controller: passController,
+                                validator: (String password) => pwdValidator(password),
+                                obscureText: !_obscureText,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                    contentPadding: EdgeInsets.all(20),
+                                    prefixIcon: Icon(Icons.lock_outline,color: Colors.black54,),
+                                    hintText: 'Password',
+                                    errorStyle:TextStyle(
+                                        color: Colors.red,
+                                        letterSpacing: 1.0,
+                                        fontFamily: "Helvetica",
+                                        fontWeight: FontWeight.w200,
+                                        fontSize: 14.0
+                                    ),
+                                    hintStyle: TextStyle(
+                                        color: Colors.black54,
+                                        fontFamily: "Helvetica",
+                                        fontWeight: FontWeight.w200),
+                                    suffixIcon: IconButton(
+                                        color: Colors.black,
+                                        icon: Icon(_obscureText
+                                            ? Icons.visibility
+                                            : Icons.visibility_off),
+                                        onPressed: () {
+                                          _toggle();
+                                        })),
+                              ),
+                              SizedBox(
+                                height: 6.0,
+                              )
                             ],
                           ),
                         ),
-                        _buildForgotPasswordBtn(),
-//                      _buildRememberMeCheckbox(),
-                        _buildLoginBtn(),
-                        _buildSignInWithText(),
-                        _buildSocialBtnRow(),
-                        SizedBox(
-                          height: 5.0,
+                      ),
+                      _buildForgotPasswordBtn(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          RaisedButton(
+                            padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 8.0),
+                            elevation: 10,
+                            splashColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              'Login',
+                              style: GoogleFonts.playfairDisplay(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                            onPressed: ()=>validateandsend(),
+                            color:Color(0xFFfb4545),
+                          ),
+                          RaisedButton(
+                            elevation: 10,
+                            padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 8.0),
+                            splashColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              'Sign Up',
+                              style: GoogleFonts.playfairDisplay(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                            onPressed:()=>validateandsendsignup(),
+                            color:Color(0xFFfb4545),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 4.0,
+                      ),
+                      Text(
+                        '------OR------',
+                        style: GoogleFonts.pacifico(
+                            fontStyle: FontStyle.italic,
+                            fontSize: 12,
+                            color: Colors.grey),
+                      ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      SignInButton(
+                        Buttons.Google,
+                        text: 'Continue With Google',
+                        onPressed:()=> handleSignIn(),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        _buildSignupBtn(),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        height: 3.0,
+                      ),
+                      SignInButton(
+                        Buttons.Facebook,
+                        text: 'Continue with Facebook',
+                        onPressed: ()=>handlefacebooklogin(),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ],
                   ),
-                )
-              ],
+                ),
+              ),
             ),
-          ),
-        ));
+                )),
+          );
   }
 }
