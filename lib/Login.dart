@@ -210,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       scaffoldkey.currentState.showSnackBar(snackbar);
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setInt("initScreen", 3);
+      await prefs.setInt("initScreen", 10);
       await prefs.setString("uid", user.uid);
       Future.delayed(const Duration(milliseconds: 1000), () {
         setState(() {
@@ -274,7 +274,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       await scaffoldkey.currentState.showSnackBar(snackbar);
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setInt("initScreen", 3);
+      await prefs.setInt("initScreen", 10);
       await prefs.setString("uid", user.uid);
       Future.delayed(const Duration(milliseconds: 1000), () {
         setState(() {
