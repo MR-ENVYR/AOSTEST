@@ -53,6 +53,17 @@ dependencies:
   google_maps_webservice: ^0.0.17
   convex_bottom_bar: ^2.3.0
   curved_navigation_bar: ^0.3.3
+    flutter_launcher_icons: ^0.7.5
+
+flutter_launcher_icons:
+  path: ../
+
+flutter_icons:
+  image_path_android: "assets/images/icon.jpeg"
+  android: true
+  ios: true
+  image_path: "assets/images/icon.jpeg"
+  adaptive_icon_background: "#0000"
 
 
 
