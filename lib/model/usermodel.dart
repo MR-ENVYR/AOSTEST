@@ -53,6 +53,7 @@ class UserModel {
   static final String SHOE_SIZE_KEY = "shoesize";
   static final String TIME_STAMP_KEY = "timestamp";
   static final String ISPROFILESHOW_KEY = "isprofileshow";
+  static final String TROUSER_lENGTH_KEY = "trouserLength";
 
   final String id;
   final String profilename;
@@ -74,6 +75,7 @@ class UserModel {
   final String shoesize;
   final Timestamp timestamp;
   final bool isprofileshow;
+  final String trouserLength;
 
   UserModel(
       {this.id,
@@ -88,6 +90,7 @@ class UserModel {
       this.birthdate,
       this.bustsize,
       this.clothingsize,
+      this.trouserLength,
       this.hipsize,
       this.language,
       this.location,
@@ -118,6 +121,7 @@ class UserModel {
         waistsize: doc[WAIST_SIZE_KEY],
         weight: doc[WEIGHT_KEY],
         timestamp: doc[TIME_STAMP_KEY],
+        trouserLength: doc[TROUSER_lENGTH_KEY],
         isprofileshow: doc[ISPROFILESHOW_KEY]);
   }
 
@@ -140,6 +144,7 @@ class UserModel {
         WAIST_SIZE_KEY: waistsize,
         SHOE_SIZE_KEY: shoesize,
         HIP_SIZE_KEY: hipsize,
+        TROUSER_lENGTH_KEY: trouserLength,
         ISPROFILESHOW_KEY: isprofileshow,
         TIME_STAMP_KEY: timestamp
       };

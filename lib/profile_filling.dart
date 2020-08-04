@@ -853,11 +853,10 @@ class _ProfileFillingState extends State<ProfileFilling> {
                               onPressed: () {
                                 FocusScope.of(context).unfocus();
                                 if (_key.currentState.validate()) {
-                                  String username = fnameController.text
-                                          .trim()
-                                          .capitalize() +
-                                      " " +
-                                      lnameController.text.trim().capitalize();
+                                  String username =
+                                      fnameController.text.trim().capitalize() +
+                                          " " +
+                                          lnameController.text;
                                   print(username);
                                   UserModel userPart1 = new UserModel(
                                     username: username.trim(),

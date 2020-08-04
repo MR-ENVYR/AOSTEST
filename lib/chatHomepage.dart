@@ -1,19 +1,29 @@
-import 'package:agent_of_style/theme.dart';
+//import 'package:agent_of_style/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:style_of_agent/inAppChat.dart';
+import 'package:style_of_agent/utils/utils.dart';
 
 class ChatHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(3, 9, 23, 1),
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: Center(
           child: Text(
             'Agents of Style',
-            style: textTheme3,
+            style: GoogleFonts.amiri(
+              letterSpacing: 2,
+              fontSize: 30,
+              color: Color(0xFFc0a948),
+//                fontFamily: "FreigSanPro",
+            ),
           ),
         ),
       ),
@@ -32,7 +42,8 @@ class _ChatLayoutState extends State<ChatLayout> {
   final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
-    return Container(color:dark,
+    return Container(
+      color: dark,
       child: ChatHeads(),
     );
   }
@@ -43,7 +54,9 @@ class _ChatLayoutState extends State<ChatLayout> {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
-              Navigator.pushNamed(context, '/chat-window');
+//              Navigator.pushNamed(context, '/chat-window');
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ChatScreen()));
             },
             child: Container(
               margin: EdgeInsets.only(top: 10, left: 10, right: 10),
@@ -54,10 +67,21 @@ class _ChatLayoutState extends State<ChatLayout> {
                   blurRadius: 6.0,
                 ),
               ], color: purple, borderRadius: BorderRadius.circular(5)),
-              child: ListTile( 
-                title: Text('Tracy MacMonday',style: TextStyle(color:notWhite),),
-                subtitle: Text('Hello',style: TextStyle(color: notWhite.withOpacity(0.5)),),
-                trailing: Text('Active',style: TextStyle(color: Colors.green),),
+              child: ListTile(
+                title: Text(
+                  'Tracy MacMonday',
+                  style: TextStyle(color: notWhite),
+                ),
+                subtitle: Text(
+                  'Hello',
+                  style: TextStyle(color: notWhite.withOpacity(0.5)),
+                ),
+                trailing: Text(
+                  'Active',
+                  style: TextStyle(
+                    color: Color(0xFFc0a948),
+                  ),
+                ),
               ),
             ),
           );

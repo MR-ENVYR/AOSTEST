@@ -11,7 +11,7 @@ int initScreen;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  initScreen=await _mockCheckForSession();
+  initScreen = await _mockCheckForSession();
   runApp(MyApp());
 }
 
@@ -20,19 +20,19 @@ Future<int> _mockCheckForSession() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = await prefs.getInt("initScreen");
   return initScreen;
-
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: (initScreen==0 || initScreen==null)
-          ? OnBoardingCircle()
-          :(initScreen==1)
-          ? LoginScreen()
-          :(initScreen==2)
-          ? PhoneVerificationScreen()
-          : (initScreen == 10) ? MenuFrame() : ProfileFilling());
-      }
+        debugShowCheckedModeBanner: false,
+        home: (initScreen == 0 || initScreen == null)
+            ? OnBoardingCircle()
+            : (initScreen == 1)
+                ? LoginScreen()
+                : (initScreen == 2)
+                    ? PhoneVerificationScreen()
+                    : (initScreen == 10) ? MenuFrame() : ProfileFilling());
   }
+}

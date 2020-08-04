@@ -9,6 +9,7 @@ import 'package:style_of_agent/QA_Sections/q_one.dart';
 import 'package:style_of_agent/animated_menu/profile.dart';
 import 'package:style_of_agent/animated_menu/recents_chats.dart';
 import 'package:style_of_agent/animated_menu/style_diamonds.dart';
+import 'package:style_of_agent/chatHomepage.dart';
 import 'package:style_of_agent/utils/utils.dart';
 import 'package:style_of_agent/widgets/fab_bottom_bar.dart';
 import 'package:style_of_agent/widgets/circular_outer_notched_rectangle.dart';
@@ -86,7 +87,7 @@ class _DashBoardState extends State<DashBoard>
                     : Container(),
                 _onTapped == 0 ? Library() : Container(),
                 _onTapped == 1 ? Profile() : Container(),
-                _onTapped == 3 ? RecentsChats() : Container(),
+                _onTapped == 3 ? ChatHomePage() : Container(),
                 _onTapped == 4 ? StyleDiamonds() : Container(),
               ],
             ),
@@ -147,7 +148,7 @@ class _DashBoardState extends State<DashBoard>
           bottomNavigationBar: CurvedNavigationBar(
             buttonBackgroundColor: Color(0xfffb4545),
             index: 2,
-//            backgroundColor: Color(0xfffb4545),
+            backgroundColor: Colors.transparent,
             height: 50,
             color: Color(0xfffb4545),
             animationDuration: Duration(milliseconds: 300),
