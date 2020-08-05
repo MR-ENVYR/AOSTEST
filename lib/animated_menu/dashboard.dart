@@ -1,11 +1,12 @@
 //import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 //import 'package:convex_bottom_bar/';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+//import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:style_of_agent/animated_menu/Library.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:style_of_agent/QA_Sections/q_one.dart';
+import 'package:style_of_agent/animated_menu/payment.dart';
 import 'package:style_of_agent/animated_menu/profile.dart';
 import 'package:style_of_agent/animated_menu/recents_chats.dart';
 import 'package:style_of_agent/animated_menu/style_diamonds.dart';
@@ -88,62 +89,11 @@ class _DashBoardState extends State<DashBoard>
                 _onTapped == 0 ? Library() : Container(),
                 _onTapped == 1 ? Profile() : Container(),
                 _onTapped == 3 ? ChatHomePage() : Container(),
-                _onTapped == 4 ? StyleDiamonds() : Container(),
+                _onTapped == 4 ? PaymentPage() : Container(),
               ],
             ),
           ),
           backgroundColor: Colors.transparent,
-//          bottomNavigationBar: StyleProvider(
-//            style: Style(),
-//            child: ConvexAppBar(
-//              initialActiveIndex: 2,
-//              activeColor: Colors.white,
-//              height: 50,
-//              top: -30,
-//              curveSize: 100,
-////              style: TabStyle.fixedCircle,
-//              onTap: (int val) {
-//                setState(() {
-//                  _onTapped = val;
-//                });
-////                if (val == 0)
-////                  Navigator.push(
-////                    context,
-////                    MaterialPageRoute(builder: (context) => Library()),
-////                  );
-////                else if (val == 1)
-////                  Navigator.push(
-////                    context,
-////                    MaterialPageRoute(builder: (context) => Profile()),
-////                  );
-//                if (val == 2)
-//                  Navigator.pushAndRemoveUntil(
-//                      context,
-//                      MaterialPageRoute(builder: (context) => QueOne()),
-//                      (route) => false);
-////                else if (val == 3)
-////                  Navigator.push(
-////                    context,
-////                    MaterialPageRoute(builder: (context) => RecentsChats()),
-////                  );
-////                else
-////                  Navigator.push(
-////                    context,
-////                    MaterialPageRoute(builder: (context) => StyleDiamonds()),
-////                  );
-//              },
-//              items: [
-////                TabItem(icon: Icons.link),
-//                TabItem(icon: Icons.photo_album),
-//                TabItem(icon: Icons.person),
-//                TabItem(icon: Icons.add),
-//                TabItem(icon: Icons.message),
-//                TabItem(icon: Icons.attach_money),
-////                TabItem(title: "2020", icon: Icons.work),
-//              ],
-//              backgroundColor: Color(0xfffb4545),
-//            ),
-//          ),
 
           bottomNavigationBar: CurvedNavigationBar(
             buttonBackgroundColor: Color(0xfffb4545),
@@ -269,18 +219,18 @@ class _DashBoardState extends State<DashBoard>
   }
 }
 
-class Style extends StyleHook {
-  @override
-  double get activeIconSize => 30;
-
-  @override
-  double get activeIconMargin => 10;
-
-  @override
-  double get iconSize => 20;
-
-  @override
-  TextStyle textStyle(Color color) {
-    return TextStyle(fontSize: 20, color: color);
-  }
-}
+//class Style extends StyleHook {
+//  @override
+//  double get activeIconSize => 30;
+//
+//  @override
+//  double get activeIconMargin => 10;
+//
+//  @override
+//  double get iconSize => 20;
+//
+//  @override
+//  TextStyle textStyle(Color color) {
+//    return TextStyle(fontSize: 20, color: color);
+//  }
+//}

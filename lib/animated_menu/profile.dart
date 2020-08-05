@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+//import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -1754,18 +1754,18 @@ class BoxShadowPainter extends CustomPainter {
   }
 }
 
-class Style extends StyleHook {
-  @override
-  double get activeIconSize => 30;
-
-  @override
-  double get activeIconMargin => 10;
-
-  @override
-  double get iconSize => 20;
-
-  @override
-  TextStyle textStyle(Color color) {
-    return TextStyle(fontSize: 20, color: color);
-  }
-}
+//class Style extends StyleHook {
+//  @override
+//  double get activeIconSize => 30;
+//
+//  @override
+//  double get activeIconMargin => 10;
+//
+//  @override
+//  double get iconSize => 20;
+//
+//  @override
+//  TextStyle textStyle(Color color) {
+//    return TextStyle(fontSize: 20, color: color);
+//  }
+//}

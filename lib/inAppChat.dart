@@ -45,6 +45,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: dark,
       appBar: AppBar(
+//        iconTheme: IconThemeData(color: Color(0xFFc0a948)),
         title: Text(
           'Tracy MacMonday',
           style: textTheme3,

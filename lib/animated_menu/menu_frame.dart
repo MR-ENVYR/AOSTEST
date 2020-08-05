@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/animated_menu/about.dart';
@@ -243,8 +244,21 @@ class _MenuFrameState extends State<MenuFrame>
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
-    return Stack(
-      children: finalStack(),
+    return Scaffold(
+      body: DoubleBackToCloseApp(
+          child: Stack(
+            children: finalStack(),
+          ),
+          snackBar: const SnackBar(
+            backgroundColor: Colors.black54,
+            content: Text(
+              'Tap back again to leave',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: "Helvetica",
+                  fontWeight: FontWeight.w200),
+            ),
+          )),
     );
   }
 }

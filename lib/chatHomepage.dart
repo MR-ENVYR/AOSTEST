@@ -14,6 +14,7 @@ class ChatHomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color.fromRGBO(3, 9, 23, 1),
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Color(0xFFc0a948)),
         backgroundColor: Colors.transparent,
         title: Center(
           child: Text(

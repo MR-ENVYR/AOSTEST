@@ -424,9 +424,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         child: Form(
                           key: _formKey,
-                          child: ListView(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
+                          child: Column(
                             children: <Widget>[
                               SizedBox(
                                 height: 4.0,
