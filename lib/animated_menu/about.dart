@@ -48,10 +48,11 @@ class _AboutState extends State<About> {
       height: height,
       width: width,
       decoration: BoxDecoration(
-        color: Color(0xfff8e1e4),
+        color: Color.fromRGBO(3, 9, 23, 1),
 //              borderRadius: BorderRadius.circular(40.0),
       ),
       child: Scaffold(
+        backgroundColor: Colors.transparent,
         appBar: PreferredSize(
             child: Container(
               height: height / 2,
@@ -62,19 +63,20 @@ class _AboutState extends State<About> {
                         "assets/images/logos/kk.jpg",
                       ),
                       fit: BoxFit.fill)),
+//              alignment: Alignment.center + Alignment(0, 1),
               padding: EdgeInsets.only(
                 top: height * 0.15,
-                left: height * 0.05,
+//                left: height * 0.05,
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+//                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Text(
                     "About Us",
                     style: GoogleFonts.amiri(
                       letterSpacing: 2,
-                      fontSize: 30,
+                      fontSize: 40,
                       color: Color(0xFFc0a948),
 //                      fontFamily: "Helvetica",
                     ),
@@ -125,34 +127,7 @@ class _AboutState extends State<About> {
 //                          margin: EdgeInsets.all(10),
 //padding: EdgeInsets.only(left: ),
 //                          alignment: ,
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: (width) / 3),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                        labels[i],
-                                        style: GoogleFonts.amiri(
-                                            color: Color(0xFFc0a948),
-//                                            fontFamily: "Helvetica",
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Text(
-                                        desc[i],
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: "FreigSanPro",
-                                            fontWeight: FontWeight.w500),
-                                      )
-                                    ],
-                                  ),
-                                ),
+//                                child: ,
                               ),
 //                        margin:
 //                            EdgeInsets.only(left: 20, bottom: 10, right: 10),
@@ -166,10 +141,44 @@ class _AboutState extends State<About> {
                                   fit: BoxFit.fill,
 //                        width: 100,
                                 ),
-                                height: 200,
-                                width: 140,
+                                height: 190,
+                                width: 150,
                               ),
                             ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: (width) / 2.4, right: 10, top: 20),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+//                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+//                                  SizedBox(height: 20),
+                                  Text(
+                                    labels[i],
+                                    style: GoogleFonts.amiri(
+                                        color: Color(0xFFc0a948),
+                                        height: 1.2,
+
+//                                            fontFamily: "Helvetica",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    desc[i],
+                                    textAlign: TextAlign.justify,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: "FreigSanPro",
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 13),
+                                  )
+                                ],
+                              ),
+                            )
                           ],
                         ),
                       );
@@ -177,6 +186,7 @@ class _AboutState extends State<About> {
                     options: CarouselOptions(
                         enableInfiniteScroll: false,
                         initialPage: 0,
+                        autoPlay: true,
                         enlargeCenterPage: true,
                         height: 250)),
               ],

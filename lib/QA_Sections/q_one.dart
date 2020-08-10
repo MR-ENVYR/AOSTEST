@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:style_of_agent/QA_Sections/fadeAnimation.dart';
 import 'package:style_of_agent/QA_Sections/moveAnimation.dart';
 import 'package:style_of_agent/QA_Sections/q_two.dart';
 import 'package:style_of_agent/animated_menu/menu_frame.dart';
+import 'package:style_of_agent/progress.dart';
 import 'package:style_of_agent/utils/utils.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,7 @@ class _QueOneState extends State<QueOne> with TickerProviderStateMixin {
   Map<String, dynamic> ques = Map();
   File _image;
   showImageOption() async {
+//    showSearch(context: null, delegate: null)
     showModalBottomSheet(
         backgroundColor: Colors.white12,
         shape: RoundedRectangleBorder(),
@@ -60,10 +63,21 @@ class _QueOneState extends State<QueOne> with TickerProviderStateMixin {
                   ),
                   onTap: () async {
                     await ImagePicker.pickImage(source: ImageSource.camera)
-                        .then((image) {
+                        .then((image) async {
+                      ImageProperties properties =
+                          await FlutterNativeImage.getImageProperties(
+                              image.path);
+
+                      File compressedFile =
+                          await FlutterNativeImage.compressImage(image.path,
+                              quality: 60,
+                              targetWidth: 300,
+                              targetHeight:
+                                  (properties.height * 300 / properties.width)
+                                      .round());
                       setState(() {
                         Navigator.pop(context);
-                        _image = image;
+                        _image = compressedFile;
                       });
                       print("image${_image}");
                     });
@@ -87,10 +101,21 @@ class _QueOneState extends State<QueOne> with TickerProviderStateMixin {
                   ),
                   onTap: () async {
                     await ImagePicker.pickImage(source: ImageSource.gallery)
-                        .then((image) {
+                        .then((image) async {
+                      ImageProperties properties =
+                          await FlutterNativeImage.getImageProperties(
+                              image.path);
+
+                      File compressedFile =
+                          await FlutterNativeImage.compressImage(image.path,
+                              quality: 60,
+                              targetWidth: 300,
+                              targetHeight:
+                                  (properties.height * 300 / properties.width)
+                                      .round());
                       setState(() {
                         Navigator.pop(context);
-                        _image = image;
+                        _image = compressedFile;
                       });
                       print("image${_image}");
                     });
@@ -332,6 +357,7 @@ class _QueOneState extends State<QueOne> with TickerProviderStateMixin {
                               color: Color(0xFFfb4545),
                               onPressed: () async {
                                 if (_image != null && !isLoading) {
+                                  showAlertDialog(context, "Please wait..");
                                   setState(() {
                                     isLoading = true;
                                   });
@@ -346,6 +372,7 @@ class _QueOneState extends State<QueOne> with TickerProviderStateMixin {
                                       .then((fileURL) {
                                     setState(() {
                                       isLoading = false;
+                                      Navigator.pop(context);
                                       print("file${fileURL}");
 //                            image_url = fileURL;
                                       ques.putIfAbsent("ques1", () => fileURL);

@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/QA_Sections/q_one.dart';
@@ -348,10 +349,21 @@ class _ProfileState extends State<Profile> {
             return InputDecorator(
               isHovering: true,
               decoration: InputDecoration(
+                  prefixIconConstraints: BoxConstraints(maxWidth: 200),
+                  prefix: SizedBox(
+                    width: 130,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        "Height\t\t\t",
+                        style: labelStyle,
+                      ),
+                    ),
+                  ),
                   focusedErrorBorder: errorBorder,
                   border: labelBorder,
-                  labelText: "Height",
-                  labelStyle: labelStyle,
+//                  labelText: "Height",
+//                  labelStyle: labelStyle,
                   errorBorder: errorBorder,
                   enabledBorder: labelBorder,
                   enabled: true,
@@ -401,10 +413,21 @@ class _ProfileState extends State<Profile> {
             return InputDecorator(
               isHovering: true,
               decoration: InputDecoration(
+                  prefixIconConstraints: BoxConstraints(maxWidth: 200),
                   focusedErrorBorder: errorBorder,
                   border: labelBorder,
-                  labelText: "Weight",
-                  labelStyle: labelStyle,
+                  prefix: SizedBox(
+                    width: 130,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        "Weight\t\t\t",
+                        style: labelStyle,
+                      ),
+                    ),
+                  ),
+//                  labelText: "Weight",
+//                  labelStyle: labelStyle,
                   errorBorder: errorBorder,
                   enabledBorder: labelBorder,
                   enabled: true,
@@ -454,8 +477,19 @@ class _ProfileState extends State<Profile> {
             return InputDecorator(
               isHovering: true,
               decoration: InputDecoration(
+                  prefix: SizedBox(
+                    width: 130,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        "Clothing Size\t\t\t",
+                        style: labelStyle,
+                      ),
+                    ),
+                  ),
                   border: labelBorder,
-                  labelText: "Clothing Size",
+//                  labelText: "Clothing Size",
+//                  prefixIconConstraints: BoxConstraints(maxWidth: 200),
                   labelStyle: labelStyle,
                   errorBorder: errorBorder,
                   enabledBorder: labelBorder,
@@ -501,16 +535,24 @@ class _ProfileState extends State<Profile> {
         SizedBox(
           height: 10,
         ),
-        SizedBox(
-          height: 10,
-        ),
         FormField<String>(
           builder: (FormFieldState<String> state) {
             return InputDecorator(
               isHovering: true,
               decoration: InputDecoration(
+                  prefix: SizedBox(
+                    width: 130,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        "Waist Size\t\t\t",
+                        style: labelStyle,
+                      ),
+                    ),
+                  ),
                   border: labelBorder,
-                  labelText: "Waist Size",
+//                  labelText: "Waist Size",
+//                  prefixIconConstraints: BoxConstraints(minWidth: 200),
                   labelStyle: labelStyle,
                   errorBorder: errorBorder,
                   enabledBorder: labelBorder,
@@ -562,7 +604,18 @@ class _ProfileState extends State<Profile> {
               isHovering: true,
               decoration: InputDecoration(
                   border: labelBorder,
-                  labelText: "Trouser Length",
+                  prefixIconConstraints: BoxConstraints(minWidth: 200),
+                  prefix: SizedBox(
+                    width: 130,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        "Trouser Length\t\t\t",
+                        style: labelStyle,
+                      ),
+                    ),
+                  ),
+//                  labelText: "Trouser Length",
                   labelStyle: labelStyle,
                   errorBorder: errorBorder,
                   enabledBorder: labelBorder,
@@ -613,8 +666,19 @@ class _ProfileState extends State<Profile> {
             return InputDecorator(
               isHovering: true,
               decoration: InputDecoration(
+//                  prefixIconConstraints: BoxConstraints(minWidth: 200),
+                  prefix: SizedBox(
+                    width: 130,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        "Shoe Size\t\t\t",
+                        style: labelStyle,
+                      ),
+                    ),
+                  ),
                   border: labelBorder,
-                  labelText: "Shoe Size",
+//                  labelText: "Shoe Size",
                   labelStyle: labelStyle,
                   errorBorder: errorBorder,
                   enabledBorder: labelBorder,
@@ -1111,10 +1175,21 @@ class _ProfileState extends State<Profile> {
                   ),
                   onTap: () async {
                     await ImagePicker.pickImage(source: ImageSource.camera)
-                        .then((image) {
+                        .then((image) async {
+                      ImageProperties properties =
+                      await FlutterNativeImage.getImageProperties(
+                          image.path);
+
+                      File compressedFile =
+                      await FlutterNativeImage.compressImage(image.path,
+                          quality: 80,
+                          targetWidth: 600,
+                          targetHeight:
+                          (properties.height * 600 / properties.width)
+                              .round());
                       setState(() {
                         Navigator.pop(context);
-                        _image = image;
+                        _image = compressedFile;
                       });
                       print("image${_image}");
                     });
@@ -1138,10 +1213,21 @@ class _ProfileState extends State<Profile> {
                   ),
                   onTap: () async {
                     await ImagePicker.pickImage(source: ImageSource.gallery)
-                        .then((image) {
+                        .then((image) async {
+                      ImageProperties properties =
+                      await FlutterNativeImage.getImageProperties(
+                          image.path);
+
+                      File compressedFile =
+                      await FlutterNativeImage.compressImage(image.path,
+                          quality: 80,
+                          targetWidth: 600,
+                          targetHeight:
+                          (properties.height * 600 / properties.width)
+                              .round());
                       setState(() {
                         Navigator.pop(context);
-                        _image = image;
+                        _image = compressedFile;
                       });
                       print("image${_image}");
                     });
@@ -1149,31 +1235,31 @@ class _ProfileState extends State<Profile> {
                 ),
                 _image != null
                     ? Divider(
-                        color: Colors.white,
-                        thickness: 2,
-                      )
+                  color: Colors.white,
+                  thickness: 2,
+                )
                     : Container(),
                 _image != null
                     ? ListTile(
-                        leading: Icon(
-                          Icons.delete,
-                          color: Colors.white,
-                        ),
-                        title: Text(
-                          "Remove",
-                          style: GoogleFonts.workSans(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        onTap: () {
-                          setState(() {
-                            Navigator.pop(context);
-                            _image = null;
-                          });
-                          print("image${_image}");
-                        },
-                      )
+                  leading: Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    "Remove",
+                    style: GoogleFonts.workSans(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      Navigator.pop(context);
+                      _image = null;
+                    });
+                    print("image${_image}");
+                  },
+                )
                     : Container(),
               ],
             ),

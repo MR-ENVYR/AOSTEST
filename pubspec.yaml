@@ -63,6 +63,7 @@ dependencies:
   double_back_to_close_app: ^1.2.0
 #  image_picker: ^0.6.5
   image_cropper: ^1.2.3
+  flutter_native_image: ^0.0.5
 
 #  flutter_launcher_icons:
 
@@ -70,6 +71,7 @@ flutter_icons:
 #  image_path_android: "assets/images/icon.jpeg"
   android: true
   ios: true
+
   image_path: "assets/images/logo.jpeg"
   adaptive_icon_background: "#0000"
 
