@@ -50,7 +50,7 @@ class _ChatScreenState extends State<ChatScreen> {
           'Tracy MacMonday',
           style: textTheme3,
         ),
-        backgroundColor: primary,
+        backgroundColor: secondary,
       ),
       body: SafeArea(
         child: Container(

@@ -63,7 +63,7 @@ class _ChatLayoutState extends State<ChatLayout> {
               margin: EdgeInsets.only(top: 10, left: 10, right: 10),
               decoration: BoxDecoration(boxShadow: [
                 BoxShadow(
-                  color: purple,
+                  color: secondary,
                   offset: Offset(0.0, 1.0), //(x,y)
                   blurRadius: 6.0,
                 ),
