@@ -519,11 +519,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             child: Text(
                               'Login',
-                              style: GoogleFonts.playfairDisplay(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                color: Colors.white,
-                              ),
+                                style: TextStyle(
+
+                                  fontSize: 20,
+//                                  fontWeight:FontWeight.bold,
+                                  fontFamily: "FreigSanPro",
+                                  color: Colors.white,
+                                ),
                             ),
                             onPressed: () => validateandsend(),
                             color: Color(0xFFfb4545),
@@ -538,11 +540,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             child: Text(
                               'Sign Up',
-                              style: GoogleFonts.playfairDisplay(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                color: Colors.white,
-                              ),
+                                style: TextStyle(
+
+                                    fontSize: 20,
+//                                    fontWeight:FontWeight.bold,
+                                    fontFamily: "FreigSanPro",
+                                    color: Colors.white,
+                                )
                             ),
                             onPressed: () => validateandsendsignup(),
                             color: Color(0xFFfb4545),

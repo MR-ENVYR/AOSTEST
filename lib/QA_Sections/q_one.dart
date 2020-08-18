@@ -351,7 +351,9 @@ class _QueOneState extends State<QueOne> with TickerProviderStateMixin {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 50, vertical: 5),
                               shape: RoundedRectangleBorder(
-//                            borderRadius: BorderRadius.all(Radius.circular(20)),
+
+                                  borderRadius: BorderRadius.circular(10),
+
                                   side: BorderSide(
                                       color: Color(0xFFfb4545), width: 3)),
                               color: Color(0xFFfb4545),

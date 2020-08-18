@@ -306,30 +306,48 @@ class _RateUsState extends State<RateUs> {
               SizedBox(
                 height: 10,
               ),
-
-              RaisedButton(
-                padding: EdgeInsets.all(15),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    side: BorderSide(color: Color(0xFFfb4545), width: 3)),
-                color: Color(0xFFfb4545),
-                onPressed: () {
-//                FocusScope.of(context).unfocus();
-//                if (_key.currentState.validate()) {}
-
-//                            Navigator.push(
-//                                context,
-//                                PageTransition(
-//                                    type: PageTransitionType.rightToLeftWithFade,
-//                                    child: QueOne()));
-                },
-//                        textColor: ,
-                child: Text(
-                  "Send",
-                  style:
-                      TextStyle(fontFamily: "FreigSanPro", color: Colors.white),
+            RaisedButton(
+              elevation: 10,
+              padding: EdgeInsets.symmetric(
+                  vertical: 8.0, horizontal: 8.0),
+              splashColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                'Send',
+                style: GoogleFonts.amiri(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.white,
                 ),
               ),
+              onPressed: () {},
+              color: Color(0xFFfb4545),
+            ),
+//              RaisedButton(
+//                padding: EdgeInsets.all(15),
+//                shape: RoundedRectangleBorder(
+//                    borderRadius: BorderRadius.all(Radius.circular(20)),
+//                    side: BorderSide(color: Color(0xFFfb4545), width: 3)),
+//                color: Color(0xFFfb4545),
+//                onPressed: () {
+////                FocusScope.of(context).unfocus();
+////                if (_key.currentState.validate()) {}
+//
+////                            Navigator.push(
+////                                context,
+////                                PageTransition(
+////                                    type: PageTransitionType.rightToLeftWithFade,
+////                                    child: QueOne()));
+//                },
+////                        textColor: ,
+//                child: Text(
+//                  "Send",
+//                  style:
+//                      TextStyle(fontFamily: "FreigSanPro", color: Colors.white),
+//                ),
+//              ),
               SizedBox(
                 height: 10,
               )

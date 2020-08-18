@@ -77,7 +77,7 @@ class _DashBoardState extends State<DashBoard>
                     ? Align(
                         alignment: Alignment.topCenter,
                         child: Text(
-                          "DashBoard",
+                          "Dashboard",
                           style: GoogleFonts.amiri(
                             letterSpacing: 2,
                             fontSize: 30,

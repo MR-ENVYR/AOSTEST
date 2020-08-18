@@ -310,12 +310,27 @@ class _ContactUsState extends State<ContactUs> {
                                 height: 10,
                               ),
                               RaisedButton(
-                                padding: EdgeInsets.all(15),
+                                elevation: 10,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 8.0),
+                                splashColor: Colors.white,
                                 shape: RoundedRectangleBorder(
-//                                  borderRadius:
-//                                      BorderRadius.all(Radius.circular(20)),
-                                    side: BorderSide(
-                                        color: Color(0xFFfb4545), width: 3)),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  'Send',
+                                  style: GoogleFonts.amiri(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                  ),
+                                ),
+//                                padding: EdgeInsets.all(15),
+//                                shape: RoundedRectangleBorder(
+////                                  borderRadius:
+////                                      BorderRadius.all(Radius.circular(20)),
+//                                    side: BorderSide(
+//                                        color: Color(0xFFfb4545), width: 3)),
                                 color: Color(0xFFfb4545),
                                 onPressed: () {
                                   FocusScope.of(context).unfocus();
@@ -328,13 +343,13 @@ class _ContactUsState extends State<ContactUs> {
 //                                    child: QueOne()));
                                 },
 //                        textColor: ,
-                                child: Text(
-                                  "Send",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "FreigSanPro",
-                                      color: Colors.white),
-                                ),
+//                                child: Text(
+//                                  "Send",
+//                                  style: TextStyle(
+//                                      fontSize: 15,
+//                                      fontFamily: "FreigSanPro",
+//                                      color: Colors.white),
+//                                ),
                               ),
                               SizedBox(
                                 height: 10,

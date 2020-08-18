@@ -183,9 +183,7 @@ class _QueSixState extends State<QueSix> {
                   2,
                   FlatButton(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    shape: RoundedRectangleBorder(
-//                              borderRadius:
-//                                  BorderRadius.all(Radius.circular(20)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),
                         side: BorderSide(color: Color(0xFFfb4545), width: 3)),
                     color: Color(0xFFfb4545),
                     onPressed: () async {
@@ -224,9 +222,7 @@ class _QueSixState extends State<QueSix> {
                   2.3,
                   FlatButton(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    shape: RoundedRectangleBorder(
-//                              borderRadius:
-//                                  BorderRadius.all(Radius.circular(20)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),
                         side: BorderSide(color: Color(0xFFfb4545), width: 3)),
                     color: Color(0xFFfb4545),
                     onPressed: () async {

@@ -419,7 +419,7 @@ class _ProfileFillingState extends State<ProfileFilling> {
                                     _userModel.profilename.capitalises(),
                                     style: GoogleFonts.workSans(
                                       fontSize: 17,
-                                      color: Colors.white.withOpacity(0.7),
+                                      color: Colors.white.withOpacity(0.9),
                                       fontWeight: FontWeight.w600,
                                     ),
                                   )
@@ -429,8 +429,8 @@ class _ProfileFillingState extends State<ProfileFilling> {
                               _userModel.email,
                               style: GoogleFonts.workSans(
                                 fontSize: 13,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w100,
+                               color: Colors.white.withOpacity(0.9),
+                                fontWeight: FontWeight.w300,
                               ),
                             ),
                             SizedBox(

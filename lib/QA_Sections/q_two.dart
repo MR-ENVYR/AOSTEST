@@ -532,10 +532,8 @@ class _QueTwoState extends State<QueTwo> {
                         child: FlatButton(
                           padding:
                               EdgeInsets.symmetric(horizontal: 50, vertical: 5),
-                          shape: RoundedRectangleBorder(
-//                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                              side: BorderSide(
-                                  color: Color(0xFFfb4545), width: 3)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(color: Color(0xFFfb4545), width: 3)),
                           color: Color(0xFFfb4545),
                           onPressed: () {
                             if (radioItem.isNotEmpty) {

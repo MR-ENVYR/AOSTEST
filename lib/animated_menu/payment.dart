@@ -104,7 +104,7 @@ class PaymentPageState extends State<PaymentPage> {
                 child: Container(
                   height: 50,
                   width: 100,
-                  color: primary,
+                  color: secondary,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -131,14 +131,14 @@ class PaymentPageState extends State<PaymentPage> {
                       Text text;
                       switch (index) {
                         case 0:
-                          icon = Icon(Icons.add_circle, color: primary);
+                          icon = Icon(Icons.add_circle, color: secondary);
                           text = Text(
                             'Add AOS Diamond via new card',
                             style: inputStyle,
                           );
                           break;
                         case 1:
-                          icon = Icon(Icons.credit_card, color: primary);
+                          icon = Icon(Icons.credit_card, color: secondary);
                           text = Text(
                             'Add AOS Diamond via existing card',
                             style: inputStyle,
@@ -149,7 +149,7 @@ class PaymentPageState extends State<PaymentPage> {
                             image: AssetImage(
                               'assets/images/diamond.png',
                             ),
-                            color: primary,
+                            color: secondary,
                             height: 25,
                           );
                           text = Text(
