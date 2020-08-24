@@ -4,6 +4,7 @@ import 'package:style_of_agent/QA_Sections/moveAnimation.dart';
 import 'package:style_of_agent/QA_Sections/moveLRAnimation.dart';
 import 'package:style_of_agent/QA_Sections/q_three.dart';
 import 'package:style_of_agent/animated_menu/menu_frame.dart';
+import 'package:style_of_agent/connection.dart';
 import 'package:style_of_agent/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -60,6 +61,7 @@ class _QueTwoState extends State<QueTwo> {
   void initState() {
     // TODO: implement initState
     super.initState();
+//    checkConnection(context);
 //    print(widget.user.uid);
   }
 
@@ -186,8 +188,8 @@ class _QueTwoState extends State<QueTwo> {
                     MoveAnimation(
                         1,
                         Container(
-                          height: 250,
-                          width: 250,
+                          width: MediaQuery.of(context).size.height / 3,
+                          height: MediaQuery.of(context).size.height / 3,
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: AssetImage(
@@ -203,7 +205,7 @@ class _QueTwoState extends State<QueTwo> {
                     FadeAnimation(
                       1.5,
                       Text(
-                        "For which type of occasion would you like an opinion",
+                        "For which type of occasion would you like an opinion ?",
                         textAlign: TextAlign.center,
                         style: headlineStyle,
                       ),
@@ -258,8 +260,8 @@ class _QueTwoState extends State<QueTwo> {
 //                                          ),
 //                                          Checkbox(
 //                                              checkColor: Colors.white,
-//                                              activeColor: Color(0xFFc0a948),
-//                                              hoverColor: Color(0xFFc0a948),
+//                                              activeColor: Color(0xFFE5CF73),
+//                                              hoverColor: Color(0xFFE5CF73),
 //                                              value: selects[i],
 //                                              onChanged: (bool val) {
 //                                                setState(() {
@@ -315,8 +317,8 @@ class _QueTwoState extends State<QueTwo> {
 //                                          ),
 //                                          Checkbox(
 //                                              checkColor: Colors.white,
-//                                              activeColor: Color(0xFFc0a948),
-//                                              hoverColor: Color(0xFFc0a948),
+//                                              activeColor: Color(0xFFE5CF73),
+//                                              hoverColor: Color(0xFFE5CF73),
 //                                              value: selects[i],
 //                                              onChanged: (bool val) {
 //                                                setState(() {
@@ -393,7 +395,10 @@ class _QueTwoState extends State<QueTwo> {
                     isExpanded
                         ? Container(
                             margin: EdgeInsets.symmetric(horizontal: 10),
-                            color: Color(0xffD32F2F),
+                            decoration: BoxDecoration(
+                              color: Color(0xffD32F2F),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             child: Column(children: <Widget>[
                               RadioListTile(
                                 activeColor: Colors.white,
@@ -532,8 +537,10 @@ class _QueTwoState extends State<QueTwo> {
                         child: FlatButton(
                           padding:
                               EdgeInsets.symmetric(horizontal: 50, vertical: 5),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),
-                              side: BorderSide(color: Color(0xFFfb4545), width: 3)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(
+                                  color: Color(0xFFfb4545), width: 3)),
                           color: Color(0xFFfb4545),
                           onPressed: () {
                             if (radioItem.isNotEmpty) {

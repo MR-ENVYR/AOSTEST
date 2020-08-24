@@ -101,28 +101,29 @@ class UserModel {
       this.timestamp});
 
   factory UserModel.fromJson(DocumentSnapshot doc) {
-    return UserModel(
-        id: doc.documentID,
-        email: doc[EMAIL_KEY],
-        username: doc[USERNAME_KEY],
-        url: doc[URL_KEY],
-        profilename: doc[PROFILE_NAME_KEY],
-        phonenumber: doc[PH_NO_KEY],
-        isphoneverified: doc[IS_PH_VERIFIED_KEY],
-        height: doc[HEIGHT_KEY],
-        birthdate: doc[BOD_KEY],
-        bustsize: doc[BUST_SIZE_KEY],
-        clothingsize: doc[CLOTHING_SIZE_KEY],
-        gender: doc[GENDER_KEY],
-        hipsize: doc[HIP_SIZE_KEY],
-        language: doc[LANGUAGE_KEY],
-        location: doc[LOCATION_KEY],
-        shoesize: doc[SHOE_SIZE_KEY],
-        waistsize: doc[WAIST_SIZE_KEY],
-        weight: doc[WEIGHT_KEY],
-        timestamp: doc[TIME_STAMP_KEY],
-        trouserLength: doc[TROUSER_lENGTH_KEY],
-        isprofileshow: doc[ISPROFILESHOW_KEY]);
+    if (doc.exists)
+      return UserModel(
+          id: doc.documentID,
+          email: doc[EMAIL_KEY],
+          username: doc[USERNAME_KEY],
+          url: doc[URL_KEY],
+          profilename: doc[PROFILE_NAME_KEY],
+          phonenumber: doc[PH_NO_KEY],
+          isphoneverified: doc[IS_PH_VERIFIED_KEY],
+          height: doc[HEIGHT_KEY],
+          birthdate: doc[BOD_KEY],
+          bustsize: doc[BUST_SIZE_KEY],
+          clothingsize: doc[CLOTHING_SIZE_KEY],
+          gender: doc[GENDER_KEY],
+          hipsize: doc[HIP_SIZE_KEY],
+          language: doc[LANGUAGE_KEY],
+          location: doc[LOCATION_KEY],
+          shoesize: doc[SHOE_SIZE_KEY],
+          waistsize: doc[WAIST_SIZE_KEY],
+          weight: doc[WEIGHT_KEY],
+          timestamp: doc[TIME_STAMP_KEY],
+          trouserLength: doc[TROUSER_lENGTH_KEY],
+          isprofileshow: doc[ISPROFILESHOW_KEY]);
   }
 
   Map<String, dynamic> toJson() => {

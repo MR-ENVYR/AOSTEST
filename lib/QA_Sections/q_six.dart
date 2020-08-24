@@ -4,6 +4,8 @@ import 'package:style_of_agent/QA_Sections/fadeAnimation.dart';
 import 'package:style_of_agent/QA_Sections/moveAnimation.dart';
 import 'package:style_of_agent/QA_Sections/moveLRAnimation.dart';
 import 'package:style_of_agent/animated_menu/menu_frame.dart';
+import 'package:style_of_agent/connection.dart';
+import 'package:style_of_agent/progress.dart';
 import 'package:style_of_agent/model/usermodel.dart';
 import 'package:style_of_agent/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -29,6 +31,7 @@ class _QueSixState extends State<QueSix> {
   void initState() {
     // TODO: implement initState
     super.initState();
+//    checkConnection(context);
     showUid();
   }
 
@@ -137,8 +140,8 @@ class _QueSixState extends State<QueSix> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                   child: Container(
-                    height: 250,
-                    width: 250,
+                    width: MediaQuery.of(context).size.height / 3,
+                    height: MediaQuery.of(context).size.height / 3,
 //                          width: 300,
                     decoration: BoxDecoration(
                         image: DecorationImage(
@@ -166,7 +169,7 @@ class _QueSixState extends State<QueSix> {
             FadeAnimation(
               1.5,
               Text(
-                "Get Your style advice",
+                "Get your style advice",
                 textAlign: TextAlign.center,
                 style: headlineStyle,
               ),
@@ -177,17 +180,20 @@ class _QueSixState extends State<QueSix> {
 //                Spacer(),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 MoveAnimation(
                   2,
                   FlatButton(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                         side: BorderSide(color: Color(0xFFfb4545), width: 3)),
                     color: Color(0xFFfb4545),
                     onPressed: () async {
-                      widget.ques.putIfAbsent("ques6", () => "Use diamonds");
+                      checkConnection(context);
+                      showAlertDialog(context, "Please wait..");
+                      widget.ques.putIfAbsent("ques6", () => "Use Diamonds");
                       widget.ques.putIfAbsent(
                         "uid",
                         () => id,
@@ -197,6 +203,9 @@ class _QueSixState extends State<QueSix> {
                       widget.ques.putIfAbsent(
                           "phone no", () => _userModel.phonenumber);
                       await _quesCollection.document().setData(widget.ques);
+                      setState(() {
+                        Navigator.pop(context);
+                      });
                       Navigator.pushAndRemoveUntil(
                           context,
                           PageTransition(
@@ -209,7 +218,7 @@ class _QueSixState extends State<QueSix> {
 
 //                        textColor: ,
                     child: Text(
-                      "Use \ndiamonds",
+                      "Use \nDiamonds",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 20,
@@ -218,17 +227,23 @@ class _QueSixState extends State<QueSix> {
                     ),
                   ),
                 ),
+//                SizedBox(
+//                  width: ,
+//                ),
                 MoveLRAnimation(
                   2.3,
                   FlatButton(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                         side: BorderSide(color: Color(0xFFfb4545), width: 3)),
                     color: Color(0xFFfb4545),
                     onPressed: () async {
+                      checkConnection(context);
+                      showAlertDialog(context, "Please wait..");
 //                          Navigator.pop(context);
                       widget.ques
-                          .putIfAbsent("ques6", () => "Recharge your diamonds");
+                          .putIfAbsent("ques6", () => "Recharge your Diamonds");
                       widget.ques.putIfAbsent(
                         "uid",
                         () => id,
@@ -239,6 +254,9 @@ class _QueSixState extends State<QueSix> {
                           "phone no", () => _userModel.phonenumber);
                       await _quesCollection.document().setData(widget.ques);
                       print(widget.ques);
+                      setState(() {
+                        Navigator.pop(context);
+                      });
                       Navigator.pushAndRemoveUntil(
                           context,
                           PageTransition(
@@ -252,7 +270,7 @@ class _QueSixState extends State<QueSix> {
 
 //                        textColor: ,
                     child: Text(
-                      "Recharge your \ndiamonds",
+                      "Recharge your \nDiamonds",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 20,

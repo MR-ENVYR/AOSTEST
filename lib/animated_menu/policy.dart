@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:style_of_agent/connection.dart';
 import 'package:style_of_agent/widgets/custom_expension_tile.dart' as custom;
 
 class Policy extends StatefulWidget {
@@ -8,6 +9,13 @@ class Policy extends StatefulWidget {
 }
 
 class _PolicyState extends State<Policy> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+//    checkConnection(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,7 +33,7 @@ class _PolicyState extends State<Policy> {
               style: GoogleFonts.amiri(
                 letterSpacing: 2,
                 fontSize: 30,
-                color: Color(0xFFc0a948),
+                color: Color(0xFFE5CF73),
 //                fontFamily: "Helvetica",
               ),
             ),
@@ -40,7 +48,7 @@ class _PolicyState extends State<Policy> {
                 "Privacy and Cookies statement",
                 style: GoogleFonts.amiri(
                   fontSize: 20,
-                  color: Color(0xFFc0a948),
+                  color: Color(0xFFE5CF73),
 //                  fontFamily: "Helvetica",
                 ),
               ),
@@ -187,7 +195,7 @@ Cookies are small text messages and other techniques that leave certain informat
                     "General Terms and Conditions",
                     style: GoogleFonts.amiri(
                       fontSize: 20,
-                      color: Color(0xFFc0a948),
+                      color: Color(0xFFE5CF73),
 //                      fontFamily: "Helvetica",
                     ),
                   ),

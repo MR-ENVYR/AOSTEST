@@ -1,6 +1,9 @@
 import 'package:google_fonts/google_fonts.dart';
+import 'package:style_of_agent/connection.dart';
 import 'package:style_of_agent/utils/utils.dart';
 import 'package:flutter/material.dart';
+
+import '../progress.dart';
 
 class ContactUs extends StatefulWidget {
   @override
@@ -16,6 +19,14 @@ class _ContactUsState extends State<ContactUs> {
   FocusNode subjectNode = FocusNode();
   FocusNode emailNode = FocusNode();
   FocusNode descriptionNode = FocusNode();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+//    checkConnection(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,7 +48,7 @@ class _ContactUsState extends State<ContactUs> {
                 style: GoogleFonts.amiri(
                   letterSpacing: 2,
                   fontSize: 30,
-                  color: Color(0xFFc0a948),
+                  color: Color(0xFFE5CF73),
 //                  fontFamily: "Helvetica",
                 ),
               ),
@@ -108,15 +119,15 @@ class _ContactUsState extends State<ContactUs> {
 //                                        "It looks like you have problems with our system.",
 ////                                    textAlign: TextAlign.center,
 //                                        style: TextStyle(
-//                                            color: Color(0xFFc0a948))),
+//                                            color: Color(0xFFE5CF73))),
 //                                    Text("We are here to help you, so please",
 ////                                    textAlign: TextAlign.center,
 //                                        style: TextStyle(
-//                                            color: Color(0xFFc0a948))),
+//                                            color: Color(0xFFE5CF73))),
 //                                    Text("get in touch with us",
 ////                                    textAlign: TextAlign.center,
 //                                        style: TextStyle(
-//                                            color: Color(0xFFc0a948))),
+//                                            color: Color(0xFFE5CF73))),
                                   ],
                                 ),
                               ),
@@ -159,7 +170,7 @@ class _ContactUsState extends State<ContactUs> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
                                         borderSide: BorderSide(
-                                            color: Color(0xFFc0a948),
+                                            color: Color(0xFFE5CF73),
                                             width: 2)),
                                     hintText: 'Subject',
                                     hintStyle: inputStyle,
@@ -174,7 +185,7 @@ class _ContactUsState extends State<ContactUs> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
                                         borderSide: BorderSide(
-                                            color: Color(0xFFc0a948),
+                                            color: Color(0xFFE5CF73),
                                             width: 2)),
                                     enabled: true,
                                     focusedBorder: OutlineInputBorder(
@@ -182,7 +193,7 @@ class _ContactUsState extends State<ContactUs> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
                                         borderSide: BorderSide(
-                                            color: Color(0xFFc0a948),
+                                            color: Color(0xFFE5CF73),
                                             width: 2)),
                                     focusColor: Color(0xFFffffff),
                                     filled: true,
@@ -218,7 +229,7 @@ class _ContactUsState extends State<ContactUs> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
                                         borderSide: BorderSide(
-                                            color: Color(0xFFc0a948),
+                                            color: Color(0xFFE5CF73),
                                             width: 2)),
                                     hintText: 'Email',
                                     hintStyle: inputStyle,
@@ -233,7 +244,7 @@ class _ContactUsState extends State<ContactUs> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
                                         borderSide: BorderSide(
-                                            color: Color(0xFFc0a948),
+                                            color: Color(0xFFE5CF73),
                                             width: 2)),
                                     enabled: true,
                                     focusedBorder: OutlineInputBorder(
@@ -241,7 +252,7 @@ class _ContactUsState extends State<ContactUs> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
                                         borderSide: BorderSide(
-                                            color: Color(0xFFc0a948),
+                                            color: Color(0xFFE5CF73),
                                             width: 2)),
                                     focusColor: Color(0xFFffffff),
                                     filled: true,
@@ -276,7 +287,7 @@ class _ContactUsState extends State<ContactUs> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
                                         borderSide: BorderSide(
-                                            color: Color(0xFFc0a948),
+                                            color: Color(0xFFE5CF73),
                                             width: 2)),
                                     hintText: 'Type the message...',
                                     hintStyle: inputStyle,
@@ -291,7 +302,7 @@ class _ContactUsState extends State<ContactUs> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
                                         borderSide: BorderSide(
-                                            color: Color(0xFFc0a948),
+                                            color: Color(0xFFE5CF73),
                                             width: 2)),
                                     enabled: true,
                                     focusedBorder: OutlineInputBorder(
@@ -299,7 +310,7 @@ class _ContactUsState extends State<ContactUs> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
                                         borderSide: BorderSide(
-                                            color: Color(0xFFc0a948),
+                                            color: Color(0xFFE5CF73),
                                             width: 2)),
                                     focusColor: Color(0xFFffffff),
                                     filled: true,
@@ -334,7 +345,21 @@ class _ContactUsState extends State<ContactUs> {
                                 color: Color(0xFFfb4545),
                                 onPressed: () {
                                   FocusScope.of(context).unfocus();
-                                  if (_key.currentState.validate()) {}
+                                  if (_key.currentState.validate()) {
+                                    checkConnection(context);
+                                    setState(() {
+                                      descriptionController.text = '';
+                                      emailController.text = '';
+                                      subjectController.text = '';
+                                    });
+                                    showSendDialog(context, "Infomation Sent");
+                                    Future.delayed(Duration(milliseconds: 800),
+                                        () {
+                                      setState(() {
+                                        Navigator.pop(context);
+                                      });
+                                    });
+                                  }
 
 //                            Navigator.push(
 //                                context,

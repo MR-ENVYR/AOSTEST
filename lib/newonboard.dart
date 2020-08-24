@@ -37,7 +37,7 @@ class _OnBoardingCircleState extends State<OnBoardingCircle> {
           screenheight: screenheight,
           image: 'assets/images/woman4.jpg',
           type: 'Create your personal profile',
-          startGradientColor: Color(0xFFc0a948),
+          startGradientColor: Color(0xFFE5CF73),
           endGradientColor: Colors.amber,
           subText:
               'Connect with fashion professionals from the comfort of your home'),
@@ -46,7 +46,7 @@ class _OnBoardingCircleState extends State<OnBoardingCircle> {
           screenheight: screenheight,
           image: 'assets/images/man1.jpg',
           type: 'Upload your outfit selfie',
-          startGradientColor: Color(0xFFc0a948),
+          startGradientColor: Color(0xFFE5CF73),
           endGradientColor: Colors.amber,
           subText:
               'Upload your outfit selfie and get the best suited recommendations on what to wear today'),
@@ -54,11 +54,11 @@ class _OnBoardingCircleState extends State<OnBoardingCircle> {
           screenWidth: screenWidth,
           screenheight: screenheight,
           image: 'assets/images/woman3.jpg',
-          type: 'Get instant style device',
-          startGradientColor: Color(0xFFc0a948),
+          type: 'Get instant style advice',
+          startGradientColor: Color(0xFFE5CF73),
           endGradientColor: Colors.amber,
           subText:
-              "Upload your pic and get the best suited recommendations from our stylists"),
+              "Our fashion professionals will text you with instant style advice"),
     ];
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -72,7 +72,7 @@ class _OnBoardingCircleState extends State<OnBoardingCircle> {
                   itemCount: introWidgetsList.length,
                   onPageChanged: (int page) {
                     setState(() {
-                      currentPageValue=page;
+                      currentPageValue = page;
                     });
                   },
                   controller: controller,
@@ -111,7 +111,7 @@ class _OnBoardingCircleState extends State<OnBoardingCircle> {
                         onPressed: () async {
                           SharedPreferences prefs =
                               await SharedPreferences.getInstance();
-                               await prefs.setInt("initScreen", 1);
+                          await prefs.setInt("initScreen", 1);
                           Route route = MaterialPageRoute(
                               builder: (context) => LoginScreen());
                           Navigator.pushReplacement(context, route);
@@ -144,7 +144,7 @@ class _OnBoardingCircleState extends State<OnBoardingCircle> {
       height: 8.0,
       width: isActive ? 35.0 : 25.0,
       decoration: BoxDecoration(
-        color: isActive ? Color(0xFFc0a948): Colors.white,
+        color: isActive ? Color(0xFFE5CF73) : Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
     );

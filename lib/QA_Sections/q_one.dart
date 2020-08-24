@@ -6,6 +6,7 @@ import 'package:style_of_agent/QA_Sections/fadeAnimation.dart';
 import 'package:style_of_agent/QA_Sections/moveAnimation.dart';
 import 'package:style_of_agent/QA_Sections/q_two.dart';
 import 'package:style_of_agent/animated_menu/menu_frame.dart';
+import 'package:style_of_agent/connection.dart';
 import 'package:style_of_agent/progress.dart';
 import 'package:style_of_agent/utils/utils.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -30,6 +31,7 @@ class _QueOneState extends State<QueOne> with TickerProviderStateMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
+//    checkConnection(context);
 //    print(widget.user.uid);
   }
 
@@ -258,8 +260,8 @@ class _QueOneState extends State<QueOne> with TickerProviderStateMixin {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20))),
                               child: Container(
-                                height: 250,
-                                width: 250,
+                                width: MediaQuery.of(context).size.height / 3,
+                                height: MediaQuery.of(context).size.height / 3,
 //                          width: 300,
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
@@ -312,7 +314,7 @@ class _QueOneState extends State<QueOne> with TickerProviderStateMixin {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20)),
                                   border: Border.all(
-                                      color: Color(0xFFc0a948), width: 2),
+                                      color: Color(0xFFE5CF73), width: 2),
                                   image: _image != null
                                       ? DecorationImage(
                                           image: FileImage(_image),
@@ -351,13 +353,12 @@ class _QueOneState extends State<QueOne> with TickerProviderStateMixin {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 50, vertical: 5),
                               shape: RoundedRectangleBorder(
-
                                   borderRadius: BorderRadius.circular(10),
-
                                   side: BorderSide(
                                       color: Color(0xFFfb4545), width: 3)),
                               color: Color(0xFFfb4545),
                               onPressed: () async {
+                                checkConnection(context);
                                 if (_image != null && !isLoading) {
                                   showAlertDialog(context, "Please wait..");
                                   setState(() {

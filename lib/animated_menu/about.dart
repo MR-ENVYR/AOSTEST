@@ -77,7 +77,7 @@ class _AboutState extends State<About> {
                     style: GoogleFonts.amiri(
                       letterSpacing: 2,
                       fontSize: 40,
-                      color: Color(0xFFc0a948),
+                      color: Color(0xFFE5CF73),
 //                      fontFamily: "Helvetica",
                     ),
                   )
@@ -156,7 +156,7 @@ class _AboutState extends State<About> {
                                   Text(
                                     labels[i],
                                     style: GoogleFonts.amiri(
-                                        color: Color(0xFFc0a948),
+                                        color: Color(0xFFE5CF73),
                                         height: 1.2,
 
 //                                            fontFamily: "Helvetica",

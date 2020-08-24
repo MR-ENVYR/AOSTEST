@@ -62,13 +62,13 @@ class ExistingCardsPageState extends State<ExistingCardsPage> {
       backgroundColor: dark,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(color: Color(0xFFc0a948)),
+        iconTheme: IconThemeData(color: Color(0xFFE5CF73)),
         title: Text(
           'Choose existing card',
           style: GoogleFonts.amiri(
 //            letterSpacing: 2,
             fontSize: 25,
-            color: Color(0xFFc0a948),
+            color: Color(0xFFE5CF73),
 //                fontFamily: "FreigSanPro",
           ),
         ),

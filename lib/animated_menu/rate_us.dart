@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:style_of_agent/connection.dart';
+import 'package:style_of_agent/progress.dart';
 
 class RateUs extends StatefulWidget {
   @override
@@ -27,6 +29,13 @@ class _RateUsState extends State<RateUs> {
   ];
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+//    checkConnection(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     return Container(
@@ -42,7 +51,7 @@ class _RateUsState extends State<RateUs> {
             style: GoogleFonts.amiri(
               letterSpacing: 2,
               fontSize: 30,
-              color: Color(0xFFc0a948),
+              color: Color(0xFFE5CF73),
 //              fontFamily: "Helvetica",
             ),
           ),
@@ -306,25 +315,39 @@ class _RateUsState extends State<RateUs> {
               SizedBox(
                 height: 10,
               ),
-            RaisedButton(
-              elevation: 10,
-              padding: EdgeInsets.symmetric(
-                  vertical: 8.0, horizontal: 8.0),
-              splashColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Text(
-                'Send',
-                style: GoogleFonts.amiri(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Colors.white,
+              RaisedButton(
+                elevation: 10,
+                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                splashColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
+                child: Text(
+                  'Send',
+                  style: GoogleFonts.amiri(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () {
+                  checkConnection(context);
+//                  setState(() {
+//                    descriptionController.text = '';
+//                    emailController.text = '';
+//                    subjectController.text = '';
+//                  });
+
+                  showSendDialog(context, "Infomation Sent");
+                  Future.delayed(Duration(milliseconds: 800), () {
+                    setState(() {
+                      Navigator.pop(context);
+                      index = 0;
+                    });
+                  });
+                },
+                color: Color(0xFFfb4545),
               ),
-              onPressed: () {},
-              color: Color(0xFFfb4545),
-            ),
 //              RaisedButton(
 //                padding: EdgeInsets.all(15),
 //                shape: RoundedRectangleBorder(

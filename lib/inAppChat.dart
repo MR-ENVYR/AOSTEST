@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:style_of_agent/connection.dart';
 import 'package:style_of_agent/utils/utils.dart';
 
 final _firestore = Firestore.instance;
@@ -24,6 +25,7 @@ class _ChatScreenState extends State<ChatScreen> {
   String messageText;
   @override
   void initState() {
+    checkConnection(context);
     super.initState();
     getCurrentUser();
   }
@@ -45,7 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: dark,
       appBar: AppBar(
-//        iconTheme: IconThemeData(color: Color(0xFFc0a948)),
+//        iconTheme: IconThemeData(color: Color(0xFFE5CF73)),
         title: Text(
           'Tracy MacMonday',
           style: textTheme3,

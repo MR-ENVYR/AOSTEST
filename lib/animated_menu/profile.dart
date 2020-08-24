@@ -12,7 +12,9 @@ import 'package:style_of_agent/animated_menu/Library.dart';
 import 'package:style_of_agent/animated_menu/menu_frame.dart';
 import 'package:style_of_agent/animated_menu/recents_chats.dart';
 import 'package:style_of_agent/animated_menu/style_diamonds.dart';
+import 'package:style_of_agent/connection.dart';
 import 'package:style_of_agent/model/usermodel.dart';
+import 'package:style_of_agent/progress.dart';
 import 'package:style_of_agent/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -282,8 +284,10 @@ class _ProfileState extends State<Profile> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     isLoad = true;
     showUid();
+
     clothController = TextEditingController(text: clothSize[0]);
     bustController = TextEditingController(text: clothSize[0]);
 
@@ -301,11 +305,13 @@ class _ProfileState extends State<Profile> {
   showUid() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      isLoad = true;
+//      isLoad = true;
+      showAlertDialog(context, "Please wait..");
     });
     String id = prefs.getString("uid");
     Firestore.instance.collection("users").document(id).get().then((value) {
       setState(() {
+        Navigator.pop(context);
         isLoad = false;
         print("uid    ${id}");
         uid = id;
@@ -1177,16 +1183,16 @@ class _ProfileState extends State<Profile> {
                     await ImagePicker.pickImage(source: ImageSource.camera)
                         .then((image) async {
                       ImageProperties properties =
-                      await FlutterNativeImage.getImageProperties(
-                          image.path);
+                          await FlutterNativeImage.getImageProperties(
+                              image.path);
 
                       File compressedFile =
-                      await FlutterNativeImage.compressImage(image.path,
-                          quality: 80,
-                          targetWidth: 600,
-                          targetHeight:
-                          (properties.height * 600 / properties.width)
-                              .round());
+                          await FlutterNativeImage.compressImage(image.path,
+                              quality: 80,
+                              targetWidth: 600,
+                              targetHeight:
+                                  (properties.height * 600 / properties.width)
+                                      .round());
                       setState(() {
                         Navigator.pop(context);
                         _image = compressedFile;
@@ -1215,16 +1221,16 @@ class _ProfileState extends State<Profile> {
                     await ImagePicker.pickImage(source: ImageSource.gallery)
                         .then((image) async {
                       ImageProperties properties =
-                      await FlutterNativeImage.getImageProperties(
-                          image.path);
+                          await FlutterNativeImage.getImageProperties(
+                              image.path);
 
                       File compressedFile =
-                      await FlutterNativeImage.compressImage(image.path,
-                          quality: 80,
-                          targetWidth: 600,
-                          targetHeight:
-                          (properties.height * 600 / properties.width)
-                              .round());
+                          await FlutterNativeImage.compressImage(image.path,
+                              quality: 80,
+                              targetWidth: 600,
+                              targetHeight:
+                                  (properties.height * 600 / properties.width)
+                                      .round());
                       setState(() {
                         Navigator.pop(context);
                         _image = compressedFile;
@@ -1235,31 +1241,31 @@ class _ProfileState extends State<Profile> {
                 ),
                 _image != null
                     ? Divider(
-                  color: Colors.white,
-                  thickness: 2,
-                )
+                        color: Colors.white,
+                        thickness: 2,
+                      )
                     : Container(),
                 _image != null
                     ? ListTile(
-                  leading: Icon(
-                    Icons.delete,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    "Remove",
-                    style: GoogleFonts.workSans(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      Navigator.pop(context);
-                      _image = null;
-                    });
-                    print("image${_image}");
-                  },
-                )
+                        leading: Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                        ),
+                        title: Text(
+                          "Remove",
+                          style: GoogleFonts.workSans(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        onTap: () {
+                          setState(() {
+                            Navigator.pop(context);
+                            _image = null;
+                          });
+                          print("image${_image}");
+                        },
+                      )
                     : Container(),
               ],
             ),
@@ -1394,11 +1400,12 @@ class _ProfileState extends State<Profile> {
             ? SafeArea(
                 child: Scaffold(
                   drawerEnableOpenDragGesture: true,
-                  resizeToAvoidBottomPadding: true,
+                  resizeToAvoidBottomPadding: false,
+                  resizeToAvoidBottomInset: false,
                   backgroundColor: Color.fromRGBO(3, 9, 23, 1),
                   appBar: PreferredSize(
                       child: Container(
-                        height: 250,
+                        height: 205,
                         child: Stack(children: <Widget>[
 //                ClipPath(
 //                    clipBehavior: Clip.hardEdge,
@@ -1412,7 +1419,7 @@ class _ProfileState extends State<Profile> {
                                 clipBehavior: Clip.hardEdge,
                                 clipper: TopHeader(),
                                 child: Container(
-                                  color: Color(0xff4527a0),
+                                  color: Color(0xFFfb4545),
                                 )),
                           ),
 //                          Align(
@@ -1426,7 +1433,7 @@ class _ProfileState extends State<Profile> {
 //                                },
 //                                child: Icon(
 //                                  Icons.arrow_back,
-//                                  color: Color(0xFFc0a948),
+//                                  color: Color(0xFFE5CF73),
 //                                ),
 //                              ),
 //                            ),
@@ -1451,13 +1458,13 @@ class _ProfileState extends State<Profile> {
                                             children: <Widget>[
                                               Icon(
                                                 Icons.edit,
-                                                color: Color(0xFFc0a948),
+                                                color: Color(0xFFE5CF73),
                                               ),
                                               Text(
                                                 "Edit",
                                                 style: TextStyle(
                                                     fontSize: 18,
-                                                    color: Color(0xFFc0a948),
+                                                    color: Color(0xFFE5CF73),
                                                     fontFamily: "FreigSanPro"),
                                               )
                                             ],
@@ -1468,8 +1475,8 @@ class _ProfileState extends State<Profile> {
                                   : Container()
                               : Container(),
                           Positioned(
-                            top: 125,
-                            left: MediaQuery.of(context).size.width / 7,
+                            top: 85,
+                            left: MediaQuery.of(context).size.width / 8,
                             child: Stack(
                               children: <Widget>[
                                 Container(
@@ -1499,7 +1506,7 @@ class _ProfileState extends State<Profile> {
                                             height: 10.0 * 2.5,
                                             width: 10.0 * 2.5,
                                             decoration: BoxDecoration(
-                                              color: Color(0xFFFFC107),
+                                              color: Color(0xFFE5CF73),
                                               shape: BoxShape.circle,
                                             ),
                                             child: Center(
@@ -1519,29 +1526,32 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                           Positioned(
-                            top: 115,
-                            left: 3 * MediaQuery.of(context).size.width / 6,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  nameController.text,
-                                  style: GoogleFonts.amiri(
-                                    fontSize: 17,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
+                            top: 80,
+                            left: 2.6 * MediaQuery.of(context).size.width / 6,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    nameController.text,
+                                    style: GoogleFonts.amiri(
+                                      fontSize: 17,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height: 10.0 * 0.5),
-                                Text(
-                                  userModel.email,
-                                  style: GoogleFonts.amiri(
-                                    fontSize: 13,
-                                    color: Colors.white.withOpacity(0.9),
-                                    fontWeight: FontWeight.w100,
+                                  SizedBox(height: 10.0 * 0.5),
+                                  Text(
+                                    userModel.email,
+                                    style: GoogleFonts.amiri(
+                                      fontSize: 13,
+                                      color: Colors.white.withOpacity(0.9),
+                                      fontWeight: FontWeight.w100,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                           Positioned(
@@ -1553,8 +1563,8 @@ class _ProfileState extends State<Profile> {
                                 "My Profile",
                                 style: GoogleFonts.amiri(
                                   letterSpacing: 2,
-                                  fontSize: 30,
-                                  color: Color(0xFFc0a948),
+                                  fontSize: 28,
+                                  color: Color(0xFFE5CF73),
 //                                  fontFamily: "Helvetica",
                                 ),
                               ),
@@ -1601,6 +1611,9 @@ class _ProfileState extends State<Profile> {
                                         onPressed: () async {
                                           FocusScope.of(context).unfocus();
                                           if (_key.currentState.validate()) {
+                                            checkConnection(context);
+                                            showAlertDialog(
+                                                context, "Please wait..");
                                             print(uid);
                                             print("_image ${_image}");
                                             if (_image != null) {
@@ -1679,6 +1692,9 @@ class _ProfileState extends State<Profile> {
                                                 isEditMeasrue = false;
                                               });
                                             }
+                                            setState(() {
+                                              Navigator.pop(context);
+                                            });
                                           }
 //                                    if (gender.isEmpty) {
 //                                      setState(() {
@@ -1718,6 +1734,7 @@ class _ProfileState extends State<Profile> {
                                           FocusScope.of(context).unfocus();
                                           if (_key.currentState.validate() &&
                                               gender.isNotEmpty) {}
+                                          checkConnection(context);
 //                                    if (gender.isEmpty) {
 //                                      setState(() {
 //                                        isgender = false;
@@ -1782,9 +1799,9 @@ class TopHeader extends CustomClipper<Path> {
   Path getClip(Size size) {
     // TODO: implement getClip
     var path = Path()
-      ..lineTo(0.0, 170)
-      ..quadraticBezierTo(size.width / 4, 150, size.width / 2, 200)
-      ..quadraticBezierTo(3 * size.width / 4, 250, size.width, 240)
+      ..lineTo(0.0, 130)
+      ..quadraticBezierTo(size.width / 4, 110, size.width / 2, 160)
+      ..quadraticBezierTo(3 * size.width / 4, 210, size.width, 200)
       ..lineTo(size.width, 0.0)
       ..close();
 //    throw UnimplementedError();
@@ -1803,9 +1820,9 @@ class shadowHeader extends CustomClipper<Path> {
   Path getClip(Size size) {
     // TODO: implement getClip
     var path = Path()
-      ..lineTo(0.0, 171)
-      ..quadraticBezierTo(size.width / 4, 151, size.width / 2, 201)
-      ..quadraticBezierTo(3 * size.width / 4, 251, size.width, 241)
+      ..lineTo(0.0, 131)
+      ..quadraticBezierTo(size.width / 4, 111, size.width / 2, 161)
+      ..quadraticBezierTo(3 * size.width / 4, 211, size.width, 201)
       ..lineTo(size.width, 0.0)
       ..close();
 //    throw UnimplementedError();
@@ -1823,14 +1840,14 @@ class BoxShadowPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var path = Path()
-      ..lineTo(0.0, 170)
-      ..quadraticBezierTo(size.width / 4, 150, size.width / 2, 200)
-      ..quadraticBezierTo(3 * size.width / 4, 250, size.width, 240)
+      ..lineTo(0.0, 131)
+      ..quadraticBezierTo(size.width / 4, 111, size.width / 2, 161)
+      ..quadraticBezierTo(3 * size.width / 4, 211, size.width, 201)
       ..lineTo(size.width, 0.0)
       ..close();
 //    throw UnimplementedError();
 
-    canvas.drawShadow(path, Color(0xff7e57c2), 5.0, false);
+    canvas.drawShadow(path, Color(0xFFfb4545).withOpacity(0.8), 5.0, false);
 //    canvas.drawShadow(path, color, elevation, transparentOccluder)
   }
 

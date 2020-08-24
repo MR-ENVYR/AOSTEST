@@ -4,6 +4,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:style_of_agent/animated_menu/existing_card.dart';
 import 'package:style_of_agent/animated_menu/payment_service.dart';
 import 'package:style_of_agent/chatHomepage.dart';
+import 'package:style_of_agent/connection.dart';
 import 'package:style_of_agent/utils/utils.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -43,6 +44,9 @@ class PaymentPageState extends State<PaymentPage> {
   @override
   void initState() {
     super.initState();
+
+    checkConnection(context);
+
     StripeService.init();
   }
 
@@ -51,7 +55,7 @@ class PaymentPageState extends State<PaymentPage> {
     return Scaffold(
       backgroundColor: dark,
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Color(0xFFc0a948)),
+        iconTheme: IconThemeData(color: Color(0xFFE5CF73)),
         backgroundColor: Colors.transparent,
         title: Center(
             child: Text(
@@ -59,41 +63,41 @@ class PaymentPageState extends State<PaymentPage> {
           style: GoogleFonts.amiri(
             letterSpacing: 2,
             fontSize: 30,
-            color: Color(0xFFc0a948),
+            color: Color(0xFFE5CF73),
 //                fontFamily: "FreigSanPro",
           ),
         )),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        label: Text('Start Session'),
-        backgroundColor: secondary,
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                    title: Text('Session will Cost 1 AOS Diamond'),
-                    content: Text('DO you want to start session'),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text("NO"),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      FlatButton(
-                        child: Text("Yes"),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ChatHomePage()));
-                        },
-                      ),
-                    ],
-                  ),
-              barrierDismissible: true);
-        },
-      ),
+//      floatingActionButton: FloatingActionButton.extended(
+//        label: Text('Start Session'),
+//        backgroundColor: secondary,
+//        onPressed: () {
+//          showDialog(
+//              context: context,
+//              builder: (_) => AlertDialog(
+//                    title: Text('Session will Cost 1 Style Diamond'),
+//                    content: Text('DO you want to start session'),
+//                    actions: <Widget>[
+//                      FlatButton(
+//                        child: Text("NO"),
+//                        onPressed: () {
+//                          Navigator.pop(context);
+//                        },
+//                      ),
+//                      FlatButton(
+//                        child: Text("Yes"),
+//                        onPressed: () {
+//                          Navigator.push(
+//                              context,
+//                              MaterialPageRoute(
+//                                  builder: (context) => ChatHomePage()));
+//                        },
+//                      ),
+//                    ],
+//                  ),
+//              barrierDismissible: true);
+//        },
+//      ),
       body: Container(
         child: Column(
           children: <Widget>[
@@ -133,30 +137,30 @@ class PaymentPageState extends State<PaymentPage> {
                         case 0:
                           icon = Icon(Icons.add_circle, color: secondary);
                           text = Text(
-                            'Add AOS Diamond via new card',
+                            'Add Style Diamond via new card',
                             style: inputStyle,
                           );
                           break;
                         case 1:
                           icon = Icon(Icons.credit_card, color: secondary);
                           text = Text(
-                            'Add AOS Diamond via existing card',
+                            'Add Style Diamond via existing card',
                             style: inputStyle,
                           );
                           break;
-                        case 2:
-                          image = Image(
-                            image: AssetImage(
-                              'assets/images/diamond.png',
-                            ),
-                            color: secondary,
-                            height: 25,
-                          );
-                          text = Text(
-                            'Pay via AOS Diamonds',
-                            style: inputStyle,
-                          );
-                          break;
+//                        case 2:
+//                          image = Image(
+//                            image: AssetImage(
+//                              'assets/images/diamond.png',
+//                            ),
+//                            color: secondary,
+//                            height: 25,
+//                          );
+//                          text = Text(
+//                            'Pay via Style Diamonds',
+//                            style: inputStyle,
+//                          );
+//                          break;
                       }
                       return InkWell(
                         onTap: () {
@@ -171,7 +175,7 @@ class PaymentPageState extends State<PaymentPage> {
                     separatorBuilder: (context, index) => Divider(
                           color: primary,
                         ),
-                    itemCount: 3),
+                    itemCount: 2),
               ),
             ),
           ],

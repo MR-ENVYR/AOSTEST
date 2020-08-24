@@ -4,6 +4,7 @@ import 'package:style_of_agent/QA_Sections/moveAnimation.dart';
 import 'package:style_of_agent/QA_Sections/moveLRAnimation.dart';
 import 'package:style_of_agent/QA_Sections/q_four.dart';
 import 'package:style_of_agent/animated_menu/menu_frame.dart';
+import 'package:style_of_agent/connection.dart';
 import 'package:style_of_agent/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -52,6 +53,7 @@ class _QueThreeState extends State<QueThree> {
   void initState() {
     // TODO: implement initState
     super.initState();
+//    checkConnection(context);
 //    print(widget.user.uid);
   }
 
@@ -183,8 +185,8 @@ class _QueThreeState extends State<QueThree> {
                         MoveAnimation(
                             1,
                             Container(
-                              height: 250,
-                              width: 250,
+                              width: MediaQuery.of(context).size.height / 3,
+                              height: MediaQuery.of(context).size.height / 3,
                               decoration: BoxDecoration(
                                   image: DecorationImage(
                                       image: AssetImage(
@@ -689,10 +691,13 @@ class _QueThreeState extends State<QueThree> {
                             child: FlatButton(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 50, vertical: 5),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),
-                                  side: BorderSide(color: Color(0xFFfb4545), width: 3)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: BorderSide(
+                                      color: Color(0xFFfb4545), width: 3)),
                               color: Color(0xFFfb4545),
                               onPressed: () {
+                                checkConnection(context);
                                 if (selects.contains(true)) {
                                   List<String> sel = List();
                                   for (int i = 0; i < 4; i++) {

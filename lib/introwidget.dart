@@ -5,13 +5,13 @@ import 'package:flutter/painting.dart';
 class IntroWidget extends StatelessWidget {
   const IntroWidget(
       {Key key,
-        @required this.screenWidth,
-        @required this.screenheight,
-        this.image,
-        this.type,
-        this.startGradientColor,
-        this.endGradientColor,
-        this.subText})
+      @required this.screenWidth,
+      @required this.screenheight,
+      this.image,
+      this.type,
+      this.startGradientColor,
+      this.endGradientColor,
+      this.subText})
       : super(key: key);
 
   final double screenWidth;
@@ -36,7 +36,8 @@ class IntroWidget extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [Colors.white, Colors.black87],
-            ).createShader(Rect.fromLTRB(0, -100, rect.width, rect.height-10));
+            ).createShader(
+                Rect.fromLTRB(0, -100, rect.width, rect.height - 10));
           },
           blendMode: BlendMode.darken,
           child: Container(
@@ -46,8 +47,7 @@ class IntroWidget extends StatelessWidget {
                   begin: FractionalOffset(0, 0),
                   end: FractionalOffset(0, 1),
                   stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp
-              ),
+                  tileMode: TileMode.clamp),
               image: DecorationImage(
                 image: ExactAssetImage(image),
                 fit: BoxFit.cover,
@@ -56,13 +56,13 @@ class IntroWidget extends StatelessWidget {
           ),
         ),
         Container(
-          padding: const EdgeInsets.only(bottom:140.0,left: 20,right: 20),
+          padding: const EdgeInsets.only(bottom: 140.0, left: 20, right: 20),
           alignment: Alignment.bottomLeft,
           child: Stack(
             alignment: AlignmentDirectional.bottomStart,
             children: <Widget>[
               Opacity(
-                opacity:0.90,
+                opacity: 0.90,
                 child: Container(
                   height: screenheight * 0.13,
                   child: Text(
@@ -80,7 +80,8 @@ class IntroWidget extends StatelessWidget {
         ),
         Container(
           alignment: Alignment.bottomLeft,
-          padding: EdgeInsets.only(bottom: 80.0,left: 20.0,right: 20.0,top:10),
+          padding:
+              EdgeInsets.only(bottom: 80.0, left: 20.0, right: 20.0, top: 10),
           child: Text(
             subText,
             style: TextStyle(
@@ -93,7 +94,6 @@ class IntroWidget extends StatelessWidget {
         )
       ],
     );
-
   }
 
 //  TextStyle buildTextStyle(double size) {

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/QA_Sections/q_one.dart';
+import 'package:style_of_agent/connection.dart';
 //import 'package:style_of_agent/firebasemethods.dart';
 import 'package:style_of_agent/model/usermodel.dart';
 import 'package:style_of_agent/progress.dart';
@@ -361,7 +362,7 @@ class _ProfileFillingState extends State<ProfileFilling> {
                                 style: GoogleFonts.amiri(
                                   letterSpacing: 1.5,
                                   fontSize: 30,
-                                  color: Color(0xFFc0a948),
+                                  color: Color(0xFFE5CF73),
 //                                    fontFamily: "Helvetica"
                                 ),
                               ),
@@ -429,7 +430,7 @@ class _ProfileFillingState extends State<ProfileFilling> {
                               _userModel.email,
                               style: GoogleFonts.workSans(
                                 fontSize: 13,
-                               color: Colors.white.withOpacity(0.9),
+                                color: Colors.white.withOpacity(0.9),
                                 fontWeight: FontWeight.w300,
                               ),
                             ),
@@ -872,13 +873,14 @@ class _ProfileFillingState extends State<ProfileFilling> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 50, vertical: 5),
                               shape: RoundedRectangleBorder(
-//                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                                  borderRadius: BorderRadius.circular(10),
                                   side: BorderSide(
                                       color: Color(0xFFfb4545), width: 3)),
                               color: Color(0xFFfb4545),
                               onPressed: () {
                                 FocusScope.of(context).unfocus();
                                 if (_key.currentState.validate()) {
+                                  checkConnection(context);
                                   String username =
                                       fnameController.text.trim().capitalize() +
                                           " " +

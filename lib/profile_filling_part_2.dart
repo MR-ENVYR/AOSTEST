@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:style_of_agent/QA_Sections/q_one.dart';
+import 'package:style_of_agent/connection.dart';
 import 'package:style_of_agent/model/usermodel.dart';
 import 'package:style_of_agent/progress.dart';
 //import 'package:style_of_agent/models/usermodel.dart';
@@ -208,6 +209,7 @@ class _ProfileFillingPart2State extends State<ProfileFillingPart2> {
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
     setState(() {
       _image = widget.image;
@@ -311,16 +313,16 @@ class _ProfileFillingPart2State extends State<ProfileFillingPart2> {
                     await ImagePicker.pickImage(source: ImageSource.camera)
                         .then((image) async {
                       ImageProperties properties =
-                      await FlutterNativeImage.getImageProperties(
-                          image.path);
+                          await FlutterNativeImage.getImageProperties(
+                              image.path);
 
                       File compressedFile =
-                      await FlutterNativeImage.compressImage(image.path,
-                          quality: 80,
-                          targetWidth: 600,
-                          targetHeight:
-                          (properties.height * 600 / properties.width)
-                              .round());
+                          await FlutterNativeImage.compressImage(image.path,
+                              quality: 80,
+                              targetWidth: 600,
+                              targetHeight:
+                                  (properties.height * 600 / properties.width)
+                                      .round());
                       setState(() {
                         Navigator.pop(context);
                         _image = compressedFile;
@@ -349,16 +351,16 @@ class _ProfileFillingPart2State extends State<ProfileFillingPart2> {
                     await ImagePicker.pickImage(source: ImageSource.gallery)
                         .then((image) async {
                       ImageProperties properties =
-                      await FlutterNativeImage.getImageProperties(
-                          image.path);
+                          await FlutterNativeImage.getImageProperties(
+                              image.path);
 
                       File compressedFile =
-                      await FlutterNativeImage.compressImage(image.path,
-                          quality: 80,
-                          targetWidth: 600,
-                          targetHeight:
-                          (properties.height * 600 / properties.width)
-                              .round());
+                          await FlutterNativeImage.compressImage(image.path,
+                              quality: 80,
+                              targetWidth: 600,
+                              targetHeight:
+                                  (properties.height * 600 / properties.width)
+                                      .round());
                       setState(() {
                         Navigator.pop(context);
                         _image = compressedFile;
@@ -369,31 +371,31 @@ class _ProfileFillingPart2State extends State<ProfileFillingPart2> {
                 ),
                 _image != null
                     ? Divider(
-                  color: Colors.white,
-                  thickness: 2,
-                )
+                        color: Colors.white,
+                        thickness: 2,
+                      )
                     : Container(),
                 _image != null
                     ? ListTile(
-                  leading: Icon(
-                    Icons.delete,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    "Remove",
-                    style: GoogleFonts.workSans(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      Navigator.pop(context);
-                      _image = null;
-                    });
-                    print("image${_image}");
-                  },
-                )
+                        leading: Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                        ),
+                        title: Text(
+                          "Remove",
+                          style: GoogleFonts.workSans(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        onTap: () {
+                          setState(() {
+                            Navigator.pop(context);
+                            _image = null;
+                          });
+                          print("image${_image}");
+                        },
+                      )
                     : Container(),
               ],
             ),
@@ -459,7 +461,7 @@ class _ProfileFillingPart2State extends State<ProfileFillingPart2> {
                             style: GoogleFonts.amiri(
                               letterSpacing: 1.5,
                               fontSize: 30,
-                              color: Color(0xFFc0a948),
+                              color: Color(0xFFE5CF73),
 //                                fontFamily: "Helvetica"
                             ),
                           ),
@@ -1183,11 +1185,12 @@ class _ProfileFillingPart2State extends State<ProfileFillingPart2> {
                           padding:
                               EdgeInsets.symmetric(horizontal: 50, vertical: 5),
                           shape: RoundedRectangleBorder(
-//                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                              borderRadius: BorderRadius.circular(10),
                               side: BorderSide(
                                   color: Color(0xFFfb4545), width: 3)),
                           color: Color(0xFFfb4545),
                           onPressed: () async {
+                            checkConnection(context);
 //                            Navigator.pop(context);
                             FocusScope.of(context).unfocus();
 //                            if (_key.currentState.validate()) {

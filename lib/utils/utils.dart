@@ -19,13 +19,13 @@ TextStyle inputStyle = TextStyle(
     fontWeight: FontWeight.w400);
 
 TextStyle headlineStyle = GoogleFonts.amiri(
-    color: Color(0xFFc0a948),
+    color: Color(0xFFE5CF73),
 //    fontFamily: "Helvetica",
     fontWeight: FontWeight.w300,
     fontSize: 25);
 
 TextStyle waitlineStyle = GoogleFonts.amiri(
-    color: Color(0xFFc0a948),
+    color: Color(0xFFE5CF73),
 //    fontFamily: "Helvetica",
     fontWeight: FontWeight.w300,
     wordSpacing: 5,
@@ -33,8 +33,8 @@ TextStyle waitlineStyle = GoogleFonts.amiri(
     fontSize: 30);
 
 TextStyle menuItemStyle = GoogleFonts.amiri(
-//    shadows: [Shadow(color: Color(0xFFc0a948), blurRadius: 10)],
-    color: Color(0xFFc0a948),
+//    shadows: [Shadow(color: Color(0xFFE5CF73), blurRadius: 10)],
+    color: Color(0xFFE5CF73),
 //    fontFamily: "Helvetica",
     fontWeight: FontWeight.bold,
     fontSize: 20);

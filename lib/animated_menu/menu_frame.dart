@@ -1,6 +1,13 @@
+import 'dart:async';
+
+import 'package:app_settings/app_settings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:style_of_agent/connection.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/animated_menu/about.dart';
 import 'package:style_of_agent/animated_menu/faq.dart';
@@ -37,6 +44,7 @@ class _MenuFrameState extends State<MenuFrame>
   @override
   void initState() {
     super.initState();
+//    checkConnection(context);
     setupUid();
     showUid();
     _animationController = AnimationController(vsync: this, duration: duration);
@@ -58,6 +66,13 @@ class _MenuFrameState extends State<MenuFrame>
     screenSnapshot = screens.values.toList();
     colors1 = colors.toList();
 //    FirebaseAuth.instance.signOut();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _animationController.dispose();
   }
 
   void setupUid() async {
@@ -140,6 +155,8 @@ class _MenuFrameState extends State<MenuFrame>
   }
 
   Widget buildScreenStack(int position) {
+//    checkConnection();
+
     final deviceWidth = MediaQuery.of(context).size.width;
     return AnimatedPositioned(
       curve: Curves.fastOutSlowIn,
@@ -152,6 +169,7 @@ class _MenuFrameState extends State<MenuFrame>
         scale: scaleAnimations[position],
         child: GestureDetector(
           onTap: () {
+//            FocusScope.of(context).unfocus();
             setState(() {
               if (menuOpen) {
                 _animationController.reverse();
@@ -203,6 +221,7 @@ class _MenuFrameState extends State<MenuFrame>
                   onTap: () {
                     print("${position} -- ${scaleAnimations[position]}");
                     setState(() {
+                      FocusScope.of(context).unfocus();
                       if (!menuOpen)
 //                        _animationController.reverse();
 //                      else
@@ -224,11 +243,11 @@ class _MenuFrameState extends State<MenuFrame>
                       child: menuOpen
                           ? Icon(
                               Icons.arrow_forward,
-                              color: Color(0xFFc0a948),
+                              color: Color(0xFFE5CF73),
                             )
                           : Icon(
                               Icons.menu,
-                              color: Color(0xFFc0a948),
+                              color: Color(0xFFE5CF73),
                             ),
                     ),
                   ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:style_of_agent/connection.dart';
 import 'package:style_of_agent/extension/string_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/Login.dart';
@@ -27,6 +28,9 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   initState() {
     super.initState();
+
+//    checkConnection(context);
+
     showUid();
 //    gooleSignout();
   }
@@ -85,7 +89,7 @@ class _MenuScreenState extends State<MenuScreen> {
 //            Image.asset(
 //              icons[index],
 //              color:
-//                  selectedMenuIndex == index ? Colors.white : Color(0xFFc0a948),
+//                  selectedMenuIndex == index ? Colors.white : Color(0xFFE5CF73),
 //            ),
 //            SizedBox(
 //              width: 8.0,
@@ -96,7 +100,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 fontFamily: "FreigSanPro",
                 color: selectedMenuIndex == index
                     ? Colors.white
-                    : Color(0xFFc0a948),
+                    : Color(0xFFE5CF73),
                 fontSize: 15.0,
                 fontWeight: FontWeight.w500,
               ),
@@ -138,7 +142,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          name.capitalises(),
+                          name ?? " ".capitalises(),
                           style: TextStyle(
                             fontFamily: "FreigSanPro",
                             color: Colors.white.withOpacity(0.85),
@@ -147,7 +151,7 @@ class _MenuScreenState extends State<MenuScreen> {
                           ),
                         ),
                         Text(
-                          email,
+                          email ?? " ",
                           style: TextStyle(
                             fontFamily: "FreigSanPro",
                             color: Colors.grey,
@@ -169,13 +173,6 @@ class _MenuScreenState extends State<MenuScreen> {
                 ),
                 Row(
                   children: <Widget>[
-                    Icon(
-                      Icons.settings,
-                      color: Colors.white.withOpacity(0.5),
-                    ),
-                    SizedBox(
-                      width: 16.0,
-                    ),
                     Text(
                       'Settings',
                       style: TextStyle(

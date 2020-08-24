@@ -271,6 +271,17 @@ class _LoginScreenState extends State<LoginScreen> {
       await scaffoldkey.currentState.showSnackBar(snackbar);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setInt("initScreen", 10);
+      print("fetching..");
+      Firestore.instance
+          .collection("users")
+          .document(user.uid)
+          .get()
+          .then((value) async {
+        print(value.toString());
+        await prefs.setString("user", value.toString());
+        print("fetched");
+      });
+
       await prefs.setString("uid", user.uid);
       Future.delayed(const Duration(milliseconds: 1000), () {
         setState(() {
@@ -381,7 +392,7 @@ class _LoginScreenState extends State<LoginScreen> {
           "Already a user! Please login",
           style: TextStyle(
               color: Colors.white,
-              fontFamily: "Helvetica",
+              fontFamily: "FreigSanPro",
               fontWeight: FontWeight.w200),
         ),
       );
@@ -432,7 +443,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               TextFormField(
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontFamily: "Helvetica",
+                                    fontFamily: "FreigSanPro",
                                     fontWeight: FontWeight.w200),
                                 controller: emailController,
                                 validator: (String email) =>
@@ -442,15 +453,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                   border: InputBorder.none,
                                   errorStyle: TextStyle(
                                       color: Colors.red,
-                                      letterSpacing: 1.0,
-                                      fontFamily: "Helvetica",
-                                      fontWeight: FontWeight.w200,
+                                      letterSpacing: 1.5,
+                                      fontFamily: "FreigSanPro",
+                                      fontWeight: FontWeight.w300,
                                       fontSize: 14.0),
                                   hintText: "Email",
                                   hintStyle: TextStyle(
                                       color: Colors.black54,
-                                      fontFamily: "Helvetica",
-                                      fontWeight: FontWeight.w200),
+                                      fontFamily: "FreigSanPro",
+                                      fontWeight: FontWeight.w300),
                                   contentPadding: EdgeInsets.all(20),
                                   prefixIcon: Icon(
                                     Icons.person_outline,
@@ -464,8 +475,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               TextFormField(
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontFamily: "Helvetica",
-                                    fontWeight: FontWeight.w200),
+                                    fontFamily: "FreigSanPro",
+                                    fontWeight: FontWeight.w300),
                                 controller: passController,
                                 validator: (String password) =>
                                     pwdValidator(password),
@@ -480,14 +491,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                     hintText: 'Password',
                                     errorStyle: TextStyle(
                                         color: Colors.red,
-                                        letterSpacing: 1.0,
-                                        fontFamily: "Helvetica",
-                                        fontWeight: FontWeight.w200,
+                                        letterSpacing: 1.5,
+                                        fontFamily: "FreigSanPro",
+                                        fontWeight: FontWeight.w300,
                                         fontSize: 14.0),
                                     hintStyle: TextStyle(
                                         color: Colors.black54,
-                                        fontFamily: "Helvetica",
-                                        fontWeight: FontWeight.w200),
+                                        fontFamily: "FreigSanPro",
+                                        fontWeight: FontWeight.w300),
                                     suffixIcon: IconButton(
                                         color: Colors.black,
                                         icon: Icon(_obscureText
@@ -519,13 +530,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             child: Text(
                               'Login',
-                                style: TextStyle(
-
-                                  fontSize: 20,
+                              style: TextStyle(
+                                fontSize: 15,
 //                                  fontWeight:FontWeight.bold,
-                                  fontFamily: "FreigSanPro",
-                                  color: Colors.white,
-                                ),
+                                fontFamily: "FreigSanPro",
+                                color: Colors.white,
+                              ),
                             ),
                             onPressed: () => validateandsend(),
                             color: Color(0xFFfb4545),
@@ -538,16 +548,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Text(
-                              'Sign Up',
+                            child: Text('Sign Up',
                                 style: TextStyle(
-
-                                    fontSize: 20,
+                                  fontSize: 15,
 //                                    fontWeight:FontWeight.bold,
-                                    fontFamily: "FreigSanPro",
-                                    color: Colors.white,
-                                )
-                            ),
+                                  fontFamily: "FreigSanPro",
+                                  color: Colors.white,
+                                )),
                             onPressed: () => validateandsendsignup(),
                             color: Color(0xFFfb4545),
                           )
@@ -558,8 +565,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       Text(
                         '------OR------',
-                        style: GoogleFonts.pacifico(
-                            fontStyle: FontStyle.italic,
+                        style: GoogleFonts.amiri(
+//                            fontStyle: FontStyle.italic,
                             fontSize: 12,
                             color: Colors.grey),
                       ),

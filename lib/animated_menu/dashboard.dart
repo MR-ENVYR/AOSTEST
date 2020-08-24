@@ -11,6 +11,7 @@ import 'package:style_of_agent/animated_menu/profile.dart';
 import 'package:style_of_agent/animated_menu/recents_chats.dart';
 import 'package:style_of_agent/animated_menu/style_diamonds.dart';
 import 'package:style_of_agent/chatHomepage.dart';
+import 'package:style_of_agent/connection.dart';
 import 'package:style_of_agent/utils/utils.dart';
 import 'package:style_of_agent/widgets/fab_bottom_bar.dart';
 import 'package:style_of_agent/widgets/circular_outer_notched_rectangle.dart';
@@ -33,6 +34,7 @@ class _DashBoardState extends State<DashBoard>
   void initState() {
     // TODO: implement initState
     super.initState();
+//    checkConnection(context);
     setState(() {
       _onTapped = 2;
     });
@@ -53,6 +55,8 @@ class _DashBoardState extends State<DashBoard>
       ),
       child: SafeArea(
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomPadding: false,
 //          appBar: AppBar(
 //            elevation: 0,
 //            backgroundColor: Colors.transparent,
@@ -61,7 +65,7 @@ class _DashBoardState extends State<DashBoard>
 //              style: GoogleFonts.amiri(
 //                letterSpacing: 2,
 //                fontSize: 30,
-//                color: Color(0xFFc0a948),
+//                color: Color(0xFFE5CF73),
 ////                fontFamily: "FreigSanPro",
 //              ),
 //            ),
@@ -81,7 +85,7 @@ class _DashBoardState extends State<DashBoard>
                           style: GoogleFonts.amiri(
                             letterSpacing: 2,
                             fontSize: 30,
-                            color: Color(0xFFc0a948),
+                            color: Color(0xFFE5CF73),
                           ),
                         ),
                       )
