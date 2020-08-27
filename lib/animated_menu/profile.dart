@@ -34,6 +34,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 
 class Profile extends StatefulWidget {
+  bool check = false;
+  Profile({this.check});
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -1395,13 +1397,14 @@ class _ProfileState extends State<Profile> {
         FocusScope.of(context).unfocus();
       },
       child: Container(
-        color: Color(0xff4527a0),
+        color: Color(0xFFfb4545),
         child: !isLoad
             ? SafeArea(
                 child: Scaffold(
                   drawerEnableOpenDragGesture: true,
                   resizeToAvoidBottomPadding: false,
                   resizeToAvoidBottomInset: false,
+//                  iconTheme: IconThemeData(color: Color(0xFFE5CF73)),
                   backgroundColor: Color.fromRGBO(3, 9, 23, 1),
                   appBar: PreferredSize(
                       child: Container(
@@ -1438,6 +1441,23 @@ class _ProfileState extends State<Profile> {
 //                              ),
 //                            ),
 //                          ),
+                          widget.check
+                              ? Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 10.0, left: 13.0),
+                                    child: IconButton(
+                                        icon: Icon(
+                                          Icons.arrow_back,
+                                          color: Color(0xFFE5CF73),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        }),
+                                  ),
+                                )
+                              : Container(),
                           !isEnable
                               ? !isEditMeasrue
                                   ? Align(

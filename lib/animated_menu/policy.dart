@@ -29,10 +29,11 @@ class _PolicyState extends State<Policy> {
           title: Align(
             alignment: Alignment.topCenter,
             child: Text(
-              " Privacy Policy",
+              "Deliveries & Shipment",
+              textAlign: TextAlign.center,
               style: GoogleFonts.amiri(
-                letterSpacing: 2,
-                fontSize: 30,
+//                letterSpacing: 2,
+                fontSize: 25,
                 color: Color(0xFFE5CF73),
 //                fontFamily: "Helvetica",
               ),

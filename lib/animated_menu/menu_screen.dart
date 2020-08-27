@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:style_of_agent/animated_menu/profile.dart';
 import 'package:style_of_agent/connection.dart';
 import 'package:style_of_agent/extension/string_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -69,7 +70,7 @@ class _MenuScreenState extends State<MenuScreen> {
     'Home',
     'Contact us',
     'FAQ',
-    'Privacy Policy',
+    'Deliveries &\nShipment',
     'About us',
     'Rate us'
   ];
@@ -173,17 +174,27 @@ class _MenuScreenState extends State<MenuScreen> {
                 ),
                 Row(
                   children: <Widget>[
-                    Text(
-                      'Settings',
-                      style: TextStyle(
-                        fontFamily: "FreigSanPro",
-                        color: Colors.white.withOpacity(0.5),
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w600,
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Profile(
+                                      check: true,
+                                    )));
+                      },
+                      child: Text(
+                        'Settings',
+                        style: TextStyle(
+                          fontFamily: "FreigSanPro",
+                          color: Colors.white.withOpacity(0.5),
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                     VerticalDivider(),
-                    GestureDetector(
+                    InkWell(
                       onTap: () {
                         gooleSignout();
                       },
