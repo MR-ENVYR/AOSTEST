@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_native_image/flutter_native_image.dart';
+//import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/QA_Sections/q_one.dart';
@@ -34,8 +34,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 
 class Profile extends StatefulWidget {
-  bool check = false;
-  Profile({this.check});
+  bool check;
+  Profile({this.check = false});
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -1184,20 +1184,20 @@ class _ProfileState extends State<Profile> {
                   onTap: () async {
                     await ImagePicker.pickImage(source: ImageSource.camera)
                         .then((image) async {
-                      ImageProperties properties =
-                          await FlutterNativeImage.getImageProperties(
-                              image.path);
-
-                      File compressedFile =
-                          await FlutterNativeImage.compressImage(image.path,
-                              quality: 80,
-                              targetWidth: 600,
-                              targetHeight:
-                                  (properties.height * 600 / properties.width)
-                                      .round());
+//                      ImageProperties properties =
+//                          await FlutterNativeImage.getImageProperties(
+//                              image.path);
+//
+//                      File compressedFile =
+//                          await FlutterNativeImage.compressImage(image.path,
+//                              quality: 80,
+//                              targetWidth: 600,
+//                              targetHeight:
+//                                  (properties.height * 600 / properties.width)
+//                                      .round());
                       setState(() {
                         Navigator.pop(context);
-                        _image = compressedFile;
+                        _image = image;
                       });
                       print("image${_image}");
                     });
@@ -1222,20 +1222,20 @@ class _ProfileState extends State<Profile> {
                   onTap: () async {
                     await ImagePicker.pickImage(source: ImageSource.gallery)
                         .then((image) async {
-                      ImageProperties properties =
-                          await FlutterNativeImage.getImageProperties(
-                              image.path);
-
-                      File compressedFile =
-                          await FlutterNativeImage.compressImage(image.path,
-                              quality: 80,
-                              targetWidth: 600,
-                              targetHeight:
-                                  (properties.height * 600 / properties.width)
-                                      .round());
+//                      ImageProperties properties =
+//                          await FlutterNativeImage.getImageProperties(
+//                              image.path);
+//
+//                      File compressedFile =
+//                          await FlutterNativeImage.compressImage(image.path,
+//                              quality: 80,
+//                              targetWidth: 600,
+//                              targetHeight:
+//                                  (properties.height * 600 / properties.width)
+//                                      .round());
                       setState(() {
                         Navigator.pop(context);
-                        _image = compressedFile;
+                        _image = image;
                       });
                       print("image${_image}");
                     });

@@ -134,9 +134,10 @@ The team from Agents of Style
                       ),
                       Align(
                         alignment: Alignment.topCenter,
+
 //                right: 13,
 //                bottom: 10,
-//                              top: -40.5,
+//                top: -40.5,
 //                left: 50,
                         child: SvgPicture.asset(
                           "assets/images/aoslogo.svg",

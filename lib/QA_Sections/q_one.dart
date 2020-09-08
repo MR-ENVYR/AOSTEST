@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_native_image/flutter_native_image.dart';
+//import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:style_of_agent/QA_Sections/fadeAnimation.dart';
 import 'package:style_of_agent/QA_Sections/moveAnimation.dart';
 import 'package:style_of_agent/QA_Sections/q_two.dart';
@@ -66,20 +66,20 @@ class _QueOneState extends State<QueOne> with TickerProviderStateMixin {
                   onTap: () async {
                     await ImagePicker.pickImage(source: ImageSource.camera)
                         .then((image) async {
-                      ImageProperties properties =
-                          await FlutterNativeImage.getImageProperties(
-                              image.path);
-
-                      File compressedFile =
-                          await FlutterNativeImage.compressImage(image.path,
-                              quality: 60,
-                              targetWidth: 300,
-                              targetHeight:
-                                  (properties.height * 300 / properties.width)
-                                      .round());
+//                      ImageProperties properties =
+//                          await FlutterNativeImage.getImageProperties(
+//                              image.path);
+//
+//                      File compressedFile =
+//                          await FlutterNativeImage.compressImage(image.path,
+//                              quality: 80,
+//                              targetWidth: 600,
+//                              targetHeight:
+//                                  (properties.height * 600 / properties.width)
+//                                      .round());
                       setState(() {
                         Navigator.pop(context);
-                        _image = compressedFile;
+                        _image = image;
                       });
                       print("image${_image}");
                     });
@@ -104,20 +104,20 @@ class _QueOneState extends State<QueOne> with TickerProviderStateMixin {
                   onTap: () async {
                     await ImagePicker.pickImage(source: ImageSource.gallery)
                         .then((image) async {
-                      ImageProperties properties =
-                          await FlutterNativeImage.getImageProperties(
-                              image.path);
-
-                      File compressedFile =
-                          await FlutterNativeImage.compressImage(image.path,
-                              quality: 60,
-                              targetWidth: 300,
-                              targetHeight:
-                                  (properties.height * 300 / properties.width)
-                                      .round());
+//                      ImageProperties properties =
+//                          await FlutterNativeImage.getImageProperties(
+//                              image.path);
+//
+//                      File compressedFile =
+//                          await FlutterNativeImage.compressImage(image.path,
+//                              quality: 80,
+//                              targetWidth: 600,
+//                              targetHeight:
+//                                  (properties.height * 600 / properties.width)
+//                                      .round());
                       setState(() {
                         Navigator.pop(context);
-                        _image = compressedFile;
+                        _image = image;
                       });
                       print("image${_image}");
                     });

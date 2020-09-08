@@ -63,7 +63,7 @@ dependencies:
   double_back_to_close_app: ^1.2.0
 #  image_picker: ^0.6.5
   image_cropper: ^1.2.3
-  flutter_native_image: ^0.0.5
+#  flutter_native_image: ^0.0.5
   data_connection_checker: ^0.3.4
   app_settings: ^4.0.0
 

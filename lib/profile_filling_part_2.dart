@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_native_image/flutter_native_image.dart';
+//import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:style_of_agent/QA_Sections/q_one.dart';
 import 'package:style_of_agent/connection.dart';
 import 'package:style_of_agent/model/usermodel.dart';
@@ -312,20 +312,20 @@ class _ProfileFillingPart2State extends State<ProfileFillingPart2> {
                   onTap: () async {
                     await ImagePicker.pickImage(source: ImageSource.camera)
                         .then((image) async {
-                      ImageProperties properties =
-                          await FlutterNativeImage.getImageProperties(
-                              image.path);
-
-                      File compressedFile =
-                          await FlutterNativeImage.compressImage(image.path,
-                              quality: 80,
-                              targetWidth: 600,
-                              targetHeight:
-                                  (properties.height * 600 / properties.width)
-                                      .round());
+//                      ImageProperties properties =
+//                          await FlutterNativeImage.getImageProperties(
+//                              image.path);
+//
+//                      File compressedFile =
+//                          await FlutterNativeImage.compressImage(image.path,
+//                              quality: 80,
+//                              targetWidth: 600,
+//                              targetHeight:
+//                                  (properties.height * 600 / properties.width)
+//                                      .round());
                       setState(() {
                         Navigator.pop(context);
-                        _image = compressedFile;
+                        _image = image;
                       });
                       print("image${_image}");
                     });
@@ -350,20 +350,20 @@ class _ProfileFillingPart2State extends State<ProfileFillingPart2> {
                   onTap: () async {
                     await ImagePicker.pickImage(source: ImageSource.gallery)
                         .then((image) async {
-                      ImageProperties properties =
-                          await FlutterNativeImage.getImageProperties(
-                              image.path);
-
-                      File compressedFile =
-                          await FlutterNativeImage.compressImage(image.path,
-                              quality: 80,
-                              targetWidth: 600,
-                              targetHeight:
-                                  (properties.height * 600 / properties.width)
-                                      .round());
+//                      ImageProperties properties =
+//                          await FlutterNativeImage.getImageProperties(
+//                              image.path);
+//
+//                      File compressedFile =
+//                          await FlutterNativeImage.compressImage(image.path,
+//                              quality: 80,
+//                              targetWidth: 600,
+//                              targetHeight:
+//                                  (properties.height * 600 / properties.width)
+//                                      .round());
                       setState(() {
                         Navigator.pop(context);
-                        _image = compressedFile;
+                        _image = image;
                       });
                       print("image${_image}");
                     });
@@ -371,31 +371,31 @@ class _ProfileFillingPart2State extends State<ProfileFillingPart2> {
                 ),
                 _image != null
                     ? Divider(
-                        color: Colors.white,
-                        thickness: 2,
-                      )
+                  color: Colors.white,
+                  thickness: 2,
+                )
                     : Container(),
                 _image != null
                     ? ListTile(
-                        leading: Icon(
-                          Icons.delete,
-                          color: Colors.white,
-                        ),
-                        title: Text(
-                          "Remove",
-                          style: GoogleFonts.workSans(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        onTap: () {
-                          setState(() {
-                            Navigator.pop(context);
-                            _image = null;
-                          });
-                          print("image${_image}");
-                        },
-                      )
+                  leading: Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    "Remove",
+                    style: GoogleFonts.workSans(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      Navigator.pop(context);
+                      _image = null;
+                    });
+                    print("image${_image}");
+                  },
+                )
                     : Container(),
               ],
             ),

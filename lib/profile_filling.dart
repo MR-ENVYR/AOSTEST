@@ -15,7 +15,7 @@ import 'package:style_of_agent/extension/string_extension.dart';
 import 'package:style_of_agent/profile_filling_part_2.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:country_pickers/country.dart';
-import 'package:flutter_native_image/flutter_native_image.dart';
+//import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_webservice/places.dart';
@@ -165,20 +165,20 @@ class _ProfileFillingState extends State<ProfileFilling> {
                   onTap: () async {
                     await ImagePicker.pickImage(source: ImageSource.camera)
                         .then((image) async {
-                      ImageProperties properties =
-                          await FlutterNativeImage.getImageProperties(
-                              image.path);
-
-                      File compressedFile =
-                          await FlutterNativeImage.compressImage(image.path,
-                              quality: 80,
-                              targetWidth: 600,
-                              targetHeight:
-                                  (properties.height * 600 / properties.width)
-                                      .round());
+//                      ImageProperties properties =
+//                          await FlutterNativeImage.getImageProperties(
+//                              image.path);
+//
+//                      File compressedFile =
+//                          await FlutterNativeImage.compressImage(image.path,
+//                              quality: 80,
+//                              targetWidth: 600,
+//                              targetHeight:
+//                                  (properties.height * 600 / properties.width)
+//                                      .round());
                       setState(() {
                         Navigator.pop(context);
-                        _image = compressedFile;
+                        _image = image;
                       });
                       print("image${_image}");
                     });
@@ -203,20 +203,20 @@ class _ProfileFillingState extends State<ProfileFilling> {
                   onTap: () async {
                     await ImagePicker.pickImage(source: ImageSource.gallery)
                         .then((image) async {
-                      ImageProperties properties =
-                          await FlutterNativeImage.getImageProperties(
-                              image.path);
-
-                      File compressedFile =
-                          await FlutterNativeImage.compressImage(image.path,
-                              quality: 80,
-                              targetWidth: 600,
-                              targetHeight:
-                                  (properties.height * 600 / properties.width)
-                                      .round());
+//                      ImageProperties properties =
+//                          await FlutterNativeImage.getImageProperties(
+//                              image.path);
+//
+//                      File compressedFile =
+//                          await FlutterNativeImage.compressImage(image.path,
+//                              quality: 80,
+//                              targetWidth: 600,
+//                              targetHeight:
+//                                  (properties.height * 600 / properties.width)
+//                                      .round());
                       setState(() {
                         Navigator.pop(context);
-                        _image = compressedFile;
+                        _image = image;
                       });
                       print("image${_image}");
                     });
