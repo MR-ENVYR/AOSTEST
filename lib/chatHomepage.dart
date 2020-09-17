@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:style_of_agent/ChatHistory.dart';
 import 'package:style_of_agent/inAppChat.dart';
 import 'package:style_of_agent/utils/utils.dart';
 
@@ -14,7 +15,7 @@ class ChatHomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color.fromRGBO(3, 9, 23, 1),
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Color(0xFFE5CF73)),
+        iconTheme: IconThemeData(color: Color(0xFFc0a948)),
         backgroundColor: Colors.transparent,
         title: Center(
           child: Text(
@@ -22,7 +23,7 @@ class ChatHomePage extends StatelessWidget {
             style: GoogleFonts.amiri(
               letterSpacing: 2,
               fontSize: 30,
-              color: Color(0xFFE5CF73),
+              color: Color(0xFFc0a948),
 //                fontFamily: "FreigSanPro",
             ),
           ),
@@ -57,7 +58,7 @@ class _ChatLayoutState extends State<ChatLayout> {
             onTap: () {
 //              Navigator.pushNamed(context, '/chat-window');
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ChatScreen()));
+                  MaterialPageRoute(builder: (context) => ChatHistory()));
             },
             child: Container(
               margin: EdgeInsets.only(top: 10, left: 10, right: 10),
@@ -65,23 +66,13 @@ class _ChatLayoutState extends State<ChatLayout> {
                 BoxShadow(
                   color: secondary,
                   offset: Offset(0.0, 1.0), //(x,y)
-                  blurRadius: 6.0,
+                  blurRadius: 10.0,
                 ),
-              ], color: purple, borderRadius: BorderRadius.circular(5)),
+              ], color: secondary, borderRadius: BorderRadius.circular(5)),
               child: ListTile(
                 title: Text(
                   'Tracy MacMonday',
                   style: TextStyle(color: notWhite),
-                ),
-                subtitle: Text(
-                  'Hello',
-                  style: TextStyle(color: notWhite.withOpacity(0.5)),
-                ),
-                trailing: Text(
-                  'Active',
-                  style: TextStyle(
-                    color: Color(0xFFE5CF73),
-                  ),
                 ),
               ),
             ),

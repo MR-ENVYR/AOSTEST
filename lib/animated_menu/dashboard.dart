@@ -26,7 +26,7 @@ class _DashBoardState extends State<DashBoard>
     with SingleTickerProviderStateMixin {
   int _onTapped = 2;
   GlobalKey _toolTipKey = GlobalKey();
-
+  var date = DateTime.now();
   Duration duration = Duration(milliseconds: 200);
   int _selectedIndex = 0;
   bool isClick = true;
@@ -34,7 +34,6 @@ class _DashBoardState extends State<DashBoard>
   void initState() {
     // TODO: implement initState
     super.initState();
-//    checkConnection(context);
     setState(() {
       _onTapped = 2;
     });
@@ -55,8 +54,6 @@ class _DashBoardState extends State<DashBoard>
       ),
       child: SafeArea(
         child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          resizeToAvoidBottomPadding: false,
 //          appBar: AppBar(
 //            elevation: 0,
 //            backgroundColor: Colors.transparent,
@@ -65,7 +62,7 @@ class _DashBoardState extends State<DashBoard>
 //              style: GoogleFonts.amiri(
 //                letterSpacing: 2,
 //                fontSize: 30,
-//                color: Color(0xFFE5CF73),
+//                color: Color(0xFFc0a948),
 ////                fontFamily: "FreigSanPro",
 //              ),
 //            ),
@@ -78,17 +75,67 @@ class _DashBoardState extends State<DashBoard>
             child: Stack(
               children: <Widget>[
                 _onTapped == 2
-                    ? Align(
-                        alignment: Alignment.topCenter,
-                        child: Text(
-                          "Dashboard",
-                          style: GoogleFonts.amiri(
-                            letterSpacing: 2,
-                            fontSize: 30,
-                            color: Color(0xFFE5CF73),
+                    ? Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(width: 55,),
+                          Text(
+                            "DashBoard",
+                            style: GoogleFonts.amiri(
+                              letterSpacing: 2,
+                              fontSize: 30,
+                              color: Color(0xFFc0a948),
+                            ),
                           ),
+                          SizedBox(
+                            width: 55,
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  'assets/images/diamond.png',
+                                  color: secondary,
+                                  height: 30,
+                                ),
+                                SizedBox(width: 10,),
+                                Text(
+                                  '1',
+                                  style: textTheme3,
+                                )
+                              ],
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10,),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: secondary),
+                      child: Padding(
+                        padding:
+                        const EdgeInsets.only(left: 10, right: 10),
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              'You have received 5 Advices',
+                              style: textTheme3,
+                            ),
+                            Text(
+                              'Till ${date.day}-${date.month}-${date.year}',
+                              style: textTheme3,
+                            ),
+                          ],
                         ),
-                      )
+                      ),
+                    ),
+                  ],
+                )
                     : Container(),
                 _onTapped == 0 ? Library() : Container(),
                 _onTapped == 1 ? Profile() : Container(),
@@ -136,7 +183,7 @@ class _DashBoardState extends State<DashBoard>
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => QueOne()),
-                    (route) => false);
+                        (route) => false);
               setState(() {
                 _onTapped = index;
               });
