@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -7,6 +9,8 @@ import 'package:style_of_agent/chatHomepage.dart';
 import 'package:style_of_agent/connection.dart';
 import 'package:style_of_agent/utils/utils.dart';
 
+import '../inAppChat.dart';
+
 class PaymentPage extends StatefulWidget {
   PaymentPage({Key key}) : super(key: key);
 
@@ -15,6 +19,16 @@ class PaymentPage extends StatefulWidget {
 }
 
 class PaymentPageState extends State<PaymentPage> {
+
+   final _auth = FirebaseAuth.instance;
+  String userEmail;
+
+  Future getCurrentUser() async {
+    FirebaseUser loggedInUser;
+    loggedInUser = await _auth.currentUser();
+    userEmail = loggedInUser.email;
+  }
+
   onItemPress(BuildContext context, int index) async {
     switch (index) {
       case 0:
@@ -52,6 +66,7 @@ class PaymentPageState extends State<PaymentPage> {
 
   @override
   Widget build(BuildContext context) {
+    getCurrentUser();
     return Scaffold(
       backgroundColor: dark,
       appBar: AppBar(
@@ -68,36 +83,36 @@ class PaymentPageState extends State<PaymentPage> {
           ),
         )),
       ),
-//      floatingActionButton: FloatingActionButton.extended(
-//        label: Text('Start Session'),
-//        backgroundColor: secondary,
-//        onPressed: () {
-//          showDialog(
-//              context: context,
-//              builder: (_) => AlertDialog(
-//                    title: Text('Session will Cost 1 Style Diamond'),
-//                    content: Text('DO you want to start session'),
-//                    actions: <Widget>[
-//                      FlatButton(
-//                        child: Text("NO"),
-//                        onPressed: () {
-//                          Navigator.pop(context);
-//                        },
-//                      ),
-//                      FlatButton(
-//                        child: Text("Yes"),
-//                        onPressed: () {
-//                          Navigator.push(
-//                              context,
-//                              MaterialPageRoute(
-//                                  builder: (context) => ChatHomePage()));
-//                        },
-//                      ),
-//                    ],
-//                  ),
-//              barrierDismissible: true);
-//        },
-//      ),
+     floatingActionButton: FloatingActionButton.extended(
+       label: Text('Start Session'),
+       backgroundColor: secondary,
+       onPressed: () {
+         showDialog(
+             context: context,
+             builder: (_) => AlertDialog(
+                   title: Text('Session will Cost 1 Style Diamond'),
+                   content: Text('DO you want to start session'),
+                   actions: <Widget>[
+                     FlatButton(
+                       child: Text("NO"),
+                       onPressed: () {
+                         Navigator.pop(context);
+                       },
+                     ),
+                     FlatButton(
+                       child: Text("Yes"),
+                       onPressed: () {
+                         Navigator.push(
+                             context,
+                             MaterialPageRoute(
+                                 builder: (context) => ChatScreen(userEmail)));
+                       },
+                     ),
+                   ],
+                 ),
+             barrierDismissible: true);
+       },
+     ),
       body: Container(
         child: Column(
           children: <Widget>[

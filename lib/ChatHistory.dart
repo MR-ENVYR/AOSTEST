@@ -12,15 +12,24 @@ final _firestore = Firestore.instance;
 FirebaseUser loggedInUser;
 
 class ChatHistory extends StatefulWidget {
+  String userEmail;
+
+  ChatHistory(this.userEmail);
+
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  _ChatScreenState createState() => _ChatScreenState(userEmail);
 }
 
 class _ChatScreenState extends State<ChatHistory> {
+  String userEmail;
+
+  _ChatScreenState(this.userEmail);
+
   final messageTextController = TextEditingController();
   final _auth = FirebaseAuth.instance;
 
   String messageText;
+
   @override
   void initState() {
     super.initState();
@@ -32,7 +41,9 @@ class _ChatScreenState extends State<ChatHistory> {
       final user = await _auth.currentUser();
       if (user != null) {
         loggedInUser = user;
-        print(loggedInUser.email);
+        print(loggedInUser.email + " demo");
+        //  this.userEmail='mayank@aos.com';
+
       }
     } catch (err) {
       print(err);
@@ -57,7 +68,7 @@ class _ChatScreenState extends State<ChatHistory> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              MessagesStream(),
+              MessagesStream(userEmail),
             ],
           ),
         ),
@@ -67,12 +78,16 @@ class _ChatScreenState extends State<ChatHistory> {
 }
 
 class MessagesStream extends StatelessWidget {
+  String userEmail;
+
+  MessagesStream(this.userEmail);
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: _firestore
           .collection('messages')
-          .document('mayank')
+          .document(userEmail)
           .collection('chat')
           .orderBy('created')
           .snapshots(),

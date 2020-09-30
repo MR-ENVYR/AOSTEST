@@ -1,4 +1,5 @@
 //import 'package:agent_of_style/theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:style_of_agent/ChatHistory.dart';
-import 'package:style_of_agent/inAppChat.dart';
 import 'package:style_of_agent/utils/utils.dart';
 
 class ChatHomePage extends StatelessWidget {
@@ -41,9 +41,20 @@ class ChatLayout extends StatefulWidget {
 
 class _ChatLayoutState extends State<ChatLayout> {
   final messageTextController = TextEditingController();
+  final _firestore = Firestore.instance;
   final _auth = FirebaseAuth.instance;
+
+  String userEmail;
+
+  Future getCurrentUser() async {
+    FirebaseUser loggedInUser;
+    loggedInUser = await _auth.currentUser();
+    userEmail = loggedInUser.email;
+  }
+
   @override
   Widget build(BuildContext context) {
+    getCurrentUser();
     return Container(
       color: dark,
       child: ChatHeads(),
@@ -57,8 +68,10 @@ class _ChatLayoutState extends State<ChatLayout> {
           return InkWell(
             onTap: () {
 //              Navigator.pushNamed(context, '/chat-window');
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ChatHistory()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ChatHistory(userEmail)));
             },
             child: Container(
               margin: EdgeInsets.only(top: 10, left: 10, right: 10),

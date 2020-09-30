@@ -14,8 +14,12 @@ final _firestore = Firestore.instance;
 FirebaseUser loggedInUser;
 
 class ChatScreen extends StatefulWidget {
+  String userEmail;
+
+  ChatScreen(this.userEmail);
+
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  _ChatScreenState createState() => _ChatScreenState(userEmail);
 }
 
 class _ChatScreenState extends State<ChatScreen> {
@@ -23,24 +27,37 @@ class _ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
 
   String messageText;
+  String userEmail;
+
+  _ChatScreenState(this.userEmail);
+
   @override
   void initState() {
     checkConnection(context);
     super.initState();
-    getCurrentUser();
+    startSession();
   }
 
-  void getCurrentUser() async {
-    try {
-      final user = await _auth.currentUser();
-      if (user != null) {
-        loggedInUser = user;
-        print(loggedInUser.email);
-      }
-    } catch (err) {
-      print(err);
-    }
+  void startSession() async {
+    await Firestore.instance
+        .collection('messages')
+        .document('users')
+        .collection('userid')
+        .document(userEmail)
+        .setData({'email': userEmail, 'status': 'request'});
   }
+
+  Stream<DocumentSnapshot> get sessionDetails {
+    var qn = Firestore.instance
+        .collection('messages')
+        .document('users')
+        .collection('userid')
+        .document(userEmail)
+        .snapshots();
+    return qn;
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,62 +77,71 @@ class _ChatScreenState extends State<ChatScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              MessagesStream(),
-              Container(
-                decoration: messageContainerDecoration,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    ImageSelector(),
-                    Expanded(
-                      child: TextField(
-                        style: TextStyle(color: notWhite),
-                        controller: messageTextController,
-                        onChanged: (value) {
-                          messageText = value;
-                        },
-                        decoration: messageTextFieldDecoration,
-                      ),
-                    ),
-                    FlatButton(
-                      onPressed: () {
-                        if (messageText != null) {
-                          _firestore
-                              .collection('messages')
-                              .document('mayank')
-                              .collection('chat')
-                              .document()
-                              .setData({
-                            'content': messageText,
-                            'sender': loggedInUser.email,
-                            'type': 'text',
-                            'created': Timestamp.now(),
-                          });
-                          messageTextController.clear();
-                        }
-                      },
-                      child: Text(
-                        'Send',
-                        style: sendButtonTextStyle,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              MessagesStream(userEmail),
+              MessageBar(),
             ],
           ),
         ),
       ),
     );
   }
+
+  Widget MessageBar() {
+    return Container(
+      decoration: messageContainerDecoration,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          ImageSelector(userEmail),
+          Expanded(
+            child: TextField(
+              style: TextStyle(color: notWhite),
+              controller: messageTextController,
+              onChanged: (value) {
+                messageText = value;
+              },
+              decoration: messageTextFieldDecoration,
+            ),
+          ),
+          FlatButton(
+            onPressed: () {
+              if (messageText != null) {
+                _firestore
+                    .collection('messages')
+                    .document(userEmail)
+                    .collection('chat')
+                    .document()
+                    .setData({
+                  'content': messageText,
+                  'sender': userEmail,
+                  'type': 'text',
+                  'created': Timestamp.now(),
+                });
+                messageTextController.clear();
+              }
+            },
+            child: Text(
+              'Send',
+              style: sendButtonTextStyle,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class ImageSelector extends StatefulWidget {
+  String userEmail;
+  ImageSelector(this.userEmail);
+
   @override
-  _ImageSelectorState createState() => _ImageSelectorState();
+  _ImageSelectorState createState() => _ImageSelectorState(userEmail);
 }
 
 class _ImageSelectorState extends State<ImageSelector> {
+  String userEmail;
+  _ImageSelectorState(this.userEmail);
   File _imageFile = null;
   String Date = new DateTime.now().toString();
 
@@ -162,12 +188,12 @@ class _ImageSelectorState extends State<ImageSelector> {
     String imageUrl = await taskSnapshot.ref.getDownloadURL();
     _firestore
         .collection('messages')
-        .document('mayank')
+        .document(userEmail)
         .collection('chat')
         .document()
         .setData({
       'content': imageUrl,
-      'sender': loggedInUser.email,
+      'sender': userEmail,
       'type': 'image',
       'created': Timestamp.now(),
     });
@@ -188,13 +214,13 @@ class _ImageSelectorState extends State<ImageSelector> {
               children: <Widget>[
                 Expanded(
                     child: _imageFile == null
-                        ? Text('NO Image Selected')
+                        ? SizedBox()
                         : Image.file(_imageFile)),
                 Row(
                   children: <Widget>[
                     Expanded(
                       child: MaterialButton(
-                        color: primary,
+                        color: secondary,
                         child: Text(
                           'Camera',
                           style: buttonStyle2,
@@ -208,7 +234,7 @@ class _ImageSelectorState extends State<ImageSelector> {
                     _imageFile == null ? SizedBox() : uploadButton(context),
                     Expanded(
                       child: MaterialButton(
-                        color: primary,
+                        color: secondary,
                         child: Text(
                           'Gallery',
                           style: buttonStyle2,
@@ -245,12 +271,14 @@ class _ImageSelectorState extends State<ImageSelector> {
 }
 
 class MessagesStream extends StatelessWidget {
+  String userEmail;
+  MessagesStream(this.userEmail);
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: _firestore
           .collection('messages')
-          .document('mayank')
+          .document(userEmail)
           .collection('chat')
           .orderBy('created')
           .snapshots(),
@@ -267,12 +295,15 @@ class MessagesStream extends StatelessWidget {
         for (var message in messages) {
           final messageText = message.data['content'];
           final messageSender = message.data['sender'];
-          final currentUser = loggedInUser.email;
+          final currentUser = userEmail;
+          final bool isStylist =
+              message.data['sender'] == "stylist@aos.com" ? true : false;
           final messageType = message.data['type'];
           final messageBubble = MessageBubble(
+            isStylist: isStylist,
             sender: messageSender,
             content: messageText,
-            isCurrentUser: currentUser == messageSender,
+            currentUser: messageSender,
             type: messageType,
           );
           messageBubbles.add(messageBubble);
@@ -289,11 +320,13 @@ class MessagesStream extends StatelessWidget {
 }
 
 class MessageBubble extends StatelessWidget {
-  MessageBubble({this.sender, this.content, this.isCurrentUser, this.type});
+  MessageBubble(
+      {this.isStylist, this.sender, this.content, this.currentUser, this.type});
 
+  final bool isStylist;
   final String sender;
   final String content;
-  final bool isCurrentUser;
+  final String currentUser;
   final String type;
 
   @override
@@ -302,7 +335,7 @@ class MessageBubble extends StatelessWidget {
       padding: EdgeInsets.all(5.0),
       child: Column(
         crossAxisAlignment:
-            isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            isStylist ? CrossAxisAlignment.start : CrossAxisAlignment.end,
         children: <Widget>[
           type == 'text' ? textBubble(context) : imageBubble(context)
         ],
@@ -313,16 +346,16 @@ class MessageBubble extends StatelessWidget {
   Widget textBubble(BuildContext context) {
     return Material(
         elevation: 10.0,
-        borderRadius: isCurrentUser
+        borderRadius: isStylist
             ? BorderRadius.only(
                 topLeft: Radius.circular(30),
-                bottomLeft: Radius.circular(30),
-                topRight: Radius.circular(30))
+                topRight: Radius.circular(30),
+                bottomRight: Radius.circular(30))
             : BorderRadius.only(
                 topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-                bottomRight: Radius.circular(30)),
-        color: isCurrentUser ? secondary : primary,
+                bottomLeft: Radius.circular(30),
+                topRight: Radius.circular(30)),
+        color: secondary,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           child: Text(

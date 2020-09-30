@@ -12,6 +12,7 @@ import 'package:style_of_agent/animated_menu/recents_chats.dart';
 import 'package:style_of_agent/animated_menu/style_diamonds.dart';
 import 'package:style_of_agent/chatHomepage.dart';
 import 'package:style_of_agent/connection.dart';
+import 'package:style_of_agent/stylist/stylistChatHomepage.dart';
 import 'package:style_of_agent/utils/utils.dart';
 import 'package:style_of_agent/widgets/fab_bottom_bar.dart';
 import 'package:style_of_agent/widgets/circular_outer_notched_rectangle.dart';
