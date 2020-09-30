@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/Login.dart';
 import 'package:style_of_agent/phoneauthpage.dart';
 import 'package:style_of_agent/animated_menu/menu_frame.dart';
+import 'package:style_of_agent/stylist/animated_menu/menu_frame.dart';
 import 'package:style_of_agent/profile_filling.dart';
 import 'package:style_of_agent/welcomescreen.dart';
 import 'newonboard.dart';
@@ -25,14 +26,14 @@ Future<int> _mockCheckForSession() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: (initScreen == 0 || initScreen == null)
-            ? OnBoardingCircle()
-            : (initScreen == 1)
-                ? LoginScreen()
-                : (initScreen == 2)
-                    ? PhoneVerificationScreen()
-                    : (initScreen == 10) ? MenuFrame() : ProfileFilling());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: StyleMenuFrame()
+//            (initScreen == 0 || initScreen == null)
+//                ? OnBoardingCircle()
+//                : (initScreen == 1)
+//                    ? LoginScreen()
+//                    : (initScreen == 2)
+//                        ? PhoneVerificationScreen()
+//                        : (initScreen == 10) ? MenuFrame() : ProfileFilling()
+        );
   }
 }
