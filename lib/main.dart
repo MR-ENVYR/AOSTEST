@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/Login.dart';
+import 'package:style_of_agent/animated_menu/dashboard.dart';
 import 'package:style_of_agent/phoneauthpage.dart';
 import 'package:style_of_agent/animated_menu/menu_frame.dart';
 import 'package:style_of_agent/profile_filling.dart';
+import 'package:style_of_agent/stylist/animated_menu/dashboard.dart';
 import 'package:style_of_agent/welcomescreen.dart';
 import 'newonboard.dart';
 
@@ -33,6 +35,18 @@ class MyApp extends StatelessWidget {
                 ? LoginScreen()
                 : (initScreen == 2)
                     ? PhoneVerificationScreen()
-                    : (initScreen == 10) ? MenuFrame() : ProfileFilling());
+                    : (initScreen != 10)
+                        ? ProfileFilling()
+                        : (getUserType() == true)
+                            ? StyleDashBoard()
+                            : MenuFrame());
   }
+}
+
+Future<bool> getUserType() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final bool isStylist = prefs.getBool('isStylist');
+  print(isStylist);
+  print("get isStylist");
+  return isStylist;
 }

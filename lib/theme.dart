@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 
 const Color white = Color(0xFFFFFFFF);
 const Color notWhite = Color(0xFFF8F6F6);
-const Color primary1 = Color(0xFFBDA94B);
+const Color primary = Color(0xFFBDA94B);
 const Color lightPrimary = Color(0xFFE2CF75);
 const Color secondary = Color(0xFFF2423F);
 const Color dark = Color.fromRGBO(3, 9, 23, 1);
-Color purple = Colors.purple.withOpacity(0.3);
-Color primary = Colors.purple;
 
 const TextStyle textTheme3 = TextStyle(color: white, fontSize: 22);
 const TextStyle chatText = TextStyle(color: white, fontSize: 18);

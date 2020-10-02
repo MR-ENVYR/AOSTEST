@@ -13,6 +13,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/phoneauthpage.dart';
 import 'package:style_of_agent/progress.dart';
+import 'package:style_of_agent/stylist/animated_menu/dashboard.dart';
 import 'package:style_of_agent/utils.dart';
 import 'package:style_of_agent/animated_menu/menu_frame.dart';
 import 'package:style_of_agent/welcomescreen.dart';
@@ -285,11 +286,26 @@ class _LoginScreenState extends State<LoginScreen> {
       await prefs.setString("uid", user.uid);
       Future.delayed(const Duration(milliseconds: 1000), () {
         setState(() {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (BuildContext context) => MenuFrame()));
+      if(user.email=='stylist@aos.com'){
+        setUserType(true);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => StyleDashBoard()));
+      }else{
+        setUserType(false);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => MenuFrame()));
+      }
         });
       });
     }
+  }
+
+  Future<bool> setUserType(bool userType)async{
+    print(userType);
+    print("Set userType");
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    prefs.setBool("isStylist", userType);
+    return prefs.commit();
   }
 
   Future<FirebaseUser> login(

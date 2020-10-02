@@ -14,15 +14,17 @@ final _firestore = Firestore.instance;
 
 class stylistChatScreen extends StatefulWidget {
   String userEmail;
-  stylistChatScreen(this.userEmail);
+  String userName;
+  stylistChatScreen(this.userEmail,this.userName);
 
   @override
-  _stylistChatScreenState createState() => _stylistChatScreenState(userEmail);
+  _stylistChatScreenState createState() => _stylistChatScreenState(userEmail,userName);
 }
 
 class _stylistChatScreenState extends State<stylistChatScreen> {
   String userEmail;
-  _stylistChatScreenState(this.userEmail);
+  String userName;
+  _stylistChatScreenState(this.userEmail,this.userName);
   final messageTextController = TextEditingController();
 
   String messageText;
@@ -34,7 +36,7 @@ class _stylistChatScreenState extends State<stylistChatScreen> {
       appBar: AppBar(
 //        iconTheme: IconThemeData(color: Color(0xFFE5CF73)),
         title: Text(
-          userEmail,
+          userName,
           style: textTheme3,
         ),
         backgroundColor: secondary,
