@@ -25,28 +25,31 @@ Future<int> _mockCheckForSession() async {
 }
 
 class MyApp extends StatelessWidget {
+  bool isStylist;
+
+  Future<bool> getUserType() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final isStylist = prefs.getBool('isStylist');
+    print(isStylist);
+    print("get isStylist");
+    return isStylist;
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
+    getUserType();
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: (initScreen == 0 || initScreen == null)
-            ? OnBoardingCircle()
-            : (initScreen == 1)
-                ? LoginScreen()
-                : (initScreen == 2)
-                    ? PhoneVerificationScreen()
-                    : (initScreen != 10)
-                        ? ProfileFilling()
-                        : (getUserType() == true)
-                            ? StyleDashBoard()
-                            : MenuFrame());
+        home: (isStylist == true)
+            ? StyleDashBoard()
+            : (initScreen == 0 || initScreen == null)
+                ? OnBoardingCircle()
+                : (initScreen == 1)
+                    ? LoginScreen()
+                    : (initScreen == 2)
+                        ? PhoneVerificationScreen()
+                        : (initScreen == 10) ? MenuFrame() : ProfileFilling());
   }
-}
-
-Future<bool> getUserType() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  final bool isStylist = prefs.getBool('isStylist');
-  print(isStylist);
-  print("get isStylist");
-  return isStylist;
 }
