@@ -7,7 +7,7 @@ extension StringExtension on String {
   }
 
   String capitalises() {
-    List<String> list = this.split(" ");
+    List<String> list = this.split("\\s");
     list = list.map((e) => e.capitalize()).toList();
     return list.join(" ");
   }

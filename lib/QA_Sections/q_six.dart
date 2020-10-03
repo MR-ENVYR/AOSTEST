@@ -24,7 +24,7 @@ class QueSix extends StatefulWidget {
 class _QueSixState extends State<QueSix> {
   static final Firestore firestore = Firestore.instance;
   static final CollectionReference _quesCollection =
-      firestore.collection("questions");
+  firestore.collection("questions");
 
   UserModel _userModel;
   @override
@@ -78,8 +78,8 @@ class _QueSixState extends State<QueSix> {
                     type: PageTransitionType.rightToLeftWithFade,
                     child: MenuFrame(
 //                                uid: id,
-                        )),
-                (route) => false);
+                    )),
+                    (route) => false);
           },
           child: Align(
 //              alignment: Alignment.bottomLeft,
@@ -196,13 +196,20 @@ class _QueSixState extends State<QueSix> {
                       widget.ques.putIfAbsent("ques6", () => "Use Diamonds");
                       widget.ques.putIfAbsent(
                         "uid",
-                        () => id,
+                            () => id,
                       );
                       widget.ques
                           .putIfAbsent("username", () => _userModel.username);
                       widget.ques.putIfAbsent(
                           "phone no", () => _userModel.phonenumber);
-                      await _quesCollection.document().setData(widget.ques);
+                      widget.ques.putIfAbsent("email", () => _userModel.email);
+                      widget.ques.putIfAbsent("status", () => "inactive");
+                      var docid = _quesCollection.document().documentID;
+                      widget.ques.putIfAbsent("id", () => docid);
+
+                      await _quesCollection
+                          .document(docid)
+                          .setData(widget.ques);
                       setState(() {
                         Navigator.pop(context);
                       });
@@ -213,7 +220,7 @@ class _QueSixState extends State<QueSix> {
                               child: MenuFrame(
                                 uid: id,
                               )),
-                          (route) => false);
+                              (route) => false);
                     },
 
 //                        textColor: ,
@@ -246,13 +253,20 @@ class _QueSixState extends State<QueSix> {
                           .putIfAbsent("ques6", () => "Recharge your Diamonds");
                       widget.ques.putIfAbsent(
                         "uid",
-                        () => id,
+                            () => id,
                       );
                       widget.ques
                           .putIfAbsent("username", () => _userModel.username);
                       widget.ques.putIfAbsent(
                           "phone no", () => _userModel.phonenumber);
-                      await _quesCollection.document().setData(widget.ques);
+                      widget.ques.putIfAbsent("email", () => _userModel.email);
+                      widget.ques.putIfAbsent("status", () => "inactive");
+                      var docid = _quesCollection.document().documentID;
+                      widget.ques.putIfAbsent("id", () => docid);
+
+                      await _quesCollection
+                          .document(docid)
+                          .setData(widget.ques);
                       print(widget.ques);
                       setState(() {
                         Navigator.pop(context);
@@ -265,7 +279,7 @@ class _QueSixState extends State<QueSix> {
 //                                      user: widget.user,
                                 uid: id,
                               )),
-                          (route) => false);
+                              (route) => false);
                     },
 
 //                        textColor: ,

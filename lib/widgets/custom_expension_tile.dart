@@ -216,7 +216,15 @@ class _ExpansionTileState extends State<ExpansionTile>
     return AnimatedBuilder(
       animation: _controller.view,
       builder: _buildChildren,
-      child: closed ? null : Column(children: widget.children),
+      child: closed
+          ? null
+          : Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: widget.children),
+            ),
     );
   }
 }

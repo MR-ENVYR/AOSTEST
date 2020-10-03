@@ -211,7 +211,11 @@ class ClientQuestion extends StatelessWidget {
                     title: Row(
                       children: [
                         CircleAvatar(
-                          backgroundImage: NetworkImage(snapshot.data["url"]),
+                          backgroundImage: (snapshot.data["url"] == null)
+                              ? AssetImage(
+                            'assets/images/av.jpg',
+                          )
+                              : NetworkImage(snapshot.data["url"]),
                         ),
                         SizedBox(
                           width: 20,
