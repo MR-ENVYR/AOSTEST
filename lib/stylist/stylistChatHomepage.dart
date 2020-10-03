@@ -75,6 +75,7 @@ class _ChatLayoutState extends State<ChatLayout> {
               itemBuilder: (context, index) {
                 String email = snapshot.data[index].data['email'];
                 String userName = snapshot.data[index].data['username'];
+                String sessionID = snapshot.data[index].data['id'];
                 print(email);
                 return InkWell(
                   onTap: () {
@@ -82,7 +83,7 @@ class _ChatLayoutState extends State<ChatLayout> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                stylistChatScreen(email, userName)));
+                                stylistChatScreen(email, userName,sessionID)));
                   },
                   child: Container(
                     margin: EdgeInsets.only(top: 10, left: 10, right: 10),

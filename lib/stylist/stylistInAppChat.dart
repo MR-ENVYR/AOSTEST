@@ -15,16 +15,22 @@ final _firestore = Firestore.instance;
 class stylistChatScreen extends StatefulWidget {
   String userEmail;
   String userName;
-  stylistChatScreen(this.userEmail,this.userName);
+  String sessionID;
+
+  stylistChatScreen(this.userEmail, this.userName, this.sessionID);
 
   @override
-  _stylistChatScreenState createState() => _stylistChatScreenState(userEmail,userName);
+  _stylistChatScreenState createState() =>
+      _stylistChatScreenState(userEmail, userName, sessionID);
 }
 
 class _stylistChatScreenState extends State<stylistChatScreen> {
   String userEmail;
   String userName;
-  _stylistChatScreenState(this.userEmail,this.userName);
+  String sessionID;
+
+  _stylistChatScreenState(this.userEmail, this.userName, this.sessionID);
+
   final messageTextController = TextEditingController();
 
   String messageText;
@@ -35,10 +41,29 @@ class _stylistChatScreenState extends State<stylistChatScreen> {
       backgroundColor: dark,
       appBar: AppBar(
 //        iconTheme: IconThemeData(color: Color(0xFFE5CF73)),
-        title: Text(
-          userName,
-          style: textTheme3,
+        title: Center(
+          child: Text(
+            userName,
+            style: textTheme3,
+          ),
         ),
+        actions: [
+          RaisedButton(
+            color: secondary,
+            child: Text(
+              "End",
+              style: textTheme3,
+            ),
+            onPressed: () {
+              Firestore.instance
+                  .collection('questions')
+                  .document(sessionID)
+                  .updateData({"status": "complete"});
+              Navigator.pop(context);
+
+            },
+          )
+        ],
         backgroundColor: secondary,
       ),
       body: SafeArea(
@@ -47,7 +72,7 @@ class _stylistChatScreenState extends State<stylistChatScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              MessagesStream(userEmail),
+              MessagesStream(userEmail, sessionID),
               Container(
                 decoration: messageContainerDecoration,
                 child: Row(
@@ -70,7 +95,7 @@ class _stylistChatScreenState extends State<stylistChatScreen> {
                           _firestore
                               .collection('messages')
                               .document(userEmail)
-                              .collection('chat')
+                              .collection(sessionID)
                               .document()
                               .setData({
                             'content': messageText,
@@ -99,14 +124,21 @@ class _stylistChatScreenState extends State<stylistChatScreen> {
 
 class ImageSelector extends StatefulWidget {
   String userEmail;
+  String sessionID;
+
   ImageSelector(this.userEmail);
+
   @override
-  _ImageSelectorState createState() => _ImageSelectorState(userEmail);
+  _ImageSelectorState createState() =>
+      _ImageSelectorState(userEmail, sessionID);
 }
 
 class _ImageSelectorState extends State<ImageSelector> {
+  String sessionID;
   String userEmail;
-  _ImageSelectorState(this.userEmail);
+
+  _ImageSelectorState(this.userEmail, this.sessionID);
+
   File _imageFile = null;
   String Date = new DateTime.now().toString();
 
@@ -147,14 +179,14 @@ class _ImageSelectorState extends State<ImageSelector> {
   Future uploadImage() async {
     int fileName = new Random().nextInt(10000000);
     StorageReference _refrence =
-    FirebaseStorage.instance.ref().child('${fileName}.jpg');
+        FirebaseStorage.instance.ref().child('${fileName}.jpg');
     StorageUploadTask uploadTask = _refrence.putFile(_imageFile);
     StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
     String imageUrl = await taskSnapshot.ref.getDownloadURL();
     _firestore
         .collection('messages')
         .document(userEmail)
-        .collection('chat')
+        .collection(sessionID)
         .document()
         .setData({
       'content': imageUrl,
@@ -212,7 +244,6 @@ class _ImageSelectorState extends State<ImageSelector> {
                     ),
                   ],
                 ),
-
               ],
             ),
           );
@@ -237,8 +268,10 @@ class _ImageSelectorState extends State<ImageSelector> {
 }
 
 class MessagesStream extends StatelessWidget {
+  String sessionID;
   String userEmail;
-  MessagesStream(this.userEmail);
+
+  MessagesStream(this.userEmail, this.sessionID);
 
   @override
   Widget build(BuildContext context) {
@@ -246,7 +279,7 @@ class MessagesStream extends StatelessWidget {
       stream: _firestore
           .collection('messages')
           .document(userEmail)
-          .collection('chat')
+          .collection(sessionID)
           .orderBy('created')
           .snapshots(),
       builder: (context, snapshot) {
@@ -263,7 +296,7 @@ class MessagesStream extends StatelessWidget {
           final messageText = message.data['content'];
           final messageSender = "stylist@aos.com";
           final bool isStylist =
-          message.data['sender'] == "stylist@aos.com" ? true : false;
+              message.data['sender'] == "stylist@aos.com" ? true : false;
           final messageType = message.data['type'];
           final messageBubble = MessageBubble(
             isStylist: isStylist,
@@ -301,7 +334,7 @@ class MessageBubble extends StatelessWidget {
       padding: EdgeInsets.all(5.0),
       child: Column(
         crossAxisAlignment:
-        isStylist ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            isStylist ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: <Widget>[
           type == 'text' ? textBubble(context) : imageBubble(context)
         ],
@@ -313,14 +346,14 @@ class MessageBubble extends StatelessWidget {
     return Material(
         elevation: 10.0,
         borderRadius: isStylist
-            ?  BorderRadius.only(
-            topLeft: Radius.circular(30),
-            bottomLeft: Radius.circular(30),
-            topRight: Radius.circular(30))
-            :BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-            bottomRight: Radius.circular(30)),
+            ? BorderRadius.only(
+                topLeft: Radius.circular(30),
+                bottomLeft: Radius.circular(30),
+                topRight: Radius.circular(30))
+            : BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+                bottomRight: Radius.circular(30)),
         color: secondary,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -347,16 +380,16 @@ class MessageBubble extends StatelessWidget {
             fit: BoxFit.fill,
             child: Image.network(content,
                 loadingBuilder: (context, child, progress) {
-                  return progress == null
-                      ? child
-                      : Padding(
-                    padding: const EdgeInsets.all(50),
-                    child: CircularProgressIndicator(
-                      backgroundColor: Colors.grey,
-                      strokeWidth: 10,
-                    ),
-                  );
-                }),
+              return progress == null
+                  ? child
+                  : Padding(
+                      padding: const EdgeInsets.all(50),
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.grey,
+                        strokeWidth: 10,
+                      ),
+                    );
+            }),
           ),
         ),
       ),

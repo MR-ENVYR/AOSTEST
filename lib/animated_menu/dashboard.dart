@@ -124,7 +124,7 @@ class _DashBoardState extends State<DashBoard>
                         child: Column(
                           children: <Widget>[
                             Text(
-                              'You have received 5 Advices',
+                              'You have received 2 Advices',
                               style: textTheme3,
                             ),
                             Text(

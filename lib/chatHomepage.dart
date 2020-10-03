@@ -75,7 +75,6 @@ class _ChatLayoutState extends State<ChatLayout> {
     return FutureBuilder(
       future: getUserSessionDetails(),
       builder: (context, snapshot) {
-        print(snapshot.data.length);
         if (!snapshot.hasData) {
           return Text("Loading");
         } else {
@@ -93,6 +92,12 @@ class _ChatLayoutState extends State<ChatLayout> {
                                   ChatScreen(userEmail,sessionID)));
                     } else if (snapshot.data[index].data['status'] ==
                         "inactive") {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ChatHistory(userEmail, sessionID)));
+                    }else{
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -128,32 +133,3 @@ class _ChatLayoutState extends State<ChatLayout> {
     );
   }
 }
-// ListView.builder(
-// itemCount: 1,
-// itemBuilder: (context, index) {
-// return InkWell(
-// onTap: () {
-// //              Navigator.pushNamed(context, '/chat-window');
-// Navigator.push(
-// context,
-// MaterialPageRoute(
-// builder: (context) => ChatHistory(userEmail)));
-// },
-// child: Container(
-// margin: EdgeInsets.only(top: 10, left: 10, right: 10),
-// decoration: BoxDecoration(boxShadow: [
-// BoxShadow(
-// color: secondary,
-// offset: Offset(0.0, 1.0), //(x,y)
-// blurRadius: 10.0,
-// ),
-// ], color: secondary, borderRadius: BorderRadius.circular(5)),
-// child: ListTile(
-// title: Text(
-// 'Tracy MacMonday',
-// style: TextStyle(color: notWhite),
-// ),
-// ),
-// ),
-// );
-// });
