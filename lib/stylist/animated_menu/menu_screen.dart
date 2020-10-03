@@ -58,6 +58,7 @@ class _StyleMenuScreenState extends State<StyleMenuScreen> {
 //    print("$initScreen");
     await prefs.setInt("initScreen", 1);
     await prefs.setString("uid", "");
+    await prefs.setBool("isStylist", false);
     // showAlertDialog(context,initScreen.toString());
     await _auth.signOut().then((onValue) {
       _googleSignIn.signOut();

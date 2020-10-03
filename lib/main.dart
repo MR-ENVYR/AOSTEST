@@ -10,6 +10,7 @@ import 'package:style_of_agent/welcomescreen.dart';
 import 'newonboard.dart';
 
 int initScreen;
+bool isStylist;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,26 +21,14 @@ Future<void> main() async {
 Future<int> _mockCheckForSession() async {
   await Future.delayed(Duration(milliseconds: 1000), () {});
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  initScreen = await prefs.getInt("initScreen");
+    initScreen = prefs.getInt("initScreen");
+    isStylist = prefs.getBool('isStylist');
   return initScreen;
 }
 
 class MyApp extends StatelessWidget {
-  bool isStylist;
-
-  Future<bool> getUserType() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final isStylist = prefs.getBool('isStylist');
-    print(isStylist);
-    print("get isStylist");
-    return isStylist;
-  }
-
-
-
   @override
   Widget build(BuildContext context) {
-    getUserType();
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: (isStylist == true)
