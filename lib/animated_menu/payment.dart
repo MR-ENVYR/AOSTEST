@@ -19,8 +19,7 @@ class PaymentPage extends StatefulWidget {
 }
 
 class PaymentPageState extends State<PaymentPage> {
-
-   final _auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
   String userEmail;
 
   Future getCurrentUser() async {
@@ -83,36 +82,6 @@ class PaymentPageState extends State<PaymentPage> {
           ),
         )),
       ),
-     floatingActionButton: FloatingActionButton.extended(
-       label: Text('Start Session'),
-       backgroundColor: secondary,
-       onPressed: () {
-         showDialog(
-             context: context,
-             builder: (_) => AlertDialog(
-                   title: Text('Session will Cost 1 Style Diamond'),
-                   content: Text('DO you want to start session'),
-                   actions: <Widget>[
-                     FlatButton(
-                       child: Text("NO"),
-                       onPressed: () {
-                         Navigator.pop(context);
-                       },
-                     ),
-                     FlatButton(
-                       child: Text("Yes"),
-                       onPressed: () {
-                         Navigator.push(
-                             context,
-                             MaterialPageRoute(
-                                 builder: (context) => ChatScreen(userEmail)));
-                       },
-                     ),
-                   ],
-                 ),
-             barrierDismissible: true);
-       },
-     ),
       body: Container(
         child: Column(
           children: <Widget>[

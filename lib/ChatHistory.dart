@@ -13,17 +13,19 @@ FirebaseUser loggedInUser;
 
 class ChatHistory extends StatefulWidget {
   String userEmail;
+  String sessionID;
 
-  ChatHistory(this.userEmail);
+  ChatHistory(this.userEmail, this.sessionID);
 
   @override
-  _ChatScreenState createState() => _ChatScreenState(userEmail);
+  _ChatScreenState createState() => _ChatScreenState(userEmail, sessionID);
 }
 
 class _ChatScreenState extends State<ChatHistory> {
   String userEmail;
+  String sessionID;
 
-  _ChatScreenState(this.userEmail);
+  _ChatScreenState(this.userEmail, this.sessionID);
 
   final messageTextController = TextEditingController();
   final _auth = FirebaseAuth.instance;
@@ -68,7 +70,7 @@ class _ChatScreenState extends State<ChatHistory> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              MessagesStream(userEmail),
+              MessagesStream(userEmail, sessionID),
             ],
           ),
         ),
@@ -79,8 +81,9 @@ class _ChatScreenState extends State<ChatHistory> {
 
 class MessagesStream extends StatelessWidget {
   String userEmail;
+  String sessionID;
 
-  MessagesStream(this.userEmail);
+  MessagesStream(this.userEmail, this.sessionID);
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +91,7 @@ class MessagesStream extends StatelessWidget {
       stream: _firestore
           .collection('messages')
           .document(userEmail)
-          .collection('chat')
+          .collection(sessionID)
           .orderBy('created')
           .snapshots(),
       builder: (context, snapshot) {
