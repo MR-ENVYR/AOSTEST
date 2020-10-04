@@ -221,10 +221,9 @@ class _ExpansionTileState extends State<ExpansionTile>
           : Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: widget.children,
-              ),
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: widget.children),
             ),
     );
   }

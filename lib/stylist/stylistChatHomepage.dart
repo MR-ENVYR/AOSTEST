@@ -1,4 +1,3 @@
-//import 'package:agent_of_style/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,9 +45,8 @@ class _ChatLayoutState extends State<ChatLayout> {
   Future getClients() async {
     var _firestore = Firestore.instance;
     QuerySnapshot qn = await _firestore
-        .collection("messages")
-        .document('users')
-        .collection('userid')
+        .collection("questions")
+        .where("status", isEqualTo: "active")
         .getDocuments();
     return qn.documents;
   }
@@ -75,30 +73,39 @@ class _ChatLayoutState extends State<ChatLayout> {
           return ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
-                String email=snapshot.data[index].data['email'];
+                String email = snapshot.data[index].data['email'];
+                String userName = snapshot.data[index].data['username'];
+                String sessionID = snapshot.data[index].data['id'];
                 print(email);
                 return InkWell(
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => stylistChatScreen(email,)));
+                            builder: (context) =>
+                                stylistChatScreen(email, userName,sessionID)));
                   },
                   child: Container(
                     margin: EdgeInsets.only(top: 10, left: 10, right: 10),
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: secondary,
-                            offset: Offset(0.0, 1.0), //(x,y)
-                            blurRadius: 10.0,
-                          ),
-                        ],
-                        color: secondary,
-                        borderRadius: BorderRadius.circular(5)),
+                    decoration: BoxDecoration(boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        offset: Offset(0.0, 1.0), //(x,y)
+                        blurRadius: 10.0,
+                      ),
+                    ], color: dark, borderRadius: BorderRadius.circular(5)),
                     child: ListTile(
-                      title: Text(email,
-                        style: TextStyle(color: notWhite),
+
+                      title: Text(
+                        snapshot.data[index].data['username'],
+                        style: TextStyle(
+                            color: primary,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        snapshot.data[index].data['email'],
+                        style: TextStyle(color: lightPrimary, fontSize: 14),
                       ),
                     ),
                   ),

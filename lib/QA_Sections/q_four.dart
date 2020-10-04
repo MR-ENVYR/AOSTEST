@@ -20,7 +20,9 @@ import 'package:style_of_agent/utils/utils.dart';
 class QueFour extends StatefulWidget {
   Map<String, dynamic> ques = Map();
   FirebaseUser user;
+
   QueFour({this.ques, this.user});
+
   @override
   _QueFourState createState() => _QueFourState();
 }
@@ -28,6 +30,7 @@ class QueFour extends StatefulWidget {
 class _QueFourState extends State<QueFour> {
   String uid;
   UserModel userModel;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -155,7 +158,8 @@ class _QueFourState extends State<QueFour> {
                       FadeAnimation(
                         1.5,
                         Text(
-                          "Fantastic ${snapshot.data["username"].split(" ").first}.\n\n We are matching you to a stylist",
+                          "Fantastic ${snapshot.data["username"].split(" ").first.toUpperCase()}" +
+                              "\n\n We are matching you to a stylist",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Color(0xFFE5CF73),

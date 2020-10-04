@@ -9,6 +9,7 @@ import 'package:style_of_agent/stylist/animated_menu/profile.dart';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:style_of_agent/stylist/stylistChatHomepage.dart';
 import 'package:style_of_agent/widgets/custom_expension_tile.dart' as custom;
 import 'package:style_of_agent/utils/utils.dart';
 
@@ -16,7 +17,6 @@ class StyleDashBoard extends StatefulWidget {
   @override
   _StyleDashBoardState createState() => _StyleDashBoardState();
 }
-
 
 class _StyleDashBoardState extends State<StyleDashBoard>
     with SingleTickerProviderStateMixin {
@@ -26,6 +26,7 @@ class _StyleDashBoardState extends State<StyleDashBoard>
   Duration duration = Duration(milliseconds: 200);
   int _selectedIndex = 0;
   bool isClick = true;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -61,9 +62,6 @@ class _StyleDashBoardState extends State<StyleDashBoard>
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SizedBox(
-                                  width: 55,
-                                ),
                                 Text(
                                   "DashBoard",
                                   style: GoogleFonts.amiri(
@@ -78,6 +76,7 @@ class _StyleDashBoardState extends State<StyleDashBoard>
                           StreamBuilder(
                               stream: Firestore.instance
                                   .collection("questions")
+                                  .where("status", isEqualTo: "inactive")
                                   .snapshots(),
                               builder: (context, snapshots) {
                                 if (snapshots.hasData) {
@@ -85,6 +84,8 @@ class _StyleDashBoardState extends State<StyleDashBoard>
                                   print(snapshots.data.documents.length);
                                   List<ClientQuestion> clientQuerys = [];
                                   for (var question in questions) {
+                                    final id =
+                                        question.data[ClientQuery.ID_KEY];
                                     final uid =
                                         question.data[ClientQuery.UID_KEY];
                                     final username =
@@ -99,6 +100,7 @@ class _StyleDashBoardState extends State<StyleDashBoard>
                                         question.data[ClientQuery.QUES3_KEY];
 
                                     final clientQuery = ClientQuery(
+                                        id: id,
                                         uid: uid,
                                         username: username,
                                         phno: phno,
@@ -131,7 +133,7 @@ class _StyleDashBoardState extends State<StyleDashBoard>
                     : Container(),
                 _onTapped == 0 ? Library() : Container(),
                 _onTapped == 1 ? StyleProfile() : Container(),
-                _onTapped == 3 ? ClientsScreen() : Container(),
+                _onTapped == 3 ? StylistChatHomePage() : Container(),
               ],
             ),
           ),
@@ -148,19 +150,21 @@ class _StyleDashBoardState extends State<StyleDashBoard>
               Icon(
                 Icons.photo_album,
                 color: Color.fromRGBO(3, 9, 23, 1),
+                size: _onTapped == 0 ? 35 : 25,
               ),
               Icon(
                 Icons.person,
                 color: Color.fromRGBO(3, 9, 23, 1),
+                size: _onTapped == 1 ? 35 : 25,
               ),
               Image.asset(
-                "assets/images/dashboard.png",
-                scale: 1,
+                "assets/images/me.png",
+                scale: _onTapped == 2 ? 14.5 : 23,
                 color: Color.fromRGBO(3, 9, 23, 1),
               ),
               Image.asset(
-                "assets/images/clients.png",
-                scale: 1,
+                "assets/images/customer.png",
+                scale: _onTapped == 3 ? 14.5 : 23,
                 color: Color.fromRGBO(3, 9, 23, 1),
               ),
 
@@ -180,7 +184,9 @@ class _StyleDashBoardState extends State<StyleDashBoard>
 
 class ClientQuestion extends StatelessWidget {
   ClientQuery clientQuery;
+
   ClientQuestion({this.clientQuery});
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -207,7 +213,11 @@ class ClientQuestion extends StatelessWidget {
                     title: Row(
                       children: [
                         CircleAvatar(
-                          backgroundImage: NetworkImage(snapshot.data["url"]),
+                          backgroundImage: (snapshot.data["url"] == null)
+                              ? AssetImage(
+                                  'assets/images/av.jpg',
+                                )
+                              : NetworkImage(snapshot.data["url"]),
                         ),
                         SizedBox(
                           width: 20,
@@ -319,7 +329,14 @@ class ClientQuestion extends StatelessWidget {
                                 color: Colors.white,
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              print(clientQuery.id);
+                              print(clientQuery.id);
+                              Firestore.instance
+                                  .collection('questions')
+                                  .document(clientQuery.id)
+                                  .updateData({'status': 'active'});
+                            },
                             color: Colors.lightGreen,
                           ),
                           RaisedButton(
