@@ -14,6 +14,7 @@ import 'package:style_of_agent/chatHomepage.dart';
 import 'package:style_of_agent/connection.dart';
 import 'package:style_of_agent/stylist/stylistChatHomepage.dart';
 import 'package:style_of_agent/utils/utils.dart';
+import 'package:style_of_agent/widgets/animate_appbar.dart';
 import 'package:style_of_agent/widgets/fab_bottom_bar.dart';
 import 'package:style_of_agent/widgets/circular_outer_notched_rectangle.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,7 @@ class _DashBoardState extends State<DashBoard>
   @override
   Widget build(BuildContext context) {
     var margin = MediaQuery.of(context).size.height * 0.02;
+    var width = MediaQuery.of(context).size.width;
     return Container(
 //      color: Color.fromRGBO(3, 9, 23, 1),
       height: MediaQuery.of(context).size.height,
@@ -76,67 +78,78 @@ class _DashBoardState extends State<DashBoard>
             child: Stack(
               children: <Widget>[
                 _onTapped == 2
-                    ? Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(width: 55,),
-                          Text(
-                            "DashBoard",
-                            style: GoogleFonts.amiri(
-                              letterSpacing: 2,
-                              fontSize: 30,
-                              color: Color(0xFFc0a948),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 55,
-                            child: Row(
+                    ? Positioned(
+                        top: -15,
+//                        left: 100,
+                        right: 0,
+                        width: width,
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Image.asset(
-                                  'assets/images/diamond.png',
-                                  color: secondary,
-                                  height: 30,
+//                          Text(
+//                            "DashBoard",
+//                            style: GoogleFonts.amiri(
+//                              letterSpacing: 2,
+//                              fontSize: 30,
+//                              color: Color(0xFFc0a948),
+//                            ),
+//                          ),
+                                SizedBox(width: 30),
+                                AnimationAppBar(height: 100, width: 200),
+
+                                SizedBox(
+                                  width: 55,
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/diamond.png',
+                                        color: secondary,
+                                        height: 30,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        '1',
+                                        style: textTheme3,
+                                      )
+                                    ],
+                                  ),
                                 ),
-                                SizedBox(width: 10,),
-                                Text(
-                                  '1',
-                                  style: textTheme3,
-                                )
                               ],
                             ),
-                          ),
-
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: secondary),
-                      child: Padding(
-                        padding:
-                        const EdgeInsets.only(left: 10, right: 10),
-                        child: Column(
-                          children: <Widget>[
-                            Text(
-                              'You have received 5 Advices',
-                              style: textTheme3,
+                            SizedBox(
+                              height: 10,
                             ),
-                            Text(
-                              'Till ${date.day}-${date.month}-${date.year}',
-                              style: textTheme3,
+                            Container(
+                              margin:
+                                  const EdgeInsets.only(left: 10, right: 30),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: secondary),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 10, right: 10),
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      'You have received 5 Advices',
+                                      style: textTheme3,
+                                    ),
+                                    Text(
+                                      'Till ${date.day}-${date.month}-${date.year}',
+                                      style: textTheme3,
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                  ],
-                )
+                      )
                     : Container(),
                 _onTapped == 0 ? Library() : Container(),
                 _onTapped == 1 ? Profile() : Container(),
@@ -184,7 +197,7 @@ class _DashBoardState extends State<DashBoard>
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => QueOne()),
-                        (route) => false);
+                    (route) => false);
               setState(() {
                 _onTapped = index;
               });

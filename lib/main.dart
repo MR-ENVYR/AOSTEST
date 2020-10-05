@@ -32,6 +32,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+//          backgroundColor: Color.fromRGBO(3, 9, 23, 1),
+            appBarTheme: AppBarTheme(
+                iconTheme: IconThemeData(color: Color(0xFFE5CF73)))),
         home: (isStylist == true)
             ? StyleMenuFrame()
             : (initScreen == 0 || initScreen == null)
