@@ -120,10 +120,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 messageTextController.clear();
               }
             },
-            child: Text(
-              'Send',
-              style: sendButtonTextStyle,
-            ),
+            child:Icon(Icons.send,color: secondary,),
           ),
         ],
       ),

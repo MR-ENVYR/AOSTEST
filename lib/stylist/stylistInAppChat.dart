@@ -60,7 +60,6 @@ class _stylistChatScreenState extends State<stylistChatScreen> {
                   .document(sessionID)
                   .updateData({"status": "complete"});
               Navigator.pop(context);
-
             },
           )
         ],
@@ -106,9 +105,9 @@ class _stylistChatScreenState extends State<stylistChatScreen> {
                           messageTextController.clear();
                         }
                       },
-                      child: Text(
-                        'Send',
-                        style: sendButtonTextStyle,
+                      child: Icon(
+                        Icons.send,
+                        color: secondary,
                       ),
                     ),
                   ],
