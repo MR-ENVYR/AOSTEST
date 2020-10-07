@@ -6,6 +6,7 @@ import 'package:style_of_agent/animated_menu/Library.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:style_of_agent/QA_Sections/q_one.dart';
+import 'package:style_of_agent/animated_menu/dash.dart';
 import 'package:style_of_agent/animated_menu/payment.dart';
 import 'package:style_of_agent/animated_menu/profile.dart';
 import 'package:style_of_agent/animated_menu/recents_chats.dart';
@@ -26,6 +27,7 @@ class DashBoard extends StatefulWidget {
 
 class _DashBoardState extends State<DashBoard>
     with SingleTickerProviderStateMixin {
+  bool _visible = false;
   int _onTapped = 2;
   GlobalKey _toolTipKey = GlobalKey();
   var date = DateTime.now();
@@ -78,78 +80,80 @@ class _DashBoardState extends State<DashBoard>
             child: Stack(
               children: <Widget>[
                 _onTapped == 2
-                    ? Positioned(
-                        top: -15,
-//                        left: 100,
-                        right: 0,
-                        width: width,
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-//                          Text(
-//                            "DashBoard",
-//                            style: GoogleFonts.amiri(
-//                              letterSpacing: 2,
-//                              fontSize: 30,
-//                              color: Color(0xFFc0a948),
+                    ?
+//                Positioned(
+//                        top: -15,
+////                        left: 100,
+//                        right: 0,
+//                        width: width,
+//                        child: Column(
+//                          children: [
+//                            Row(
+//                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                              crossAxisAlignment: CrossAxisAlignment.center,
+//                              children: [
+////                          Text(
+////                            "DashBoard",
+////                            style: GoogleFonts.amiri(
+////                              letterSpacing: 2,
+////                              fontSize: 30,
+////                              color: Color(0xFFc0a948),
+////                            ),
+////                          ),
+//                                SizedBox(width: 30),
+//                                AnimationAppBar(height: 100, width: 200),
+//
+//                                SizedBox(
+//                                  width: 55,
+//                                  child: Row(
+//                                    children: [
+//                                      Image.asset(
+//                                        'assets/images/diamond.png',
+//                                        color: secondary,
+//                                        height: 30,
+//                                      ),
+//                                      SizedBox(
+//                                        width: 10,
+//                                      ),
+//                                      Text(
+//                                        '1',
+//                                        style: textTheme3,
+//                                      )
+//                                    ],
+//                                  ),
+//                                ),
+//                              ],
 //                            ),
-//                          ),
-                                SizedBox(width: 30),
-                                AnimationAppBar(height: 100, width: 200),
-
-                                SizedBox(
-                                  width: 55,
-                                  child: Row(
-                                    children: [
-                                      Image.asset(
-                                        'assets/images/diamond.png',
-                                        color: secondary,
-                                        height: 30,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        '1',
-                                        style: textTheme3,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(left: 10, right: 30),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: secondary),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 10, right: 10),
-                                child: Column(
-                                  children: <Widget>[
-                                    Text(
-                                      'You have received 5 Advices',
-                                      style: textTheme3,
-                                    ),
-                                    Text(
-                                      'Till ${date.day}-${date.month}-${date.year}',
-                                      style: textTheme3,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
+//                            SizedBox(
+//                              height: 10,
+//                            ),
+//                            Container(
+//                              margin:
+//                                  const EdgeInsets.only(left: 10, right: 30),
+//                              decoration: BoxDecoration(
+//                                  borderRadius: BorderRadius.circular(5),
+//                                  color: secondary),
+//                              child: Padding(
+//                                padding:
+//                                    const EdgeInsets.only(left: 10, right: 10),
+//                                child: Column(
+//                                  children: <Widget>[
+//                                    Text(
+//                                      'You have received 5 Advices',
+//                                      style: textTheme3,
+//                                    ),
+//                                    Text(
+//                                      'Till ${date.day}-${date.month}-${date.year}',
+//                                      style: textTheme3,
+//                                    ),
+//                                  ],
+//                                ),
+//                              ),
+//                            ),
+//                          ],
+//                        ),
+//                      )
+                    Test()
                     : Container(),
                 _onTapped == 0 ? Library() : Container(),
                 _onTapped == 1 ? Profile() : Container(),

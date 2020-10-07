@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flare_flutter/flare_actor.dart';
 //import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:style_of_agent/QA_Sections/fadeAnimation.dart';
 import 'package:style_of_agent/QA_Sections/moveAnimation.dart';

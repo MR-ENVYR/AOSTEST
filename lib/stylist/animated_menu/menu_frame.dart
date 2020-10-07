@@ -243,10 +243,12 @@ class _StyleMenuFrameState extends State<StyleMenuFrame>
                       child: menuOpen
                           ? Icon(
                               Icons.arrow_forward,
+                              size: 27,
                               color: Color(0xFFE5CF73),
                             )
                           : Icon(
                               Icons.menu,
+                              size: 27,
                               color: Color(0xFFE5CF73),
                             ),
                     ),

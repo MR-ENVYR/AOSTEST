@@ -237,16 +237,18 @@ class _MenuFrameState extends State<MenuFrame>
                     });
                   },
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 40.0, left: 30),
+                    padding: const EdgeInsets.only(top: 40.5, left: 30),
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: menuOpen
                           ? Icon(
                               Icons.arrow_forward,
+                              size: 30,
                               color: Color(0xFFE5CF73),
                             )
                           : Icon(
                               Icons.menu,
+                              size: 30,
                               color: Color(0xFFE5CF73),
                             ),
                     ),

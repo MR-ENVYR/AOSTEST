@@ -75,7 +75,7 @@ flutter_icons:
 #  image_path_android: "assets/images/icon.jpeg"
   android: true
   ios: true
-  
+
   image_path: "assets/images/logo.jpeg"
   adaptive_icon_background: "#0000"
 
@@ -123,6 +123,7 @@ flutter:
     - assets/images/log.jpeg
 
     - assets/images/
+    - assets/images/looks/
     - assets/images/logos/
     - assets/images/emojis/
     - assets/images/qa_section/

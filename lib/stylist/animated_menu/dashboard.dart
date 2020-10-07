@@ -1,7 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:style_of_agent/animated_menu/Library.dart';
+import 'package:style_of_agent/stylist/animated_menu/Library.dart';
 import 'package:style_of_agent/model/clients_query_model.dart';
 
 import 'package:style_of_agent/stylist/animated_menu/clients_screen.dart';
