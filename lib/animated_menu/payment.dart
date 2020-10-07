@@ -19,8 +19,7 @@ class PaymentPage extends StatefulWidget {
 }
 
 class PaymentPageState extends State<PaymentPage> {
-
-   final _auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
   String userEmail;
 
   Future getCurrentUser() async {
@@ -46,12 +45,12 @@ class PaymentPageState extends State<PaymentPage> {
     dialog.style(message: 'Please wait...');
     await dialog.show();
     var response =
-        await StripeService.payWithNewCard(amount: '15000', currency: 'USD');
+    await StripeService.payWithNewCard(amount: '15000', currency: 'USD');
     await dialog.hide();
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(response.message),
       duration:
-          new Duration(milliseconds: response.success == true ? 1200 : 3000),
+      new Duration(milliseconds: response.success == true ? 1200 : 3000),
     ));
   }
 
@@ -74,45 +73,15 @@ class PaymentPageState extends State<PaymentPage> {
         backgroundColor: Colors.transparent,
         title: Center(
             child: Text(
-          'Payment Page',
-          style: GoogleFonts.amiri(
-            letterSpacing: 2,
-            fontSize: 30,
-            color: Color(0xFFE5CF73),
+              'Payment Page',
+              style: GoogleFonts.amiri(
+                letterSpacing: 2,
+                fontSize: 30,
+                color: Color(0xFFE5CF73),
 //                fontFamily: "FreigSanPro",
-          ),
-        )),
+              ),
+            )),
       ),
-     floatingActionButton: FloatingActionButton.extended(
-       label: Text('Start Session'),
-       backgroundColor: secondary,
-       onPressed: () {
-         showDialog(
-             context: context,
-             builder: (_) => AlertDialog(
-                   title: Text('Session will Cost 1 Style Diamond'),
-                   content: Text('DO you want to start session'),
-                   actions: <Widget>[
-                     FlatButton(
-                       child: Text("NO"),
-                       onPressed: () {
-                         Navigator.pop(context);
-                       },
-                     ),
-                     FlatButton(
-                       child: Text("Yes"),
-                       onPressed: () {
-                         Navigator.push(
-                             context,
-                             MaterialPageRoute(
-                                 builder: (context) => ChatScreen(userEmail)));
-                       },
-                     ),
-                   ],
-                 ),
-             barrierDismissible: true);
-       },
-     ),
       body: Container(
         child: Column(
           children: <Widget>[
@@ -188,8 +157,8 @@ class PaymentPageState extends State<PaymentPage> {
                       );
                     },
                     separatorBuilder: (context, index) => Divider(
-                          color: primary,
-                        ),
+                      color: primary,
+                    ),
                     itemCount: 2),
               ),
             ),

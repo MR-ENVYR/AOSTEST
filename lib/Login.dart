@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<FirebaseUser> firebaseAuthWithFacebook(
       {@required FacebookAccessToken token}) async {
     AuthCredential credential =
-        FacebookAuthProvider.getCredential(accessToken: token.token);
+    FacebookAuthProvider.getCredential(accessToken: token.token);
     FirebaseUser firebaseUser =
         (await _auth.signInWithCredential(credential)).user;
     return firebaseUser;
@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
   handlefacebooklogin() async {
     showAlertDialog(context, "Getting credentials..");
     final facebookLoginResult =
-        await facebookLogin.logIn(['email', 'public_profile']);
+    await facebookLogin.logIn(['email', 'public_profile']);
     switch (facebookLoginResult.status) {
       case FacebookLoginStatus.error:
         Navigator.pop(context);
@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       case FacebookLoginStatus.loggedIn:
 
-        /// calling the auth mehtod and getting the logged user
+      /// calling the auth mehtod and getting the logged user
         var firebaseUser = await firebaseAuthWithFacebook(
             token: facebookLoginResult.accessToken);
         checkuserfromfirestore(firebaseUser);
@@ -111,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
     showAlertDialog(context, "Please wait..");
     try {
       GoogleSignInAccount googleSignInAccount =
-          await _googleSignIn.signIn().catchError((onError) {
+      await _googleSignIn.signIn().catchError((onError) {
         Navigator.pop(context);
         final snackbar = SnackBar(
           backgroundColor: Colors.black54,
@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
         scaffoldkey.currentState.showSnackBar(snackbar);
       });
       GoogleSignInAuthentication googleSignInAuthentication =
-          await googleSignInAccount.authentication.catchError((onError) {
+      await googleSignInAccount.authentication.catchError((onError) {
         Navigator.pop(context);
         final snackbar = SnackBar(
           backgroundColor: Colors.black54,
@@ -144,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
           idToken: googleSignInAuthentication.idToken,
           accessToken: googleSignInAuthentication.accessToken);
       AuthResult result =
-          (await _auth.signInWithCredential(credential).catchError((onError) {
+      (await _auth.signInWithCredential(credential).catchError((onError) {
         Navigator.pop(context);
         final snackbar = SnackBar(
           backgroundColor: Colors.black54,
@@ -178,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   checkuserfromfirestore(FirebaseUser user) async {
     QuerySnapshot result =
-        await usersref.where("email", isEqualTo: user.email).getDocuments();
+    await usersref.where("email", isEqualTo: user.email).getDocuments();
     final List<DocumentSnapshot> docs = result.documents;
     if (docs.length == 0) {
       usersref.document(user.uid).setData({
@@ -243,7 +243,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   checkuser(FirebaseUser user) async {
     QuerySnapshot result =
-        await usersref.where("email", isEqualTo: user.email).getDocuments();
+    await usersref.where("email", isEqualTo: user.email).getDocuments();
     final List<DocumentSnapshot> docs = result.documents;
     if (docs.length == 0) {
       final snackbar = SnackBar(
@@ -286,15 +286,15 @@ class _LoginScreenState extends State<LoginScreen> {
       await prefs.setString("uid", user.uid);
       Future.delayed(const Duration(milliseconds: 1000), () {
         setState(() {
-      if(user.email=='stylist@aos.com'){
-        setUserType(true);
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => StyleDashBoard()));
-      }else{
-        setUserType(false);
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => MenuFrame()));
-      }
+          if(user.email=='stylist@aos.com'){
+            setUserType(true);
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (BuildContext context) => StyleDashBoard()));
+          }else{
+            setUserType(false);
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (BuildContext context) => MenuFrame()));
+          }
         });
       });
     }
@@ -360,7 +360,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> signUp({@required String email, @required String pwd}) async {
     try {
       FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
-              email: email, password: pwd))
+          email: email, password: pwd))
           .user;
       if (user != null) {
         savedata(user);
@@ -382,7 +382,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   savedata(FirebaseUser user) async {
     QuerySnapshot result =
-        await usersref.where("email", isEqualTo: user.email).getDocuments();
+    await usersref.where("email", isEqualTo: user.email).getDocuments();
     final List<DocumentSnapshot> docs = result.documents;
     if (docs.length == 0) {
       usersref.document(user.uid).setData({

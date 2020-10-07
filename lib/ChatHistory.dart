@@ -13,17 +13,19 @@ FirebaseUser loggedInUser;
 
 class ChatHistory extends StatefulWidget {
   String userEmail;
+  String sessionID;
 
-  ChatHistory(this.userEmail);
+  ChatHistory(this.userEmail, this.sessionID);
 
   @override
-  _ChatScreenState createState() => _ChatScreenState(userEmail);
+  _ChatScreenState createState() => _ChatScreenState(userEmail, sessionID);
 }
 
 class _ChatScreenState extends State<ChatHistory> {
   String userEmail;
+  String sessionID;
 
-  _ChatScreenState(this.userEmail);
+  _ChatScreenState(this.userEmail, this.sessionID);
 
   final messageTextController = TextEditingController();
   final _auth = FirebaseAuth.instance;
@@ -68,7 +70,7 @@ class _ChatScreenState extends State<ChatHistory> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              MessagesStream(userEmail),
+              MessagesStream(userEmail, sessionID),
             ],
           ),
         ),
@@ -79,8 +81,9 @@ class _ChatScreenState extends State<ChatHistory> {
 
 class MessagesStream extends StatelessWidget {
   String userEmail;
+  String sessionID;
 
-  MessagesStream(this.userEmail);
+  MessagesStream(this.userEmail, this.sessionID);
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +91,7 @@ class MessagesStream extends StatelessWidget {
       stream: _firestore
           .collection('messages')
           .document(userEmail)
-          .collection('chat')
+          .collection(sessionID)
           .orderBy('created')
           .snapshots(),
       builder: (context, snapshot) {
@@ -139,7 +142,7 @@ class MessageBubble extends StatelessWidget {
       padding: EdgeInsets.all(5.0),
       child: Column(
         crossAxisAlignment:
-            isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: <Widget>[
           type == 'text' ? textBubble(context) : imageBubble(context)
         ],
@@ -152,13 +155,13 @@ class MessageBubble extends StatelessWidget {
         elevation: 10.0,
         borderRadius: isCurrentUser
             ? BorderRadius.only(
-                topLeft: Radius.circular(30),
-                bottomLeft: Radius.circular(30),
-                topRight: Radius.circular(30))
+            topLeft: Radius.circular(30),
+            bottomLeft: Radius.circular(30),
+            topRight: Radius.circular(30))
             : BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-                bottomRight: Radius.circular(30)),
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+            bottomRight: Radius.circular(30)),
         color: isCurrentUser ? secondary : secondary,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -182,19 +185,19 @@ class MessageBubble extends StatelessWidget {
           height: 200,
           width: 200,
           child: FittedBox(
-            fit: BoxFit.fill,
+            fit: BoxFit.contain,
             child: Image.network(content,
                 loadingBuilder: (context, child, progress) {
-              return progress == null
-                  ? child
-                  : Padding(
-                      padding: const EdgeInsets.all(50),
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.grey,
-                        strokeWidth: 10,
-                      ),
-                    );
-            }),
+                  return progress == null
+                      ? child
+                      : Padding(
+                    padding: const EdgeInsets.all(50),
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.grey,
+                      strokeWidth: 10,
+                    ),
+                  );
+                }),
           ),
         ),
       ),

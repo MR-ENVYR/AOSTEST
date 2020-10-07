@@ -377,7 +377,7 @@ class MessageBubble extends StatelessWidget {
           height: 200,
           width: 200,
           child: FittedBox(
-            fit: BoxFit.fill,
+            fit: BoxFit.contain,
             child: Image.network(content,
                 loadingBuilder: (context, child, progress) {
               return progress == null
