@@ -120,39 +120,14 @@ class _LibraryState extends State<Library> {
         stream:
             Firestore.instance.collection('library').document(id).snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData && snapshot.data.data!=null) {
             print("library has data");
-            print(snapshot.data['images'].runtimeType);
 
-//            List<Widget> images = [];
             var images = snapshot.data['images'];
-//            for (var image in snapshot.data['images']) {
-//              images.add(GestureDetector(
-//                onTap: () {
-//                  Navigator.push(
-//                      context,
-//                      MaterialPageRoute(
-//                          builder: (context) => ImageView(
-//                                url: image,
-//                              )));
-//                },
-//                child: new FadeInImage.memoryNetwork(
-//                  placeholder: kTransparentImage,
-//                  image: image,
-//                ),
-////                Container(
-////                  decoration: BoxDecoration(
-////                      image: DecorationImage(
-////                          image: NetworkImage(image, scale: 1),
-////                          fit: BoxFit.cover)),
-////                ),
-//              ));
-//            }
-//            return Container();
+
             return Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: new StaggeredGridView.countBuilder(
-//                  primary: false,
                   crossAxisCount: 4,
                   mainAxisSpacing: 10.0,
                   crossAxisSpacing: 10.0,
@@ -196,9 +171,6 @@ class ImageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       primary: true,
-//      appBar: AppBar(
-//        backgroundColor: Colors.transparent,
-//      ),
       body: Container(
         height: double.maxFinite,
         width: double.maxFinite,
