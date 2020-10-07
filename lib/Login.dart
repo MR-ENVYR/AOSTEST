@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/phoneauthpage.dart';
 import 'package:style_of_agent/progress.dart';
 import 'package:style_of_agent/stylist/animated_menu/dashboard.dart';
+import 'package:style_of_agent/stylist/animated_menu/menu_frame.dart';
 import 'package:style_of_agent/utils.dart';
 import 'package:style_of_agent/animated_menu/menu_frame.dart';
 import 'package:style_of_agent/welcomescreen.dart';
@@ -289,7 +290,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if(user.email=='stylist@aos.com'){
             setUserType(true);
             Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => StyleDashBoard()));
+                builder: (BuildContext context) => StyleMenuFrame()));
           }else{
             setUserType(false);
             Navigator.of(context).pushReplacement(MaterialPageRoute(

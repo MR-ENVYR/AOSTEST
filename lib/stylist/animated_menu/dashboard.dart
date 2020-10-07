@@ -118,13 +118,8 @@ class _StyleDashBoardState extends State<StyleDashBoard>
                                         children: clientQuerys),
                                   );
                                 } else {
-                                  return Text(
-                                    "No Data",
-                                    style: GoogleFonts.amiri(
-                                      letterSpacing: 2,
-                                      fontSize: 30,
-                                      color: Color(0xFFc0a948),
-                                    ),
+                                  return SizedBox(
+                                    height: 0,
                                   );
                                 }
                               })
@@ -354,7 +349,12 @@ class ClientQuestion extends StatelessWidget {
                                   fontFamily: "FreigSanPro",
                                   color: Colors.white,
                                 )),
-                            onPressed: () {},
+                            onPressed: () {
+                              Firestore.instance
+                                  .collection('questions')
+                                  .document(clientQuery.id)
+                                  .updateData({'status': 'complete'});
+                            },
                             color: Color(0xFFfb4545),
                           )
                         ],
