@@ -340,7 +340,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   validateandsend() async {
     if (_formKey.currentState.validate()) {
-      showAlertDialog(context, "Loging in. Please wait");
+      showAlertDialog(context, "Logging In");
       email = emailController.text.trim();
       password = passController.text.trim();
       _formKey.currentState.save();
