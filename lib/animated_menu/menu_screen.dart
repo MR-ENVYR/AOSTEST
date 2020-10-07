@@ -57,6 +57,7 @@ class _MenuScreenState extends State<MenuScreen> {
 //    print("$initScreen");
     await prefs.setInt("initScreen", 1);
     await prefs.setString("uid", "");
+    await prefs.setString("userEmail","");
     // showAlertDialog(context,initScreen.toString());
     await _auth.signOut().then((onValue) {
       _googleSignIn.signOut();

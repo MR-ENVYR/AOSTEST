@@ -14,7 +14,7 @@ class Test extends StatefulWidget {
 
 class _TestState extends State<Test> {
   bool _visible = false;
-
+  var date = DateTime.now();
   int _current = 0;
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,28 @@ class _TestState extends State<Test> {
             children: <Widget>[
               SizedBox(
                 height: 20,
+              ),Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: secondary),
+                child: Padding(
+                  padding:
+                  const EdgeInsets.only(left: 10, right: 10),
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        'You have received 2 Advices',
+                        style: textTheme3,
+                      ),
+                      Text(
+                        'Till ${date.day}-${date.month}-${date.year}',
+                        style: textTheme3,
+                      ),
+                    ],
+                  ),
+                ),
               ),
+              SizedBox(height: 20,),
               RichText(
                 text: TextSpan(
                   text: 'Clothing from Premium Brands\n',

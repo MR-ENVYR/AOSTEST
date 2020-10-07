@@ -293,6 +293,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 builder: (BuildContext context) => StyleMenuFrame()));
           }else{
             setUserType(false);
+            setUserEmail(user.email);
             Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (BuildContext context) => MenuFrame()));
           }
@@ -300,7 +301,11 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
-
+  Future<bool> setUserEmail(String email)async{
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    prefs.setString("userEmail", email);
+    return prefs.commit();
+  }
   Future<bool> setUserType(bool userType)async{
     print(userType);
     print("Set userType");

@@ -107,7 +107,7 @@ class _MenuFrameState extends State<MenuFrame>
   }
 
   Map<int, Widget> screens = {
-    0: DashBoard(),
+    0: DashBoard( ),
     1: ContactUs(),
     2: FAQ(),
     3: Policy(),

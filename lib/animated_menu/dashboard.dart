@@ -1,7 +1,9 @@
 //import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 //import 'package:convex_bottom_bar/';
 //import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/animated_menu/Library.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
@@ -27,6 +29,7 @@ class DashBoard extends StatefulWidget {
 
 class _DashBoardState extends State<DashBoard>
     with SingleTickerProviderStateMixin {
+  String email;
   bool _visible = false;
   int _onTapped = 2;
   GlobalKey _toolTipKey = GlobalKey();
@@ -42,9 +45,15 @@ class _DashBoardState extends State<DashBoard>
       _onTapped = 2;
     });
   }
+  void getCurrentUser()async{
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    email=prefs.getString("userEmail");
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    getCurrentUser();
     var margin = MediaQuery.of(context).size.height * 0.02;
     var width = MediaQuery.of(context).size.width;
     return Container(
@@ -53,111 +62,20 @@ class _DashBoardState extends State<DashBoard>
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: Color.fromRGBO(3, 9, 23, 1),
-//          image: DecorationImage(
-//              image: AssetImage("assets/images/qa_section/dashboard.jpg"),
-//              fit: BoxFit.cover)
+
       ),
       child: SafeArea(
         child: Scaffold(
-//          appBar: AppBar(
-//            elevation: 0,
-//            backgroundColor: Colors.transparent,
-//            title: Text(
-//              "DashBoard",
-//              style: GoogleFonts.amiri(
-//                letterSpacing: 2,
-//                fontSize: 30,
-//                color: Color(0xFFc0a948),
-////                fontFamily: "FreigSanPro",
-//              ),
-//            ),
-//            centerTitle: true,
-//          ),
           body: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             color: Colors.transparent,
             child: Stack(
               children: <Widget>[
-                _onTapped == 2
-                    ?
-//                Positioned(
-//                        top: -15,
-////                        left: 100,
-//                        right: 0,
-//                        width: width,
-//                        child: Column(
-//                          children: [
-//                            Row(
-//                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                              crossAxisAlignment: CrossAxisAlignment.center,
-//                              children: [
-////                          Text(
-////                            "DashBoard",
-////                            style: GoogleFonts.amiri(
-////                              letterSpacing: 2,
-////                              fontSize: 30,
-////                              color: Color(0xFFc0a948),
-////                            ),
-////                          ),
-//                                SizedBox(width: 30),
-//                                AnimationAppBar(height: 100, width: 200),
-//
-//                                SizedBox(
-//                                  width: 55,
-//                                  child: Row(
-//                                    children: [
-//                                      Image.asset(
-//                                        'assets/images/diamond.png',
-//                                        color: secondary,
-//                                        height: 30,
-//                                      ),
-//                                      SizedBox(
-//                                        width: 10,
-//                                      ),
-//                                      Text(
-//                                        '1',
-//                                        style: textTheme3,
-//                                      )
-//                                    ],
-//                                  ),
-//                                ),
-//                              ],
-//                            ),
-//                            SizedBox(
-//                              height: 10,
-//                            ),
-//                            Container(
-//                              margin:
-//                                  const EdgeInsets.only(left: 10, right: 30),
-//                              decoration: BoxDecoration(
-//                                  borderRadius: BorderRadius.circular(5),
-//                                  color: secondary),
-//                              child: Padding(
-//                                padding:
-//                                    const EdgeInsets.only(left: 10, right: 10),
-//                                child: Column(
-//                                  children: <Widget>[
-//                                    Text(
-//                                      'You have received 5 Advices',
-//                                      style: textTheme3,
-//                                    ),
-//                                    Text(
-//                                      'Till ${date.day}-${date.month}-${date.year}',
-//                                      style: textTheme3,
-//                                    ),
-//                                  ],
-//                                ),
-//                              ),
-//                            ),
-//                          ],
-//                        ),
-//                      )
-                    Test()
-                    : Container(),
+                _onTapped == 2 ? Test() : Container(),
                 _onTapped == 0 ? Library() : Container(),
                 _onTapped == 1 ? Profile() : Container(),
-                _onTapped == 3 ? ChatHomePage() : Container(),
+                _onTapped == 3 ? ChatHomePage(email) : Container(),
                 _onTapped == 4 ? PaymentPage() : Container(),
               ],
             ),
