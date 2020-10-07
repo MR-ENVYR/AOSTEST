@@ -53,17 +53,17 @@ class _ChatLayoutState extends State<ChatLayout> {
   final _firestore = Firestore.instance;
   final _auth = FirebaseAuth.instance;
 
-  Future getUserSessionDetails() async {
-    QuerySnapshot sessionDetails = await _firestore
-        .collection('questions')
-        .where("email", isEqualTo: userEmail)
-        .getDocuments();
-    return sessionDetails.documents;
-  }
+  // Future getUserSessionDetails() async {
+  //   QuerySnapshot sessionDetails = await _firestore
+  //       .collection('questions')
+  //       .where("email", isEqualTo: userEmail)
+  //       .getDocuments();
+  //   return sessionDetails.documents;
+  // }
 
   @override
   Widget build(BuildContext context) {
-     print(userEmail);
+    print(userEmail);
     return Container(
       color: dark,
       child: ChatHeads(),
@@ -71,25 +71,29 @@ class _ChatLayoutState extends State<ChatLayout> {
   }
 
   Widget ChatHeads() {
-    return FutureBuilder(
-      future: getUserSessionDetails(),
+    return StreamBuilder(
+      stream: Firestore.instance
+          .collection('questions')
+          .where("email", isEqualTo: userEmail)
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Text("Loading");
         } else {
           return ListView.builder(
-              itemCount: snapshot.data.length,
+              itemCount: snapshot.data.documents.length,
               itemBuilder: (context, index) {
-                String sessionID = snapshot.data[index].data['id'];
+                DocumentSnapshot session=snapshot.data.documents[index];
+                String sessionID = session['id'];
                 return InkWell(
                   onTap: () {
-                    if (snapshot.data[index].data['status'] == "active") {
+                    if (session['status'] == "active") {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
                                   ChatScreen(userEmail, sessionID)));
-                    } else if (snapshot.data[index].data['status'] ==
+                    } else if (session['status'] ==
                         "inactive") {
                       Navigator.push(
                           context,
@@ -121,9 +125,9 @@ class _ChatLayoutState extends State<ChatLayout> {
                         'Tracy MacMonday',
                         style: TextStyle(color: notWhite),
                       ),
-                      subtitle: Text(snapshot.data[index].data['ques2']),
+                      subtitle: Text(session['ques2']),
                       trailing: Text(
-                        snapshot.data[index].data['status'].toUpperCase(),
+                        session['status'].toUpperCase(),
                       ),
                     ),
                   ),
