@@ -77,7 +77,7 @@ class _stylistChatScreenState extends State<stylistChatScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    ImageSelector(userEmail),
+                    ImageSelector(userEmail,sessionID),
                     Expanded(
                       child: TextField(
                         style: TextStyle(color: notWhite),
@@ -125,7 +125,7 @@ class ImageSelector extends StatefulWidget {
   String userEmail;
   String sessionID;
 
-  ImageSelector(this.userEmail);
+  ImageSelector(this.userEmail,this.sessionID);
 
   @override
   _ImageSelectorState createState() =>
