@@ -8,15 +8,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_of_agent/ChatHistory.dart';
 import 'package:style_of_agent/utils/utils.dart';
-
 import 'inAppChat.dart';
-import 'model/usermodel.dart';
 
 class ChatHomePage extends StatelessWidget {
   String userEmail;
   ChatHomePage(this.userEmail);
+
+  void getCurrentUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userEmail = prefs.getString("userEmail");
+  }
+
   @override
   Widget build(BuildContext context) {
+    getCurrentUser();
     return Scaffold(
       backgroundColor: Color.fromRGBO(3, 9, 23, 1),
       appBar: AppBar(
@@ -53,17 +58,16 @@ class _ChatLayoutState extends State<ChatLayout> {
   final _firestore = Firestore.instance;
   final _auth = FirebaseAuth.instance;
 
-  // Future getUserSessionDetails() async {
-  //   QuerySnapshot sessionDetails = await _firestore
-  //       .collection('questions')
-  //       .where("email", isEqualTo: userEmail)
-  //       .getDocuments();
-  //   return sessionDetails.documents;
-  // }
+  void getCurrentUser() async {
+    if (userEmail == null) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      userEmail = prefs.getString("userEmail");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    print(userEmail);
+    getCurrentUser();
     return Container(
       color: dark,
       child: ChatHeads(),
@@ -83,7 +87,7 @@ class _ChatLayoutState extends State<ChatLayout> {
           return ListView.builder(
               itemCount: snapshot.data.documents.length,
               itemBuilder: (context, index) {
-                DocumentSnapshot session=snapshot.data.documents[index];
+                DocumentSnapshot session = snapshot.data.documents[index];
                 String sessionID = session['id'];
                 return InkWell(
                   onTap: () {
@@ -93,8 +97,7 @@ class _ChatLayoutState extends State<ChatLayout> {
                           MaterialPageRoute(
                               builder: (context) =>
                                   ChatScreen(userEmail, sessionID)));
-                    } else if (session['status'] ==
-                        "inactive") {
+                    } else if (session['status'] == "inactive") {
                       Navigator.push(
                           context,
                           MaterialPageRoute(

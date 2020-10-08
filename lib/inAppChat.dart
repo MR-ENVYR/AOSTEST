@@ -47,15 +47,6 @@ class _ChatScreenState extends State<ChatScreen> {
   //       .setData({'email': userEmail, 'status': 'request'});
   // }
 
-  Stream<DocumentSnapshot> get sessionDetails {
-    var qn = Firestore.instance
-        .collection('messages')
-        .document('users')
-        .collection('userid')
-        .document(userEmail)
-        .snapshots();
-    return qn;
-  }
 
 
 
@@ -64,7 +55,6 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: dark,
       appBar: AppBar(
-//        iconTheme: IconThemeData(color: Color(0xFFE5CF73)),
         title: Text(
           'Tracy MacMonday',
           style: textTheme3,
@@ -87,7 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget MessageBar() {
-    return Container(
+    return Container(padding: EdgeInsets.only(bottom: 15),
       decoration: messageContainerDecoration,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -72,7 +72,7 @@ class _stylistChatScreenState extends State<stylistChatScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               MessagesStream(userEmail, sessionID),
-              Container(
+              Container(padding: EdgeInsets.only(bottom: 15),
                 decoration: messageContainerDecoration,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,

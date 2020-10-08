@@ -191,6 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
         "isphoneverified": false,
         "timestamp": time
       });
+
       Navigator.pop(context);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString("uid", user.uid);
@@ -198,6 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (BuildContext context) =>
               PhoneVerificationScreen(user: user)));
+      setUserEmail(user.email);
     } else {
       Navigator.pop(context);
       final snackbar = SnackBar(
@@ -214,6 +216,7 @@ class _LoginScreenState extends State<LoginScreen> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setInt("initScreen", 10);
       await prefs.setString("uid", user.uid);
+      setUserEmail(user.email);
       Future.delayed(const Duration(milliseconds: 1000), () {
         setState(() {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -293,7 +296,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 builder: (BuildContext context) => StyleMenuFrame()));
           }else{
             setUserType(false);
-            setUserEmail(user.email);
+            setUserEmail(email);
             Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (BuildContext context) => MenuFrame()));
           }
@@ -358,6 +361,7 @@ class _LoginScreenState extends State<LoginScreen> {
       password = passController.text.trim();
       _formKey.currentState.save();
       showAlertDialog(context, "Creating user.. Please wait");
+      setUserEmail(email);
       await signUp(email: email, pwd: password);
       Navigator.pop(context);
     }
