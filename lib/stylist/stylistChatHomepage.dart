@@ -60,22 +60,24 @@ class _ChatLayoutState extends State<ChatLayout> {
   }
 
   Widget ChatHeads() {
-    return FutureBuilder(
-      future: getClients(),
+    return StreamBuilder(
+      stream: Firestore.instance
+          .collection("questions")
+          .where("status", isEqualTo: "active")
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          print('No Data');
           return Text('Loading');
         } else {
-          print('Data Availabale');
-          print(snapshot.data.length);
+          print(snapshot.data.documents.length);
 
           return ListView.builder(
-              itemCount: snapshot.data.length,
+              itemCount: snapshot.data.documents.length,
               itemBuilder: (context, index) {
-                String email = snapshot.data[index].data['email'];
-                String userName = snapshot.data[index].data['username'];
-                String sessionID = snapshot.data[index].data['id'];
+                DocumentSnapshot session = snapshot.data.documents[index];
+                String email = session['email'];
+                String userName = session['username'];
+                String sessionID = session['id'];
                 print(email);
                 return InkWell(
                   onTap: () {
@@ -83,7 +85,7 @@ class _ChatLayoutState extends State<ChatLayout> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                stylistChatScreen(email, userName,sessionID)));
+                                stylistChatScreen(email, userName, sessionID)));
                   },
                   child: Container(
                     margin: EdgeInsets.only(top: 10, left: 10, right: 10),
@@ -95,16 +97,15 @@ class _ChatLayoutState extends State<ChatLayout> {
                       ),
                     ], color: dark, borderRadius: BorderRadius.circular(5)),
                     child: ListTile(
-
                       title: Text(
-                        snapshot.data[index].data['username'],
+                        session['username'],
                         style: TextStyle(
                             color: primary,
                             fontSize: 20,
                             fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(
-                        snapshot.data[index].data['email'],
+                        session['email'],
                         style: TextStyle(color: lightPrimary, fontSize: 14),
                       ),
                     ),
