@@ -32,7 +32,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool _obscureText = true;
+  bool _obscureText = false;
   FirebaseAuth _auth = FirebaseAuth.instance;
   final usersref = Firestore.instance.collection("users");
   final DateTime time = DateTime.now();
