@@ -481,7 +481,7 @@ class _ProfileFillingPart2State extends State<ProfileFillingPart2> {
                                     ? FileImage(_image)
                                     : widget.userModel.url != null
                                         ? NetworkImage(widget.userModel.url)
-                                        : AssetImage('assets/images/av.jpg'),
+                                        : AssetImage('assets/images/av.png'),
                               ),
                               GestureDetector(
                                 onTap: () {

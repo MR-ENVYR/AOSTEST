@@ -133,7 +133,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       radius: 24.0,
                       backgroundImage: url == null
                           ? AssetImage(
-                              'assets/images/av.jpg',
+                              'assets/images/av.png',
                             )
                           : NetworkImage(url),
                     ),

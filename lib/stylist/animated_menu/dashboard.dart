@@ -145,21 +145,21 @@ class _StyleDashBoardState extends State<StyleDashBoard>
               Icon(
                 Icons.photo_album,
                 color: Color.fromRGBO(3, 9, 23, 1),
-                size: _onTapped == 0 ? 35 : 25,
+                size: _onTapped == 0 ? 30 : 25,
               ),
               Icon(
                 Icons.person,
                 color: Color.fromRGBO(3, 9, 23, 1),
-                size: _onTapped == 1 ? 35 : 25,
+                size: _onTapped == 1 ? 30 : 25,
               ),
               Image.asset(
                 "assets/images/me.png",
-                scale: _onTapped == 2 ? 14.5 : 23,
+                scale: _onTapped == 2 ? 16 : 23,
                 color: Color.fromRGBO(3, 9, 23, 1),
               ),
               Image.asset(
                 "assets/images/customer.png",
-                scale: _onTapped == 3 ? 14.5 : 23,
+                scale: _onTapped == 3 ? 16 : 23,
                 color: Color.fromRGBO(3, 9, 23, 1),
               ),
 
@@ -210,7 +210,7 @@ class ClientQuestion extends StatelessWidget {
                         CircleAvatar(
                           backgroundImage: (snapshot.data["url"] == null)
                               ? AssetImage(
-                                  'assets/images/av.jpg',
+                                  'assets/images/av.png',
                                 )
                               : NetworkImage(snapshot.data["url"]),
                         ),

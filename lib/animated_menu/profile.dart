@@ -1507,7 +1507,7 @@ class _ProfileState extends State<Profile> {
                                         : userModel.url != null
                                             ? NetworkImage(userModel.url)
                                             : AssetImage(
-                                                'assets/images/av.jpg'),
+                                                'assets/images/av.png'),
                                   ),
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle,

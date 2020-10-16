@@ -100,13 +100,13 @@ class _ChatLayoutState extends State<ChatLayout> {
                       title: Text(
                         session['username'],
                         style: TextStyle(
-                            color: primary,
+                            color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(
                         session['email'],
-                        style: TextStyle(color: lightPrimary, fontSize: 14),
+                        style: TextStyle(color: Colors.white54, fontSize: 14),
                       ),
                     ),
                   ),

@@ -383,7 +383,7 @@ class _ProfileFillingState extends State<ProfileFilling> {
                                         : _userModel.url != null
                                             ? NetworkImage(_userModel.url)
                                             : AssetImage(
-                                                'assets/images/av.jpg'),
+                                                'assets/images/av.png'),
                                   ),
                                   GestureDetector(
                                     onTap: () {
