@@ -80,6 +80,8 @@ class _stylistChatScreenState extends State<stylistChatScreen> {
                     ImageSelector(userEmail,sessionID),
                     Expanded(
                       child: TextField(
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 3,
                         style: TextStyle(color: notWhite),
                         controller: messageTextController,
                         onChanged: (value) {
@@ -396,7 +398,7 @@ class MessageBubble extends StatelessWidget {
   }
 
   Widget imageDetail(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: dark,
       body: GestureDetector(
         onTap: () {
           Navigator.pop(context);

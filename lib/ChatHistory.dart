@@ -205,7 +205,7 @@ class MessageBubble extends StatelessWidget {
   }
 
   Widget imageDetail(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: dark,
       body: GestureDetector(
         onTap: () {
           Navigator.pop(context);

@@ -38,15 +38,6 @@ class _ChatScreenState extends State<ChatScreen> {
     //   startSession();
   }
 
-  // void startSession() async {
-  //   await Firestore.instance
-  //       .collection('messages')
-  //       .document('users')
-  //       .collection('userid')
-  //       .document(userEmail)
-  //       .setData({'email': userEmail, 'status': 'request'});
-  // }
-
 
 
 
@@ -85,6 +76,8 @@ class _ChatScreenState extends State<ChatScreen> {
           ImageSelector(userEmail,sessionID),
           Expanded(
             child: TextField(
+              keyboardType: TextInputType.multiline,
+              maxLines: 3,
               style: TextStyle(color: notWhite),
               controller: messageTextController,
               onChanged: (value) {
@@ -388,7 +381,7 @@ class MessageBubble extends StatelessWidget {
   }
 
   Widget imageDetail(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: dark,
       body: GestureDetector(
         onTap: () {
           Navigator.pop(context);
