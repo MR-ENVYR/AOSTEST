@@ -81,7 +81,7 @@ class _stylistChatScreenState extends State<stylistChatScreen> {
                     Expanded(
                       child: TextField(
                         keyboardType: TextInputType.multiline,
-                        maxLines: 3,
+                        maxLines: 2,
                         style: TextStyle(color: notWhite),
                         controller: messageTextController,
                         onChanged: (value) {
