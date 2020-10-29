@@ -4,7 +4,8 @@
 
 
     <string name="app_name">Agents of Style</string>
-    <string name="facebook_app_id">216647059595254</string>
-    <string name="fb_login_protocol_scheme">fb216647059595254</string>
+    <string name="facebook_app_id">1025107974299478</string>
+    <string name="fb_login_protocol_scheme">fb1025107974299478</string>
+
 
 </resources>
